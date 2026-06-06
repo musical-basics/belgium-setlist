@@ -17,6 +17,14 @@ public protocol ShowClock: AnyObject {
 
     /// True while audio is actively playing (an EDM piece is running).
     var isRunning: Bool { get }
+
+    /// A normalized audio-reactive white-hit value, weighted toward low-end/backing energy.
+    /// Hosts that do not analyze audio can leave this at the default 0.
+    var audioFlashLevel: Double { get }
+}
+
+public extension ShowClock {
+    var audioFlashLevel: Double { 0 }
 }
 
 /// A trivial clock used for headless tests / when no host clock is supplied.
