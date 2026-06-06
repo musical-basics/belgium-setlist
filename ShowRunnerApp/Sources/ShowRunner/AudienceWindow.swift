@@ -66,10 +66,11 @@ final class AudienceWindow {
         } else {
             window.styleMask = [.titled, .closable, .resizable, .miniaturizable]
             window.title = "ShowRunner — Audience Preview"
-            let w: CGFloat = 1280, h: CGFloat = 720
-            let f = NSRect(x: screen.frame.midX - w / 2, y: screen.frame.midY - h / 2, width: w, height: h)
+            let w: CGFloat = 960, h: CGFloat = 540
+            // Top-right corner so it does NOT cover the centered operator window on a single display.
+            let f = NSRect(x: screen.frame.maxX - w - 40, y: screen.frame.maxY - h - 60, width: w, height: h)
             window.setFrame(f, display: true)
-            window.level = .floating   // stay visible above the operator window for home testing
+            window.level = .normal
             window.ignoresMouseEvents = false
         }
         window.orderFrontRegardless()             // show WITHOUT stealing key focus from operator

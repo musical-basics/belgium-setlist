@@ -1,5 +1,43 @@
 import AppKit
 
+/// A horizontal output-level meter (green → yellow → red) with a fast-rise / slow-fall ballistic
+/// so the operator can see at a glance that audio is actually flowing to each output pair.
+final class MeterView: NSView {
+    private let caption: String
+    private var level: CGFloat = 0
+
+    init(caption: String) {
+        self.caption = caption
+        super.init(frame: .zero)
+        wantsLayer = true
+        layer?.cornerRadius = 4
+        translatesAutoresizingMaskIntoConstraints = false
+    }
+    required init?(coder: NSCoder) { fatalError("not used") }
+
+    /// Feed a new peak (0…1). Rises instantly, decays smoothly.
+    func setLevel(_ newValue: Float) {
+        let target = CGFloat(min(1, max(0, newValue)))
+        level = target >= level ? target : max(target, level - 0.07)
+        needsDisplay = true
+    }
+
+    override func draw(_ dirtyRect: NSRect) {
+        NSColor.black.withAlphaComponent(0.55).setFill()
+        bounds.fill()
+        if level > 0.001 {
+            let color: NSColor = level > 0.9 ? .systemRed : (level > 0.7 ? .systemYellow : .systemGreen)
+            color.setFill()
+            NSRect(x: 0, y: 0, width: bounds.width * level, height: bounds.height).fill()
+        }
+        let attrs: [NSAttributedString.Key: Any] = [
+            .font: NSFont.monospacedSystemFont(ofSize: 9, weight: .bold),
+            .foregroundColor: NSColor.white,
+        ]
+        (caption as NSString).draw(at: NSPoint(x: 6, y: bounds.midY - 6), withAttributes: attrs)
+    }
+}
+
 /// Display info for a single piece row.
 struct PieceRowInfo {
     let order: String
@@ -138,8 +176,13 @@ final class OperatorWindowController {
     private let scrollView = NSScrollView()
     private let goButton = NSButton(title: "GO  (Space)", target: nil, action: nil)
     private let stopButton = NSButton(title: "STOP / PANIC  (Esc)", target: nil, action: nil)
+    private let onDeckLabel = NSTextField(labelWithString: "—")
     private let nowPlayingLabel = NSTextField(labelWithString: "—")
     private let elapsedLabel = NSTextField(labelWithString: "")
+    private let remainingLabel = NSTextField(labelWithString: "")
+    private let progressBar = NSProgressIndicator()
+    private let backingMeter = MeterView(caption: "BACKING  1·2")
+    private let clickMeter = MeterView(caption: "CLICK  3·4")
 
     private var rowViews: [PieceRowView] = []
 
@@ -164,9 +207,21 @@ final class OperatorWindowController {
         displayPopup.target = self
         displayPopup.action = #selector(displayChanged)
 
-        nowPlayingLabel.font = .systemFont(ofSize: 18, weight: .semibold)
+        onDeckLabel.font = .systemFont(ofSize: 21, weight: .bold)
+        onDeckLabel.lineBreakMode = .byTruncatingTail
+        nowPlayingLabel.font = .systemFont(ofSize: 17, weight: .semibold)
+        nowPlayingLabel.lineBreakMode = .byTruncatingTail
         elapsedLabel.font = .monospacedDigitSystemFont(ofSize: 30, weight: .bold)
         elapsedLabel.stringValue = "––:–– / ––:––"
+        remainingLabel.font = .monospacedDigitSystemFont(ofSize: 17, weight: .semibold)
+        remainingLabel.textColor = .secondaryLabelColor
+        remainingLabel.stringValue = "−––:––"
+        progressBar.isIndeterminate = false
+        progressBar.style = .bar
+        progressBar.minValue = 0
+        progressBar.maxValue = 1
+        progressBar.doubleValue = 0
+        progressBar.translatesAutoresizingMaskIntoConstraints = false
 
         configureButton(goButton, color: .systemGreen, action: #selector(goPressed))
         configureButton(stopButton, color: .systemRed, action: #selector(stopPressed))
@@ -231,15 +286,34 @@ final class OperatorWindowController {
         transport.distribution = .fillEqually
         transport.spacing = 16
 
-        let playInfo = NSStackView(views: [nowPlayingLabel, elapsedLabel])
-        playInfo.orientation = .horizontal
-        playInfo.distribution = .equalSpacing
-        playInfo.alignment = .centerY
+        // "On deck" banner — exactly what the next GO will fire.
+        let onDeckCaption = NSTextField(labelWithString: "ON DECK →")
+        onDeckCaption.font = .systemFont(ofSize: 12, weight: .heavy)
+        onDeckCaption.textColor = .controlAccentColor
+        onDeckCaption.setContentHuggingPriority(.required, for: .horizontal)
+        let onDeckRow = NSStackView(views: [onDeckCaption, onDeckLabel])
+        onDeckRow.orientation = .horizontal
+        onDeckRow.spacing = 10
+        onDeckRow.alignment = .firstBaseline
 
-        let footer = NSStackView(views: [playInfo, transport])
+        // Elapsed (big) on the left, time-remaining countdown on the right.
+        let timeRow = NSStackView(views: [elapsedLabel, NSView(), remainingLabel])
+        timeRow.orientation = .horizontal
+        timeRow.alignment = .lastBaseline
+
+        // Two output-level meters.
+        let meterRow = NSStackView(views: [backingMeter, clickMeter])
+        meterRow.orientation = .horizontal
+        meterRow.distribution = .fillEqually
+        meterRow.spacing = 16
+        meterRow.translatesAutoresizingMaskIntoConstraints = false
+        backingMeter.heightAnchor.constraint(equalToConstant: 22).isActive = true
+        clickMeter.heightAnchor.constraint(equalToConstant: 22).isActive = true
+
+        let footer = NSStackView(views: [onDeckRow, nowPlayingLabel, timeRow, progressBar, meterRow, transport])
         footer.orientation = .vertical
         footer.alignment = .leading
-        footer.spacing = 12
+        footer.spacing = 10
         footer.translatesAutoresizingMaskIntoConstraints = false
 
         content.addSubview(header)
@@ -262,8 +336,14 @@ final class OperatorWindowController {
             footer.bottomAnchor.constraint(equalTo: content.bottomAnchor, constant: -m),
             transport.leadingAnchor.constraint(equalTo: footer.leadingAnchor),
             transport.trailingAnchor.constraint(equalTo: footer.trailingAnchor),
-            playInfo.leadingAnchor.constraint(equalTo: footer.leadingAnchor),
-            playInfo.trailingAnchor.constraint(equalTo: footer.trailingAnchor),
+            onDeckRow.leadingAnchor.constraint(equalTo: footer.leadingAnchor),
+            onDeckRow.trailingAnchor.constraint(equalTo: footer.trailingAnchor),
+            timeRow.leadingAnchor.constraint(equalTo: footer.leadingAnchor),
+            timeRow.trailingAnchor.constraint(equalTo: footer.trailingAnchor),
+            progressBar.leadingAnchor.constraint(equalTo: footer.leadingAnchor),
+            progressBar.trailingAnchor.constraint(equalTo: footer.trailingAnchor),
+            meterRow.leadingAnchor.constraint(equalTo: footer.leadingAnchor),
+            meterRow.trailingAnchor.constraint(equalTo: footer.trailingAnchor),
         ])
     }
 
@@ -322,6 +402,13 @@ final class OperatorWindowController {
 
     func setNowPlaying(_ text: String) { nowPlayingLabel.stringValue = text }
     func setElapsed(_ text: String) { elapsedLabel.stringValue = text }
+    func setOnDeck(_ text: String) { onDeckLabel.stringValue = text }
+    func setRemaining(_ text: String) { remainingLabel.stringValue = text }
+    func setProgress(_ fraction: Double) { progressBar.doubleValue = max(0, min(1, fraction)) }
+    func setMeters(backing: Float, click: Float) {
+        backingMeter.setLevel(backing)
+        clickMeter.setLevel(click)
+    }
 
     // MARK: Actions
 

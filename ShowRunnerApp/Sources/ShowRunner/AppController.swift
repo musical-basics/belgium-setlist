@@ -211,8 +211,9 @@ final class AppController: NSObject, OperatorWindowDelegate {
         // otherwise it would cover the control UI — fall back to a windowed preview.
         let fullscreen = (target != operatorScreen)
         audienceWindow.place(on: target, fullscreen: fullscreen)
-        // Placing the audience window must never steal keyboard focus from the operator.
-        operatorController.window.makeKey()
+        // Placing the audience window must never steal focus from — or sit on top of — the
+        // operator window. Bring the control window back to the front and make it key.
+        operatorController.window.makeKeyAndOrderFront(nil)
         Logger.shared.info("Audience display -> index \(idx) (\(fullscreen ? "fullscreen" : "windowed preview"))")
     }
 
@@ -225,6 +226,8 @@ final class AppController: NSObject, OperatorWindowDelegate {
 
         audienceWindow.showCard(m.imageReady ? m.image : nil)
         audioEngine.stop()
+        operatorController.setProgress(0)
+        operatorController.setRemaining("−––:––")
 
         if m.piece.hasAudio {
             // Refuse to play an EDM piece if the current device can't route the click to
@@ -264,12 +267,17 @@ final class AppController: NSObject, OperatorWindowDelegate {
         operatorController.setPlaying(index: nil)
         operatorController.setNowPlaying("— stopped —")
         operatorController.setElapsed("––:–– / ––:––")
+        operatorController.setRemaining("−––:––")
+        operatorController.setProgress(0)
     }
 
     private func selectIndex(_ i: Int) {
         guard !pieces.isEmpty else { return }
         selectedIndex = min(max(0, i), pieces.count - 1)
         operatorController.setSelected(selectedIndex)
+        let m = pieces[selectedIndex]
+        let tag = m.piece.hasAudio ? "  ♪" : ""
+        operatorController.setOnDeck("\(m.piece.order) — \(m.piece.title)\(tag)")
     }
 
     // MARK: Elapsed timer
@@ -282,14 +290,20 @@ final class AppController: NSObject, OperatorWindowDelegate {
     }
 
     @objc private func tick() {
+        // Meters always reflect the engine, so they decay to zero when audio stops.
+        operatorController.setMeters(backing: audioEngine.backingLevel, click: audioEngine.clickLevel)
         guard let pi = playingIndex, pi < pieces.count, let pre = pieces[pi].premix else { return }
         let total = audioEngine.sampleRate > 0 ? Double(pre.frameCount) / audioEngine.sampleRate : 0
         let elapsed = min(audioEngine.elapsedSeconds, total)
         operatorController.setElapsed("\(AppController.fmt(elapsed)) / \(AppController.fmt(total))")
+        operatorController.setRemaining("−\(AppController.fmt(max(0, total - elapsed)))")
+        operatorController.setProgress(total > 0 ? elapsed / total : 0)
         if !audioEngine.isPlaying {
             playingIndex = nil
             operatorController.setPlaying(index: nil)
             operatorController.setNowPlaying("— finished —")
+            operatorController.setProgress(1)
+            operatorController.setRemaining("−00:00")
         }
     }
 

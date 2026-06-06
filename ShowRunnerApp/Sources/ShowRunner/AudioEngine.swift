@@ -47,6 +47,11 @@ struct RenderState {
     var frameCount: Int = 0
     var currentFrame: Int = 0
     var playing: Int32 = 0   // 0 = silence, 1 = playing
+    // Per-channel peak of the most recent render block (0…1), for the UI level meters.
+    var peak0: Float = 0
+    var peak1: Float = 0
+    var peak2: Float = 0
+    var peak3: Float = 0
 }
 
 /// The C render callback. No allocation, no ARC, no locks — reads RenderState via a raw pointer.
@@ -56,11 +61,12 @@ private let showRunnerRenderProc: AURenderCallback = { (inRefCon, _, _, _, inNum
     let frames = Int(inNumberFrames)
     let st = inRefCon.assumingMemoryBound(to: RenderState.self)
 
-    // Not playing -> output pure silence on every channel.
+    // Not playing -> output pure silence on every channel and clear the meters.
     if st.pointee.playing == 0 {
         for i in 0..<abl.count {
             if let d = abl[i].mData { memset(d, 0, Int(abl[i].mDataByteSize)) }
         }
+        st.pointee.peak0 = 0; st.pointee.peak1 = 0; st.pointee.peak2 = 0; st.pointee.peak3 = 0
         return noErr
     }
 
@@ -83,8 +89,33 @@ private let showRunnerRenderProc: AURenderCallback = { (inRefCon, _, _, _, inNum
         if let src = src, n > 0 {
             out.update(from: src + pos, count: n)
             if n < frames { (out + n).update(repeating: 0, count: frames - n) }
+            if i < 4 {   // track peak level for the meters (stack-only, RT-safe)
+                let base = src + pos
+                var pk: Float = 0
+                var j = 0
+                while j < n {
+                    let v = base[j]
+                    let a = v < 0 ? -v : v
+                    if a > pk { pk = a }
+                    j += 1
+                }
+                switch i {
+                case 0: st.pointee.peak0 = pk
+                case 1: st.pointee.peak1 = pk
+                case 2: st.pointee.peak2 = pk
+                case 3: st.pointee.peak3 = pk
+                default: break
+                }
+            }
         } else {
             out.update(repeating: 0, count: frames)
+            switch i {
+            case 0: st.pointee.peak0 = 0
+            case 1: st.pointee.peak1 = 0
+            case 2: st.pointee.peak2 = 0
+            case 3: st.pointee.peak3 = 0
+            default: break
+            }
         }
     }
 
@@ -404,6 +435,10 @@ final class AudioEngine {
         statePtr.pointee.ch1 = nil
         statePtr.pointee.ch2 = nil
         statePtr.pointee.ch3 = nil
+        statePtr.pointee.peak0 = 0
+        statePtr.pointee.peak1 = 0
+        statePtr.pointee.peak2 = 0
+        statePtr.pointee.peak3 = 0
         activePremix = nil
     }
 
@@ -413,6 +448,9 @@ final class AudioEngine {
         guard sampleRate > 0 else { return 0 }
         return Double(statePtr.pointee.currentFrame) / sampleRate
     }
+    /// Live output peak (0…1) for the meters. Backing = outs 1·2, click = outs 3·4.
+    var backingLevel: Float { max(statePtr.pointee.peak0, statePtr.pointee.peak1) }
+    var clickLevel: Float { max(statePtr.pointee.peak2, statePtr.pointee.peak3) }
 
     // MARK: Loading & resampling
 
