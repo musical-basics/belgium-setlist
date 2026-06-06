@@ -16,6 +16,7 @@ public final class LightingController {
     private let renderer: Renderer
     private let log: (String) -> Void
     private var window: LightingWindowController?
+    private var visualizer: LightingVisualizerWindowController?
 
     /// Create the controller. Returns `nil` when lighting is disabled in lighting.json, so the
     /// caller can treat "no lighting" and "lighting failed" identically and never block the show.
@@ -56,7 +57,16 @@ public final class LightingController {
                                            proofFixtureName: defaultProofFixture())
         win.show()
         window = win
-        log("Lighting window opened. \(rig.fixtures.count) fixtures, universes \(rig.universeFrames().map { $0.number }).")
+
+        // Abstract stage preview — reads the engine's per-frame snapshot read-only (capture the
+        // renderer, not self, so there's no controller↔window retain cycle).
+        let renderer = self.renderer
+        let viz = LightingVisualizerWindowController(snapshot: { renderer.currentVisual() },
+                                                     status: { renderer.currentStatus() })
+        viz.show()
+        visualizer = viz
+
+        log("Lighting + stage-preview windows opened. \(rig.fixtures.count) fixtures, universes \(rig.universeFrames().map { $0.number }).")
     }
 
     /// Tear down cleanly (on app quit): stop the renderer (sends sACN termination), close the window.
@@ -64,6 +74,8 @@ public final class LightingController {
         renderer.stop()
         window?.close()
         window = nil
+        visualizer?.close()
+        visualizer = nil
         // Give the termination packets a moment to leave before the socket goes away.
         DispatchQueue.global().asyncAfter(deadline: .now() + 0.1) { [sender] in sender.closeSocket() }
     }
@@ -158,4 +170,5 @@ extension LightingController: LightingWindowDelegate {
     public func lightingProofOfLife(fixture: String) { renderer.startProofOfLife(fixture: fixture) }
     public func lightingSetArmProvisional(_ armed: Bool) { renderer.setArmProvisional(armed) }
     public func lightingStatus() -> LightingStatus { renderer.currentStatus() }
+    public func lightingShowPreview() { visualizer?.show() }
 }

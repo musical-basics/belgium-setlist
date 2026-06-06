@@ -34,6 +34,20 @@ if arguments.contains("--lighting-selftest") {
     exit(result.failures == 0 ? 0 : 1)
 }
 
+// Headless render of the abstract stage preview to a PNG:
+//   ShowRunner --lighting-preview <out.png> [pieceOrder=4] [seconds=42]
+if let i = arguments.firstIndex(of: "--lighting-preview") {
+    let out = (i + 1 < arguments.count) ? arguments[i + 1] : "lighting-preview.png"
+    let piece = (i + 2 < arguments.count) ? arguments[i + 2] : "4"
+    let seconds = (i + 3 < arguments.count) ? (Double(arguments[i + 3]) ?? 42) : 42
+    let root: URL = (try? ConfigLoader.load(explicit: configArg))?.root ?? URL(fileURLWithPath: ConfigLoader.defaultShowRoot)
+    if let data = LightingPreview.renderPNG(showRoot: root, pieceOrder: piece, seconds: seconds) {
+        do { try data.write(to: URL(fileURLWithPath: out)); print("Wrote preview \(out) (piece \(piece) @ \(seconds)s)"); exit(0) }
+        catch { print("Failed to write \(out): \(error)"); exit(1) }
+    }
+    print("Failed to render preview."); exit(1)
+}
+
 if arguments.contains("--help") || arguments.contains("-h") {
     print("""
     ShowRunner — live concert playback

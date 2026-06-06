@@ -9,6 +9,7 @@ public protocol LightingWindowDelegate: AnyObject {
     func lightingProofOfLife(fixture: String)
     func lightingSetArmProvisional(_ armed: Bool)
     func lightingStatus() -> LightingStatus
+    func lightingShowPreview()
 }
 
 /// The lighting operator's own window — completely separate from the audio operator window, so
@@ -30,6 +31,7 @@ public final class LightingWindowController {
     private let prevCueButton = NSButton(title: "◀ PREV CUE", target: nil, action: nil)
     private let nextCueButton = NSButton(title: "NEXT CUE ▶", target: nil, action: nil)
     private let armButton = NSButton(title: "ARM MOVERS", target: nil, action: nil)
+    private let previewButton = NSButton(title: "STAGE PREVIEW", target: nil, action: nil)
     private var refreshTimer: Timer?
 
     public init(delegate: LightingWindowDelegate, confirmChecklist: String, proofFixtureName: String) {
@@ -90,6 +92,7 @@ public final class LightingWindowController {
         styleButton(prevCueButton, color: .systemGray, height: 44, fontSize: 15, action: #selector(prevTapped))
         styleButton(nextCueButton, color: .systemGreen, height: 44, fontSize: 15, action: #selector(nextTapped))
         styleButton(armButton, color: .systemGray, height: 40, fontSize: 14, action: #selector(armTapped))
+        styleButton(previewButton, color: .systemIndigo, height: 40, fontSize: 14, action: #selector(previewTapped))
 
         let cueRow = NSStackView(views: [prevCueButton, nextCueButton])
         cueRow.orientation = .horizontal
@@ -113,7 +116,7 @@ public final class LightingWindowController {
         let stack = NSStackView(views: [
             title, statusLabel, pieceLabel, cueLabel,
             blackoutButton, cueRow, smallRow,
-            armButton, provLabel,
+            armButton, provLabel, previewButton,
             spacer(8), checklistCaption, checklist,
         ])
         stack.orientation = .vertical
@@ -136,6 +139,8 @@ public final class LightingWindowController {
             smallRow.trailingAnchor.constraint(equalTo: stack.trailingAnchor),
             armButton.leadingAnchor.constraint(equalTo: stack.leadingAnchor),
             armButton.trailingAnchor.constraint(equalTo: stack.trailingAnchor),
+            previewButton.leadingAnchor.constraint(equalTo: stack.leadingAnchor),
+            previewButton.trailingAnchor.constraint(equalTo: stack.trailingAnchor),
             checklist.widthAnchor.constraint(equalTo: stack.widthAnchor),
         ])
     }
@@ -171,6 +176,7 @@ public final class LightingWindowController {
         let armed = !(delegate?.lightingStatus().armProvisional ?? false)
         delegate?.lightingSetArmProvisional(armed)
     }
+    @objc private func previewTapped() { delegate?.lightingShowPreview() }
 
     // MARK: Refresh
 

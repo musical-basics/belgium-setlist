@@ -17,6 +17,20 @@ public struct LightingStatus {
     public var proofActive = false
 }
 
+/// What one fixture is doing this frame, for the abstract stage preview. `state` is the INTENDED
+/// look (so colour/scale can be verified even before the provisional movers are armed); `emitting`
+/// is false when the fixture would NOT actually output live (blackout, or a provisional profile
+/// that hasn't been armed) so the preview can flag it.
+public struct FixtureVisual {
+    public let name: String
+    public let kind: String        // profile id: "fargo_9ch" | "spiider_mode2" | "dalis_stub"
+    public let address: Int
+    public let universe: Int
+    public let isProvisional: Bool
+    public let emitting: Bool
+    public let state: FixtureState
+}
+
 /// The lighting renderer: a fixed-rate loop that, every frame, reads the show clock, computes the
 /// full lighting state for that instant, writes DMX into the universe frames, and transmits sACN.
 ///
@@ -64,9 +78,10 @@ public final class Renderer {
     private var proofPriorBlackout = false   // restore the operator's blackout latch after proof
     private let proofRampUp = 1.5, proofHold = 1.0, proofRampDown = 1.5
 
-    // status snapshot (lock-protected for the UI)
+    // status + visual snapshots (lock-protected for the UI)
     private let statusLock = NSLock()
     private var _status = LightingStatus()
+    private var _visual: [FixtureVisual] = []
 
     public init(rig: Rig, sender: SACNSender, clock: ShowClock, frameRateHz: Double,
                 onLog: @escaping (String) -> Void = { _ in }) {
@@ -199,6 +214,11 @@ public final class Renderer {
         return _status
     }
 
+    public func currentVisual() -> [FixtureVisual] {
+        statusLock.lock(); defer { statusLock.unlock() }
+        return _visual
+    }
+
     // MARK: Frame
 
     private func tick() {
@@ -208,6 +228,25 @@ public final class Renderer {
             sender.send(universe: u.number, slots: u.slots)
         }
         publishStatus()
+        publishVisual(map)
+    }
+
+    /// Publish the intended per-fixture look for the stage preview (lock-protected, read on the UI).
+    private func publishVisual(_ map: [String: FixtureState]) {
+        var vis: [FixtureVisual] = []
+        vis.reserveCapacity(rig.fixtures.count)
+        for f in rig.fixtures {
+            let gatedDark = (f.profile.isProvisional && !rig.armProvisional)
+            vis.append(FixtureVisual(
+                name: f.name,
+                kind: f.profile.id,
+                address: f.address,
+                universe: f.universeNumber,
+                isProvisional: f.profile.isProvisional,
+                emitting: !blackout && !gatedDark,
+                state: map[f.name] ?? FixtureState()))
+        }
+        statusLock.lock(); _visual = vis; statusLock.unlock()
     }
 
     /// Compute the per-fixture state map to output this frame. Empty map => all channels at 0.
