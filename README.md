@@ -67,6 +67,8 @@ backing/click pairs load and route to outs 1·2 / 3·4. Look for `RESULT: PASS �
 
 ## Setting it up on another Mac
 
+📄 **Dedicated copy-paste guide: [RUN_ON_A_NEW_MAC.md](RUN_ON_A_NEW_MAC.md)** — start there.
+
 Full checklist (macOS 13 or newer):
 
 1. **Install Command Line Tools** (one-time, gives you `swift`; no full Xcode needed):
