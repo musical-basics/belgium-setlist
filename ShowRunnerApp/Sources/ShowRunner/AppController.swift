@@ -25,6 +25,8 @@ final class AppController: NSObject, OperatorWindowDelegate {
     private let configPath: String?
     private var config: ShowConfig!
     private var root: URL!
+    private var configURL: URL!
+    private var saveWorkItem: DispatchWorkItem?
 
     private let audioEngine = AudioEngine()
     private var audienceWindow: AudienceWindow!
@@ -50,6 +52,7 @@ final class AppController: NSObject, OperatorWindowDelegate {
             let loaded = try ConfigLoader.load(explicit: configPath)
             config = loaded.config
             root = loaded.root
+            configURL = loaded.url
             Logger.shared.info("Loaded config: \(loaded.root.path) (\(config.pieces.count) pieces)")
         } catch {
             presentFatalConfigError("\(error)")
@@ -92,6 +95,11 @@ final class AppController: NSObject, OperatorWindowDelegate {
         reloadAudio()
 
         // Populate UI
+        let mb = config.masterBackingGainDb ?? 0
+        let mc = config.masterClickGainDb ?? 0
+        audioEngine.setMasterGains(backingDb: mb, clickDb: mc)
+        operatorController.setMasterLevels(backingDb: mb, clickDb: mc)
+
         refreshDevicePopup()
         refreshDisplayPopup()
         refreshChannelPopups()
@@ -109,6 +117,14 @@ final class AppController: NSObject, OperatorWindowDelegate {
         operatorController.window.orderFrontRegardless()
 
         Logger.shared.info("ShowRunner ready.")
+
+        // Hidden debug hook: dump the (re-encoded) config to a path and quit — verifies save round-trips.
+        if let dump = ProcessInfo.processInfo.environment["SHOWRUNNER_DUMPCONFIG"] {
+            ConfigLoader.save(config, to: URL(fileURLWithPath: dump))
+            Logger.shared.info("Dumped config to \(dump)")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { NSApp.terminate(nil) }
+            return
+        }
 
         // Hidden debug hook: SHOWRUNNER_SELFPLAY=6,9,12 auto-fires those pieces 4s apart.
         if let order = ProcessInfo.processInfo.environment["SHOWRUNNER_SELFPLAY"] {
@@ -292,7 +308,8 @@ final class AppController: NSObject, OperatorWindowDelegate {
                 operatorController.setElapsed("––:–– / ––:––")
                 Logger.shared.error("Blocked GO [\(m.piece.order)] — \(reason); click cannot route.")
             } else if let pre = m.premix {
-                audioEngine.play(pre)
+                let p = config.pieces[selectedIndex]
+                audioEngine.play(pre, pieceBackingDb: p.backingGainDb ?? 0, pieceClickDb: p.clickGainDb ?? 0)
                 playingIndex = selectedIndex
                 operatorController.setPlaying(index: selectedIndex)
                 operatorController.setNowPlaying("▶  \(m.piece.order) — \(m.piece.title)")
@@ -330,6 +347,30 @@ final class AppController: NSObject, OperatorWindowDelegate {
         let m = pieces[selectedIndex]
         let tag = m.piece.hasAudio ? "  ♪" : ""
         operatorController.setOnDeck("\(m.piece.order) — \(m.piece.title)\(tag)")
+        updatePieceTrimUI()
+    }
+
+    private func updatePieceTrimUI() {
+        guard selectedIndex < config.pieces.count else { return }
+        let p = config.pieces[selectedIndex]
+        if p.hasAudio {
+            operatorController.setPieceTrim(enabled: true, caption: "PER-PIECE TRIM — \(p.title)",
+                                            backingDb: p.backingGainDb ?? 0, clickDb: p.clickGainDb ?? 0)
+        } else {
+            operatorController.setPieceTrim(enabled: false, caption: "PER-PIECE TRIM (audio pieces only)",
+                                            backingDb: 0, clickDb: 0)
+        }
+    }
+
+    private func scheduleSave() {
+        saveWorkItem?.cancel()
+        let item = DispatchWorkItem { [weak self] in
+            guard let self = self, let url = self.configURL else { return }
+            ConfigLoader.save(self.config, to: url)
+            Logger.shared.info("Saved levels to \(url.lastPathComponent)")
+        }
+        saveWorkItem = item
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8, execute: item)
     }
 
     // MARK: Elapsed timer
@@ -430,6 +471,36 @@ final class AppController: NSObject, OperatorWindowDelegate {
         config.audienceDisplayIndex = index
         applyAudienceDisplay(index: index)
         updateStatus()
+    }
+
+    func operatorDidSetMasterBacking(db: Double) {
+        audioEngine.setMasterGains(backingDb: db, clickDb: audioEngine.masterClickDb)
+        config.masterBackingGainDb = db
+        scheduleSave()
+    }
+
+    func operatorDidSetMasterClick(db: Double) {
+        audioEngine.setMasterGains(backingDb: audioEngine.masterBackingDb, clickDb: db)
+        config.masterClickGainDb = db
+        scheduleSave()
+    }
+
+    func operatorDidSetPieceBacking(db: Double) {
+        guard selectedIndex < config.pieces.count, config.pieces[selectedIndex].hasAudio else { return }
+        config.pieces[selectedIndex].backingGainDb = db
+        if playingIndex == selectedIndex {
+            audioEngine.setPieceTrim(backingDb: db, clickDb: config.pieces[selectedIndex].clickGainDb ?? 0)
+        }
+        scheduleSave()
+    }
+
+    func operatorDidSetPieceClick(db: Double) {
+        guard selectedIndex < config.pieces.count, config.pieces[selectedIndex].hasAudio else { return }
+        config.pieces[selectedIndex].clickGainDb = db
+        if playingIndex == selectedIndex {
+            audioEngine.setPieceTrim(backingDb: config.pieces[selectedIndex].backingGainDb ?? 0, clickDb: db)
+        }
+        scheduleSave()
     }
 
     // MARK: Errors

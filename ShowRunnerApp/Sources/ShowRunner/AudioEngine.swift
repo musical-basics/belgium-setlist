@@ -52,6 +52,9 @@ struct RenderState {
     var dest1: Int = 1   // backing R
     var dest2: Int = 2   // click L
     var dest3: Int = 3   // click R
+    // Effective linear gains (master × per-piece) applied in the callback.
+    var gainBacking: Float = 1
+    var gainClick: Float = 1
     // Per-channel peak of the most recent render block (0…1), for the UI level meters.
     var peak0: Float = 0
     var peak1: Float = 0
@@ -59,20 +62,26 @@ struct RenderState {
     var peak3: Float = 0
 }
 
-/// Write `n` frames of `src` (starting at `pos`) into device output channel `destCh`, and return
-/// the block peak. RT-safe: no allocation, no ARC. Assumes all device buffers were pre-zeroed.
+/// Write `n` frames of `src` (starting at `pos`) into device output channel `destCh`, scaled by
+/// `gain`, and return the post-gain block peak. RT-safe: no allocation, no ARC. Assumes all device
+/// buffers were pre-zeroed.
 @inline(__always)
-private func placeChannel(_ src: UnsafeMutablePointer<Float>?, _ destCh: Int,
+private func placeChannel(_ src: UnsafeMutablePointer<Float>?, _ destCh: Int, _ gain: Float,
                           _ abl: UnsafeMutableAudioBufferListPointer,
                           _ pos: Int, _ n: Int) -> Float {
     guard let src = src, n > 0, destCh >= 0, destCh < abl.count,
           let raw = abl[destCh].mData else { return 0 }
     let out = raw.assumingMemoryBound(to: Float.self)
     let base = src + pos
-    out.update(from: base, count: n)
     var pk: Float = 0
     var j = 0
-    while j < n { let v = base[j]; let a = v < 0 ? -v : v; if a > pk { pk = a }; j += 1 }
+    while j < n {
+        let v = base[j] * gain
+        out[j] = v
+        let a = v < 0 ? -v : v
+        if a > pk { pk = a }
+        j += 1
+    }
     return pk
 }
 
@@ -98,11 +107,13 @@ private let showRunnerRenderProc: AURenderCallback = { (inRefCon, _, _, _, inNum
     let avail = max(0, total - pos)
     let n = min(frames, avail)
 
-    // Place each source on its configured destination output channel (rest stay silent).
-    st.pointee.peak0 = placeChannel(st.pointee.ch0, st.pointee.dest0, abl, pos, n)
-    st.pointee.peak1 = placeChannel(st.pointee.ch1, st.pointee.dest1, abl, pos, n)
-    st.pointee.peak2 = placeChannel(st.pointee.ch2, st.pointee.dest2, abl, pos, n)
-    st.pointee.peak3 = placeChannel(st.pointee.ch3, st.pointee.dest3, abl, pos, n)
+    // Place each source on its configured destination output channel (rest stay silent),
+    // scaled by the effective backing/click gain.
+    let gB = st.pointee.gainBacking, gC = st.pointee.gainClick
+    st.pointee.peak0 = placeChannel(st.pointee.ch0, st.pointee.dest0, gB, abl, pos, n)
+    st.pointee.peak1 = placeChannel(st.pointee.ch1, st.pointee.dest1, gB, abl, pos, n)
+    st.pointee.peak2 = placeChannel(st.pointee.ch2, st.pointee.dest2, gC, abl, pos, n)
+    st.pointee.peak3 = placeChannel(st.pointee.ch3, st.pointee.dest3, gC, abl, pos, n)
 
     let newPos = pos + n
     st.pointee.currentFrame = min(newPos, total)
@@ -151,6 +162,38 @@ final class AudioEngine {
         statePtr.pointee.dest2 = click.0
         statePtr.pointee.dest3 = click.1
         Logger.shared.info("Routing: backing → outs \(backing.0 + 1)·\(backing.1 + 1), click → outs \(click.0 + 1)·\(click.1 + 1)")
+    }
+
+    // MARK: Volume / gain
+
+    /// Master fader gains in dB (live-adjustable). -inf at the bottom of the slider range.
+    private(set) var masterBackingDb: Double = 0
+    private(set) var masterClickDb: Double = 0
+    // Per-piece trims (dB) of whatever is currently loaded.
+    private var pieceBackingDb: Double = 0
+    private var pieceClickDb: Double = 0
+
+    static func dbToLinear(_ db: Double) -> Float {
+        if db <= -40 { return 0 }   // bottom of the fader == mute
+        return Float(pow(10.0, db / 20.0))
+    }
+
+    func setMasterGains(backingDb: Double, clickDb: Double) {
+        masterBackingDb = backingDb
+        masterClickDb = clickDb
+        updateEffectiveGains()
+    }
+
+    /// Set the per-piece trim for the currently-loaded piece (live).
+    func setPieceTrim(backingDb: Double, clickDb: Double) {
+        pieceBackingDb = backingDb
+        pieceClickDb = clickDb
+        updateEffectiveGains()
+    }
+
+    private func updateEffectiveGains() {
+        statePtr.pointee.gainBacking = AudioEngine.dbToLinear(masterBackingDb + pieceBackingDb)
+        statePtr.pointee.gainClick = AudioEngine.dbToLinear(masterClickDb + pieceClickDb)
     }
     var deviceReady: Bool { audioUnit != nil }
 
@@ -394,11 +437,14 @@ final class AudioEngine {
     // MARK: Transport
 
     /// Start a pre-mixed buffer. Backing + click begin on the exact same frame (sample-locked).
-    func play(_ pre: PremixedAudio) {
+    func play(_ pre: PremixedAudio, pieceBackingDb: Double, pieceClickDb: Double) {
         guard let u = audioUnit else {
             Logger.shared.warn("play() called with no audio device configured.")
             return
         }
+        self.pieceBackingDb = pieceBackingDb
+        self.pieceClickDb = pieceClickDb
+        updateEffectiveGains()
         // Silence first, THEN stop, so an in-flight render callback (which checks `playing`
         // before touching any buffer pointer) cannot read the pointers we are about to
         // overwrite. AudioOutputUnitStop/Start also act as memory barriers across the audio

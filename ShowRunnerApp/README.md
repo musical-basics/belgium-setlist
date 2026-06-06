@@ -79,6 +79,22 @@ Both are dropdowns at the top of the operator window:
 
 These defaults come from `showrunner.json` (`backingChannels`, `clickChannels`, 1-based).
 
+## Volume / levels
+
+At the bottom of the control window is a small mixer:
+
+- **MASTER VOLUME** — two faders, **Backing** and **Click**, with dB readouts. These are your
+  live faders (move them during the show); 0 dB = unity, bottom of the fader = −∞ (mute), up to
+  +6 dB. The level meter under each fader shows the actual post-fader output.
+- **PER-PIECE TRIM** — two faders that adjust **only the currently-selected piece** (so you can
+  make Canon's backing quieter without touching the others). The effective volume is
+  *master + per-piece trim*. Disabled for non-audio pieces.
+
+**Levels are saved automatically** back into `showrunner.json` (`masterBackingGainDb`,
+`masterClickGainDb`, and per-piece `backingGainDb` / `clickGainDb`), so whatever you dial in at
+soundcheck is still there next launch. (The save is atomic and was verified to round-trip
+cleanly, so it can't corrupt the file.)
+
 ---
 
 ## Editing the running order
@@ -93,7 +109,10 @@ Edit **`showrunner.json`** (next to the app). No recompile needed — it is read
   "engineSampleRate": 48000,        // device + all audio locked to this rate for the whole show
   "backingChannels": [1, 2],        // default output pair for backing (1-based; editable in the UI)
   "clickChannels": [3, 4],          // default output pair for click
+  "masterBackingGainDb": 0,         // master fader positions (saved automatically from the UI)
+  "masterClickGainDb": 0,
   "pieces": [
+    // each audio piece may also carry "backingGainDb" / "clickGainDb" trims (set via the UI)
     {
       "order": "1",
       "title": "Prelude in G minor",

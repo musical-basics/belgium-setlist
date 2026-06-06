@@ -187,6 +187,10 @@ protocol OperatorWindowDelegate: AnyObject {
     func operatorDidChangeDisplay(index: Int)
     func operatorDidChangeBackingPair(index: Int)
     func operatorDidChangeClickPair(index: Int)
+    func operatorDidSetMasterBacking(db: Double)
+    func operatorDidSetMasterClick(db: Double)
+    func operatorDidSetPieceBacking(db: Double)
+    func operatorDidSetPieceClick(db: Double)
 }
 
 /// The operator's control window: running order, GO/STOP, device + display pickers, elapsed time.
@@ -211,16 +215,25 @@ final class OperatorWindowController {
     private let progressBar = NSProgressIndicator()
     private let backingMeter = MeterView(caption: "BACKING")
     private let clickMeter = MeterView(caption: "CLICK")
+    private let backingFader = NSSlider()
+    private let clickFader = NSSlider()
+    private let backingDbLabel = NSTextField(labelWithString: "0.0 dB")
+    private let clickDbLabel = NSTextField(labelWithString: "0.0 dB")
+    private let pieceBackingFader = NSSlider()
+    private let pieceClickFader = NSSlider()
+    private let pieceBackingDbLabel = NSTextField(labelWithString: "0.0 dB")
+    private let pieceClickDbLabel = NSTextField(labelWithString: "0.0 dB")
+    private let trimCaptionLabel = NSTextField(labelWithString: "Per-piece trim")
 
     private var rowViews: [PieceRowView] = []
 
     init(headerTitle: String) {
-        window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 820, height: 940),
+        window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 840, height: 1040),
                           styleMask: [.titled, .closable, .miniaturizable, .resizable],
                           backing: .buffered, defer: false)
         window.title = "ShowRunner"
         window.appearance = NSAppearance(named: .darkAqua)
-        window.minSize = NSSize(width: 680, height: 600)
+        window.minSize = NSSize(width: 700, height: 720)
         window.isReleasedWhenClosed = false
         // Appear on whatever Space is active (incl. over a full-screen app) instead of
         // opening on a hidden desktop the operator can't see.
@@ -258,6 +271,17 @@ final class OperatorWindowController {
         progressBar.maxValue = 1
         progressBar.doubleValue = 0
         progressBar.translatesAutoresizingMaskIntoConstraints = false
+
+        configureFader(backingFader, #selector(masterBackingChanged))
+        configureFader(clickFader, #selector(masterClickChanged))
+        configureFader(pieceBackingFader, #selector(pieceBackingChanged))
+        configureFader(pieceClickFader, #selector(pieceClickChanged))
+        for l in [backingDbLabel, clickDbLabel, pieceBackingDbLabel, pieceClickDbLabel] {
+            l.font = .monospacedDigitSystemFont(ofSize: 11, weight: .semibold)
+            l.alignment = .right
+        }
+        trimCaptionLabel.font = .systemFont(ofSize: 11, weight: .heavy)
+        trimCaptionLabel.textColor = .secondaryLabelColor
 
         configureButton(goButton, color: .systemGreen, action: #selector(goPressed))
         configureButton(stopButton, color: .systemRed, action: #selector(stopPressed))
@@ -344,16 +368,45 @@ final class OperatorWindowController {
         timeRow.orientation = .horizontal
         timeRow.alignment = .lastBaseline
 
-        // Two output-level meters.
-        let meterRow = NSStackView(views: [backingMeter, clickMeter])
-        meterRow.orientation = .horizontal
-        meterRow.distribution = .fillEqually
-        meterRow.spacing = 16
-        meterRow.translatesAutoresizingMaskIntoConstraints = false
-        backingMeter.heightAnchor.constraint(equalToConstant: 22).isActive = true
-        clickMeter.heightAnchor.constraint(equalToConstant: 22).isActive = true
+        // Mixer: master faders (with level meters beneath) + per-piece trim.
+        backingMeter.heightAnchor.constraint(equalToConstant: 10).isActive = true
+        clickMeter.heightAnchor.constraint(equalToConstant: 10).isActive = true
+        func tag(_ s: String) -> NSTextField {
+            let l = NSTextField(labelWithString: s)
+            l.font = .systemFont(ofSize: 11, weight: .medium)
+            l.textColor = .secondaryLabelColor
+            return l
+        }
+        func section(_ s: String) -> NSTextField {
+            let l = NSTextField(labelWithString: s)
+            l.font = .systemFont(ofSize: 11, weight: .heavy)
+            l.textColor = .secondaryLabelColor
+            return l
+        }
+        let mixer = NSGridView()
+        mixer.translatesAutoresizingMaskIntoConstraints = false
+        mixer.rowSpacing = 5
+        mixer.columnSpacing = 10
+        mixer.addRow(with: [section("MASTER VOLUME"), NSGridCell.emptyContentView, NSGridCell.emptyContentView])
+        mixer.addRow(with: [tag("Backing"), backingFader, backingDbLabel])
+        mixer.addRow(with: [NSGridCell.emptyContentView, backingMeter, NSGridCell.emptyContentView])
+        mixer.addRow(with: [tag("Click"), clickFader, clickDbLabel])
+        mixer.addRow(with: [NSGridCell.emptyContentView, clickMeter, NSGridCell.emptyContentView])
+        mixer.addRow(with: [trimCaptionLabel, NSGridCell.emptyContentView, NSGridCell.emptyContentView])
+        mixer.addRow(with: [tag("Backing"), pieceBackingFader, pieceBackingDbLabel])
+        mixer.addRow(with: [tag("Click"), pieceClickFader, pieceClickDbLabel])
+        mixer.column(at: 0).xPlacement = .leading
+        mixer.column(at: 0).width = 64
+        mixer.column(at: 1).xPlacement = .fill
+        mixer.column(at: 2).xPlacement = .trailing
+        for f in [backingFader, clickFader, pieceBackingFader, pieceClickFader] {
+            f.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        }
+        for d in [backingDbLabel, clickDbLabel, pieceBackingDbLabel, pieceClickDbLabel] {
+            d.widthAnchor.constraint(greaterThanOrEqualToConstant: 58).isActive = true
+        }
 
-        let footer = NSStackView(views: [onDeckRow, nowPlayingLabel, timeRow, progressBar, meterRow, transport])
+        let footer = NSStackView(views: [onDeckRow, nowPlayingLabel, timeRow, progressBar, mixer, transport])
         footer.orientation = .vertical
         footer.alignment = .leading
         footer.spacing = 10
@@ -385,9 +438,25 @@ final class OperatorWindowController {
             timeRow.trailingAnchor.constraint(equalTo: footer.trailingAnchor),
             progressBar.leadingAnchor.constraint(equalTo: footer.leadingAnchor),
             progressBar.trailingAnchor.constraint(equalTo: footer.trailingAnchor),
-            meterRow.leadingAnchor.constraint(equalTo: footer.leadingAnchor),
-            meterRow.trailingAnchor.constraint(equalTo: footer.trailingAnchor),
+            mixer.leadingAnchor.constraint(equalTo: footer.leadingAnchor),
+            mixer.trailingAnchor.constraint(equalTo: footer.trailingAnchor),
         ])
+    }
+
+    private func configureFader(_ slider: NSSlider, _ action: Selector) {
+        slider.sliderType = .linear
+        slider.minValue = -40
+        slider.maxValue = 6
+        slider.doubleValue = 0
+        slider.isContinuous = true
+        slider.target = self
+        slider.action = action
+        slider.translatesAutoresizingMaskIntoConstraints = false
+    }
+
+    static func fmtDb(_ db: Double) -> String {
+        if db <= -40 { return "−∞" }
+        return String(format: "%+.1f dB", db)
     }
 
     private func labeledRow(_ text: String, _ control: NSView) -> NSStackView {
@@ -436,6 +505,23 @@ final class OperatorWindowController {
         if clickSel >= 0 && clickSel < clickPopup.numberOfItems { clickPopup.selectItem(at: clickSel) }
     }
 
+    func setMasterLevels(backingDb: Double, clickDb: Double) {
+        backingFader.doubleValue = backingDb
+        clickFader.doubleValue = clickDb
+        backingDbLabel.stringValue = Self.fmtDb(backingDb)
+        clickDbLabel.stringValue = Self.fmtDb(clickDb)
+    }
+
+    func setPieceTrim(enabled: Bool, caption: String, backingDb: Double, clickDb: Double) {
+        trimCaptionLabel.stringValue = caption
+        pieceBackingFader.isEnabled = enabled
+        pieceClickFader.isEnabled = enabled
+        pieceBackingFader.doubleValue = backingDb
+        pieceClickFader.doubleValue = clickDb
+        pieceBackingDbLabel.stringValue = enabled ? Self.fmtDb(backingDb) : "—"
+        pieceClickDbLabel.stringValue = enabled ? Self.fmtDb(clickDb) : "—"
+    }
+
     func setStatus(_ text: String) { statusLabel.stringValue = text }
 
     func setSelected(_ index: Int) {
@@ -471,4 +557,20 @@ final class OperatorWindowController {
     @objc private func displayChanged() { delegate?.operatorDidChangeDisplay(index: displayPopup.indexOfSelectedItem) }
     @objc private func backingPairChanged() { delegate?.operatorDidChangeBackingPair(index: backingPopup.indexOfSelectedItem) }
     @objc private func clickPairChanged() { delegate?.operatorDidChangeClickPair(index: clickPopup.indexOfSelectedItem) }
+    @objc private func masterBackingChanged() {
+        backingDbLabel.stringValue = Self.fmtDb(backingFader.doubleValue)
+        delegate?.operatorDidSetMasterBacking(db: backingFader.doubleValue)
+    }
+    @objc private func masterClickChanged() {
+        clickDbLabel.stringValue = Self.fmtDb(clickFader.doubleValue)
+        delegate?.operatorDidSetMasterClick(db: clickFader.doubleValue)
+    }
+    @objc private func pieceBackingChanged() {
+        pieceBackingDbLabel.stringValue = Self.fmtDb(pieceBackingFader.doubleValue)
+        delegate?.operatorDidSetPieceBacking(db: pieceBackingFader.doubleValue)
+    }
+    @objc private func pieceClickChanged() {
+        pieceClickDbLabel.stringValue = Self.fmtDb(pieceClickFader.doubleValue)
+        delegate?.operatorDidSetPieceClick(db: pieceClickFader.doubleValue)
+    }
 }

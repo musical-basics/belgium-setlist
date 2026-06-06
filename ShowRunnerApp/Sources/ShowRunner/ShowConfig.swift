@@ -10,6 +10,9 @@ struct Piece: Codable {
     let hasAudio: Bool
     let backing: String?
     let click: String?
+    /// Per-piece volume trim in dB (on top of the master faders). Default 0 dB.
+    var backingGainDb: Double?
+    var clickGainDb: Double?
 }
 
 /// Top-level show configuration.
@@ -24,6 +27,9 @@ struct ShowConfig: Codable {
     var backingChannels: [Int]?
     /// 1-based device output channels for the click track. Defaults to [3, 4].
     var clickChannels: [Int]?
+    /// Master volume faders in dB. Default 0 dB (unity).
+    var masterBackingGainDb: Double?
+    var masterClickGainDb: Double?
     var pieces: [Piece]
 }
 
@@ -82,8 +88,8 @@ enum ConfigLoader {
         return (URL(fileURLWithPath: defaultShowRoot + "/showrunner.json"), tried)
     }
 
-    /// Load config and return it alongside the resolved show-root directory.
-    static func load(explicit: String?) throws -> (config: ShowConfig, root: URL) {
+    /// Load config and return it alongside the resolved show-root directory and the file URL.
+    static func load(explicit: String?) throws -> (config: ShowConfig, root: URL, url: URL) {
         let (url, tried) = locate(explicit: explicit)
         guard FileManager.default.fileExists(atPath: url.path) else {
             throw ConfigError.notFound(tried)
@@ -91,11 +97,23 @@ enum ConfigLoader {
         do {
             let data = try Data(contentsOf: url)
             let cfg = try JSONDecoder().decode(ShowConfig.self, from: data)
-            return (cfg, url.deletingLastPathComponent())
+            return (cfg, url.deletingLastPathComponent(), url)
         } catch let e as DecodingError {
             throw ConfigError.decode(String(describing: e))
         } catch {
             throw ConfigError.decode(error.localizedDescription)
+        }
+    }
+
+    /// Atomically write the config back to its file (used to persist soundcheck levels).
+    static func save(_ config: ShowConfig, to url: URL) {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.prettyPrinted, .withoutEscapingSlashes]
+        do {
+            let data = try encoder.encode(config)
+            try data.write(to: url, options: .atomic)
+        } catch {
+            Logger.shared.error("Failed to save config to \(url.path): \(error)")
         }
     }
 }
