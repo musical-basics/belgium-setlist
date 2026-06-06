@@ -205,6 +205,7 @@ final class PieceRowView: NSView {
 protocol OperatorWindowDelegate: AnyObject {
     func operatorDidPressGo()
     func operatorDidPressStop()
+    func operatorDidPressCloseApplication()
     func operatorDidSelect(index: Int)
     func operatorDidChangeDevice(index: Int)
     func operatorDidChangeDisplay(index: Int)
@@ -223,6 +224,7 @@ final class OperatorWindowController {
     weak var delegate: OperatorWindowDelegate?
 
     private let titleLabel = NSTextField(labelWithString: "ShowRunner")
+    private let closeApplicationButton = NSButton(title: "CLOSE APPLICATION", target: nil, action: nil)
     private let devicePopup = NSPopUpButton(frame: .zero, pullsDown: false)
     private let displayPopup = NSPopUpButton(frame: .zero, pullsDown: false)
     private let backingPopup = NSPopUpButton(frame: .zero, pullsDown: false)
@@ -311,6 +313,7 @@ final class OperatorWindowController {
 
         configureButton(goButton, color: .systemGreen, action: #selector(goPressed))
         configureButton(stopButton, color: .systemRed, action: #selector(stopPressed))
+        configureCloseButton()
 
         buildLayout()
     }
@@ -328,11 +331,28 @@ final class OperatorWindowController {
         b.heightAnchor.constraint(equalToConstant: 72).isActive = true
     }
 
+    private func configureCloseButton() {
+        closeApplicationButton.bezelStyle = .rounded
+        closeApplicationButton.font = .systemFont(ofSize: 12, weight: .bold)
+        closeApplicationButton.target = self
+        closeApplicationButton.action = #selector(closeApplicationPressed)
+        closeApplicationButton.contentTintColor = .systemRed
+        closeApplicationButton.translatesAutoresizingMaskIntoConstraints = false
+        closeApplicationButton.widthAnchor.constraint(equalToConstant: 164).isActive = true
+        closeApplicationButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+    }
+
     private func buildLayout() {
         let content = NSView()
         window.contentView = content
 
         // Header
+        let titleRow = NSStackView(views: [titleLabel, NSView(), closeApplicationButton])
+        titleRow.orientation = .horizontal
+        titleRow.alignment = .centerY
+        titleRow.spacing = 12
+        titleRow.translatesAutoresizingMaskIntoConstraints = false
+
         let deviceRow = labeledRow("Audio device:", devicePopup)
         let displayRow = labeledRow("Audience display:", displayPopup)
         let pickerRow = NSStackView(views: [deviceRow, displayRow])
@@ -347,7 +367,7 @@ final class OperatorWindowController {
         routeRow.spacing = 24
         routeRow.alignment = .firstBaseline
 
-        let header = NSStackView(views: [titleLabel, pickerRow, routeRow, statusLabel])
+        let header = NSStackView(views: [titleRow, pickerRow, routeRow, statusLabel])
         header.orientation = .vertical
         header.alignment = .leading
         header.spacing = 8
@@ -447,6 +467,8 @@ final class OperatorWindowController {
             header.topAnchor.constraint(equalTo: content.topAnchor, constant: m),
             header.leadingAnchor.constraint(equalTo: content.leadingAnchor, constant: m),
             header.trailingAnchor.constraint(equalTo: content.trailingAnchor, constant: -m),
+            titleRow.leadingAnchor.constraint(equalTo: header.leadingAnchor),
+            titleRow.trailingAnchor.constraint(equalTo: header.trailingAnchor),
 
             scrollView.topAnchor.constraint(equalTo: header.bottomAnchor, constant: 14),
             scrollView.leadingAnchor.constraint(equalTo: content.leadingAnchor, constant: m),
@@ -583,6 +605,7 @@ final class OperatorWindowController {
 
     @objc private func goPressed() { delegate?.operatorDidPressGo() }
     @objc private func stopPressed() { delegate?.operatorDidPressStop() }
+    @objc private func closeApplicationPressed() { delegate?.operatorDidPressCloseApplication() }
     @objc private func rowClicked(_ g: NSClickGestureRecognizer) {
         if let v = g.view as? PieceRowView { delegate?.operatorDidSelect(index: v.index) }
     }

@@ -55,7 +55,8 @@ The app reads **`showrunner.json`** from the concert folder
 | **−** / **=** | Click master volume −/+ 1 dB (hold to ramp) |
 
 The big green **GO** and red **STOP / PANIC** buttons do the same thing with the mouse.
-Clicking a row selects it.
+Clicking a row selects it. The **CLOSE APPLICATION** button in the operator header quits
+ShowRunner through the normal shutdown path so all app windows close together.
 
 For audio pieces, the transport bar under the elapsed-time readout is now a scrubber:
 drag/click it to jump to a point in the clip, or hover it and use the trackpad/scroll wheel

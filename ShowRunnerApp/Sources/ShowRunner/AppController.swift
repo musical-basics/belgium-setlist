@@ -520,6 +520,7 @@ final class AppController: NSObject, OperatorWindowDelegate {
 
     func operatorDidPressGo() { go() }
     func operatorDidPressStop() { stop() }
+    func operatorDidPressCloseApplication() { NSApp.terminate(nil) }
     func operatorDidSelect(index: Int) { selectIndex(index) }
 
     func operatorDidSeek(toFraction fraction: Double) {
