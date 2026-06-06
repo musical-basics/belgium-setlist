@@ -100,6 +100,11 @@ final class AppController: NSObject, OperatorWindowDelegate {
         installKeyboard()
         startElapsedTimer()
 
+        // Make sure the control window is actually in front of the operator, on their Space.
+        NSApp.activate(ignoringOtherApps: true)
+        operatorController.window.makeKeyAndOrderFront(nil)
+        operatorController.window.orderFrontRegardless()
+
         Logger.shared.info("ShowRunner ready.")
     }
 

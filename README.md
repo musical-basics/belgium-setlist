@@ -5,7 +5,55 @@ A native macOS app, **ShowRunner**, that replaces QLab: one keypress per piece p
 backing track to outputs 1·2 and a sample-locked click to outputs 3·4, and shows a
 full-screen title card on the projector with a 1-second fade.
 
-> Full app docs, keybindings, and build/run instructions: **[ShowRunnerApp/README.md](ShowRunnerApp/README.md)**
+---
+
+# ▶︎ HOW TO RUN IT (read this first)
+
+## Just launch it — double-click the app
+In **Finder**, open this folder (`Belgium Concert Program`) and **double-click `ShowRunner.app`**.
+That's the whole thing. The control window opens with the 15-piece running order.
+
+Full path to the app: `/Users/lionelyu/Music/Belgium Concert Program/ShowRunner.app`
+
+- Prefer Terminal? `open "/Users/lionelyu/Music/Belgium Concert Program/ShowRunner.app"`
+
+## Using it
+| Key | Action |
+|-----|--------|
+| **Space** or **Enter** | **GO** — fire the selected piece (title card fades up; EDM also starts backing + click) |
+| **↑ / ↓** | Move the selection up/down (does NOT fire) |
+| **Esc** | **STOP / PANIC** — instant stop + fade card to black |
+
+Quit the app with **⌘Q**.
+
+## ⚠️ "I launched it but I don't see the window!"
+It opened **behind your full-screen editor on another Space**. Do ONE of these:
+- Press **⌘-Tab** and pick **ShowRunner**, or
+- Click the **ShowRunner icon in the Dock**, or
+- Swipe with **3–4 fingers** to the desktop Space (or exit your editor's full-screen).
+
+The app now forces its window onto whatever Space is active, so this should be rare.
+
+## First time, or after editing the code — rebuild the app
+Open **Terminal** and run (copy-paste both lines):
+```bash
+cd "/Users/lionelyu/Music/Belgium Concert Program/ShowRunnerApp"
+./build.sh
+```
+That recreates `ShowRunner.app` next to `showrunner.json`. Then double-click the app as above.
+Requires Command Line Tools only (`xcode-select --install`) — **no full Xcode needed.**
+
+## Check everything's ready before the show (no windows, just a report)
+```bash
+cd "/Users/lionelyu/Music/Belgium Concert Program/ShowRunnerApp"
+swift run -c release ShowRunner --selftest
+```
+Confirms the Audient iD44 is found with ≥4 outputs, every title card exists, and all 5 EDM
+backing/click pairs load and route to outs 1·2 / 3·4. Look for `RESULT: PASS ✅`.
+
+---
+
+> More detail (audio design, config, reliability): **[ShowRunnerApp/README.md](ShowRunnerApp/README.md)**
 
 ## What's in this repo
 

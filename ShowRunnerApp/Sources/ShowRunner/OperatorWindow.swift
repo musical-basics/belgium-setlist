@@ -193,6 +193,10 @@ final class OperatorWindowController {
         window.title = "ShowRunner"
         window.appearance = NSAppearance(named: .darkAqua)
         window.minSize = NSSize(width: 680, height: 600)
+        window.isReleasedWhenClosed = false
+        // Appear on whatever Space is active (incl. over a full-screen app) instead of
+        // opening on a hidden desktop the operator can't see.
+        window.collectionBehavior = [.moveToActiveSpace, .fullScreenAuxiliary]
         window.center()
 
         titleLabel.stringValue = headerTitle

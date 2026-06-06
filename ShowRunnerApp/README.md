@@ -14,22 +14,24 @@ No timeline, no editing, no licensing. Built to be boring and unbreakable.
 
 ---
 
-## Quick start
+## ▶︎ How to run it
 
+**The normal way: double-click `ShowRunner.app` in Finder.**
+It's in the concert folder: `/Users/lionelyu/Music/Belgium Concert Program/ShowRunner.app`.
+The control window opens with all 15 pieces. (Terminal equivalent: `open "../ShowRunner.app"`.)
+
+**Don't see the window after launching?** It opened behind a full-screen editor on another
+Space. Press **⌘-Tab → ShowRunner**, click its **Dock icon**, or swipe to the desktop Space.
+
+**First time, or after you change the code — rebuild the app:**
 ```bash
 cd "/Users/lionelyu/Music/Belgium Concert Program/ShowRunnerApp"
-./build.sh           # builds ShowRunner.app next to showrunner.json
-open "../ShowRunner.app"
+./build.sh           # rebuilds ShowRunner.app next to showrunner.json
 ```
+Then double-click `ShowRunner.app`. (Dev shortcut, runs without rebuilding the bundle:
+`swift run -c release ShowRunner`.) Needs Command Line Tools only — **no full Xcode.**
 
-…or for development without the bundle:
-
-```bash
-swift run -c release ShowRunner
-```
-
-Self-test (no windows — verify everything is in place before the show):
-
+**Pre-show check (no windows, just a PASS/FAIL report):**
 ```bash
 swift run -c release ShowRunner --selftest
 # or, after build.sh:
