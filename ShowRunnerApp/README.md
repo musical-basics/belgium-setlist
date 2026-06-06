@@ -57,6 +57,12 @@ The app reads **`showrunner.json`** from the concert folder
 The big green **GO** and red **STOP / PANIC** buttons do the same thing with the mouse.
 Clicking a row selects it.
 
+For audio pieces, the transport bar under the elapsed-time readout is now a scrubber:
+drag/click it to jump to a point in the clip, or hover it and use the trackpad/scroll wheel
+to nudge through time. While audio is playing, scrubbing seeks playback and lighting together.
+While stopped, selecting an audio piece and scrubbing previews that piece's timecoded lighting
+silently, so the Stage Preview window can be checked at an exact timestamp.
+
 ---
 
 ## Picking the audio device and audience display

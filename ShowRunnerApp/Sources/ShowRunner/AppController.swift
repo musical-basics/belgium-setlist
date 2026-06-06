@@ -50,6 +50,7 @@ final class AppController: NSObject, OperatorWindowDelegate {
     private var availableDevices: [AudioDeviceInfo] = []
     private var selectedIndex = 0
     private var playingIndex: Int?
+    private var previewLightingIndex: Int?
 
     private var keyMonitor: Any?
     private var elapsedTimer: Timer?
@@ -337,7 +338,9 @@ final class AppController: NSObject, OperatorWindowDelegate {
                 let p = config.pieces[selectedIndex]
                 audioEngine.play(pre, pieceBackingDb: p.backingGainDb ?? 0, pieceClickDb: p.clickGainDb ?? 0)
                 playingIndex = selectedIndex
+                previewLightingIndex = nil
                 operatorController.setPlaying(index: selectedIndex)
+                updateScrubEnabled()
                 let b = audioEngine.backingChannels
                 let fold = audioEngine.clickFolded ? "  (stereo — click summed to outs \(b.0 + 1)·\(b.1 + 1))" : ""
                 operatorController.setNowPlaying("▶  \(m.piece.order) — \(m.piece.title)\(fold)")
@@ -350,10 +353,13 @@ final class AppController: NSObject, OperatorWindowDelegate {
             }
         } else {
             playingIndex = nil
+            previewLightingIndex = nil
             operatorController.setPlaying(index: nil)
+            updateScrubEnabled()
             operatorController.setNowPlaying("\(m.piece.order) — \(m.piece.title)  (no audio)")
             operatorController.setElapsed("––:–– / ––:––")
         }
+        updateScrubEnabled()
 
         // Tell the (optional) lighting module which piece fired so it can select that piece's
         // program. Done LAST — after audioEngine.play() has reset the clock to 0 — so lighting is
@@ -368,11 +374,13 @@ final class AppController: NSObject, OperatorWindowDelegate {
         audioEngine.stop()
         audienceWindow.clear()
         playingIndex = nil
+        previewLightingIndex = nil
         operatorController.setPlaying(index: nil)
         operatorController.setNowPlaying("— stopped —")
         operatorController.setElapsed("––:–– / ––:––")
         operatorController.setRemaining("−––:––")
         operatorController.setProgress(0)
+        updateScrubEnabled()
     }
 
     private func selectIndex(_ i: Int) {
@@ -383,6 +391,31 @@ final class AppController: NSObject, OperatorWindowDelegate {
         let tag = m.piece.hasAudio ? "  ♪" : ""
         operatorController.setOnDeck("\(m.piece.order) — \(m.piece.title)\(tag)")
         updatePieceTrimUI()
+        updateScrubEnabled()
+        if playingIndex == nil {
+            previewLightingIndex = nil
+            if let total = durationSeconds(for: selectedIndex) {
+                operatorController.setElapsed("00:00 / \(AppController.fmt(total))")
+                operatorController.setRemaining("−\(AppController.fmt(total))")
+            } else {
+                operatorController.setElapsed("––:–– / ––:––")
+                operatorController.setRemaining("−––:––")
+            }
+            operatorController.setProgress(0)
+        }
+    }
+
+    private func updateScrubEnabled() {
+        let index = playingIndex ?? selectedIndex
+        let enabled = pieces.indices.contains(index) && pieces[index].piece.hasAudio && pieces[index].premix != nil
+        operatorController.setScrubEnabled(enabled)
+    }
+
+    private func durationSeconds(for index: Int) -> Double? {
+        guard pieces.indices.contains(index), let pre = pieces[index].premix else { return nil }
+        let rate = pre.sampleRate > 0 ? pre.sampleRate : audioEngine.sampleRate
+        guard rate > 0 else { return nil }
+        return Double(pre.frameCount) / rate
     }
 
     private func updatePieceTrimUI() {
@@ -433,17 +466,20 @@ final class AppController: NSObject, OperatorWindowDelegate {
         // Meters always reflect the engine, so they decay to zero when audio stops.
         operatorController.setMeters(backing: audioEngine.backingLevel, click: audioEngine.clickLevel)
         guard let pi = playingIndex, pi < pieces.count, let pre = pieces[pi].premix else { return }
-        let total = audioEngine.sampleRate > 0 ? Double(pre.frameCount) / audioEngine.sampleRate : 0
+        let rate = pre.sampleRate > 0 ? pre.sampleRate : audioEngine.sampleRate
+        let total = rate > 0 ? Double(pre.frameCount) / rate : 0
         let elapsed = min(audioEngine.elapsedSeconds, total)
         operatorController.setElapsed("\(AppController.fmt(elapsed)) / \(AppController.fmt(total))")
         operatorController.setRemaining("−\(AppController.fmt(max(0, total - elapsed)))")
         operatorController.setProgress(total > 0 ? elapsed / total : 0)
         if !audioEngine.isPlaying {
             playingIndex = nil
+            previewLightingIndex = nil
             operatorController.setPlaying(index: nil)
             operatorController.setNowPlaying("— finished —")
             operatorController.setProgress(1)
             operatorController.setRemaining("−00:00")
+            updateScrubEnabled()
         }
     }
 
@@ -485,6 +521,30 @@ final class AppController: NSObject, OperatorWindowDelegate {
     func operatorDidPressGo() { go() }
     func operatorDidPressStop() { stop() }
     func operatorDidSelect(index: Int) { selectIndex(index) }
+
+    func operatorDidSeek(toFraction fraction: Double) {
+        let index = playingIndex ?? selectedIndex
+        guard pieces.indices.contains(index), let pre = pieces[index].premix else { return }
+        let total = durationSeconds(for: index) ?? 0
+        let clamped = min(1, max(0, fraction))
+        let seconds = clamped * total
+
+        if playingIndex == index {
+            audioEngine.seek(toSeconds: seconds)
+        } else {
+            let p = config.pieces[index]
+            audioEngine.cue(pre, pieceBackingDb: p.backingGainDb ?? 0, pieceClickDb: p.clickGainDb ?? 0, atSeconds: seconds)
+            if previewLightingIndex != index {
+                lighting?.pieceDidStart(order: pieces[index].piece.order)
+                previewLightingIndex = index
+            }
+            operatorController.setNowPlaying("PREVIEW  \(pieces[index].piece.order) — \(pieces[index].piece.title)")
+        }
+
+        operatorController.setElapsed("\(AppController.fmt(seconds)) / \(AppController.fmt(total))")
+        operatorController.setRemaining("−\(AppController.fmt(max(0, total - seconds)))")
+        operatorController.setProgress(clamped)
+    }
 
     func operatorDidChangeDevice(index: Int) {
         guard index >= 0, index < availableDevices.count else { return }
