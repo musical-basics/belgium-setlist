@@ -1,0 +1,166 @@
+{
+  "showRoot": "/Users/lionelyu/Music/Belgium Concert Program",
+  "audioDeviceName": "Audient",
+  "fadeSeconds": 1.0,
+  "audienceDisplayIndex": 1,
+  "backingChannels": [
+    1,
+    2
+  ],
+  "clickChannels": [
+    3,
+    4
+  ],
+  "pieces": [
+    {
+      "order": "1",
+      "title": "Prelude in G minor",
+      "subtitle": "Sergei Rachmaninoff, Op. 23 No. 5",
+      "folder": "01 - Rachmaninoff Prelude G minor",
+      "titleCard": "TitleCard.png",
+      "hasAudio": false,
+      "backing": null,
+      "click": null
+    },
+    {
+      "order": "2",
+      "title": "Colors of the Soul",
+      "subtitle": "Lionel Yu",
+      "folder": "02 - Colors of the Soul",
+      "titleCard": "TitleCard.png",
+      "hasAudio": false,
+      "backing": null,
+      "click": null
+    },
+    {
+      "order": "3",
+      "title": "Gallop",
+      "subtitle": "Lionel Yu · piano trio",
+      "folder": "03 - Gallop (Trio)",
+      "titleCard": "TitleCard.png",
+      "hasAudio": false,
+      "backing": null,
+      "click": null
+    },
+    {
+      "order": "4",
+      "title": "Torrent Etude Nightmare",
+      "subtitle": "Chopin · arr. Lionel Yu",
+      "folder": "04 - Torrent Etude (EDM)",
+      "titleCard": "TitleCard.png",
+      "hasAudio": true,
+      "backing": "Backing.wav",
+      "click": "Click.wav"
+    },
+    {
+      "order": "5",
+      "title": "Beethoven Virus",
+      "subtitle": "arr. Lionel Yu · piano trio",
+      "folder": "05 - Beethoven Virus (Trio)",
+      "titleCard": "TitleCard.png",
+      "hasAudio": false,
+      "backing": null,
+      "click": null
+    },
+    {
+      "order": "6",
+      "title": "Canon in Dream",
+      "subtitle": "Remix of Pachelbel's Canon in D",
+      "folder": "06 - Canon in Dream (EDM)",
+      "titleCard": "TitleCard.png",
+      "hasAudio": true,
+      "backing": "Backing.wav",
+      "click": "Click.wav"
+    },
+    {
+      "order": "7",
+      "title": "Fight for Freedom",
+      "subtitle": "Lionel Yu",
+      "folder": "07 - Fight for Freedom (maybe)",
+      "titleCard": "TitleCard.png",
+      "hasAudio": false,
+      "backing": null,
+      "click": null
+    },
+    {
+      "order": "8",
+      "title": "Winter Wind Etude",
+      "subtitle": "Frédéric Chopin, Op. 25 No. 11",
+      "folder": "08 - Winter Wind",
+      "titleCard": "TitleCard.png",
+      "hasAudio": false,
+      "backing": null,
+      "click": null
+    },
+    {
+      "order": "9",
+      "title": "Moonlight Sonata Nightmare",
+      "subtitle": "Remix of Beethoven's Moonlight Sonata",
+      "folder": "09 - Moonlight Sonata (EDM)",
+      "titleCard": "TitleCard.png",
+      "hasAudio": true,
+      "backing": "Backing.wav",
+      "click": "Click.wav"
+    },
+    {
+      "order": "10",
+      "title": "Sunflowers",
+      "subtitle": "Lionel Yu",
+      "folder": "10 - Sunflowers",
+      "titleCard": "TitleCard.png",
+      "hasAudio": false,
+      "backing": null,
+      "click": null
+    },
+    {
+      "order": "11",
+      "title": "Dreams of a Violin",
+      "subtitle": "Lionel Yu · violin & piano",
+      "folder": "11 - Dreams of a Violin (Duet)",
+      "titleCard": "TitleCard.png",
+      "hasAudio": false,
+      "backing": null,
+      "click": null
+    },
+    {
+      "order": "12",
+      "title": "Für Elise Nightmare",
+      "subtitle": "Remix of Beethoven's Für Elise",
+      "folder": "12 - Fur Elise Dubstep (EDM)",
+      "titleCard": "TitleCard.png",
+      "hasAudio": true,
+      "backing": "Backing.wav",
+      "click": "Click.wav"
+    },
+    {
+      "order": "E1",
+      "title": "Fantaisie-Impromptu",
+      "subtitle": "Frédéric Chopin, Op. 66",
+      "folder": "E1 - Fantasie Impromptu",
+      "titleCard": "TitleCard.png",
+      "hasAudio": false,
+      "backing": null,
+      "click": null
+    },
+    {
+      "order": "E2",
+      "title": "Flight of the Bumblebee",
+      "subtitle": "Rimsky-Korsakov",
+      "folder": "E2 - Flight of the Bumblebee",
+      "titleCard": "TitleCard.png",
+      "hasAudio": false,
+      "backing": null,
+      "click": null
+    },
+    {
+      "order": "E3",
+      "title": "Still D.R.E.",
+      "subtitle": "arr. Lionel Yu",
+      "folder": "E3 - Still Dre (EDM)",
+      "titleCard": "TitleCard.png",
+      "hasAudio": true,
+      "backing": "Backing.wav",
+      "click": "Click.wav"
+    }
+  ]
+}

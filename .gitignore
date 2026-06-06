@@ -1,0 +1,27 @@
+# --- Build artifacts ---
+.build/
+*.app/
+.DS_Store
+*.log
+
+# --- Large audio: synced via Dropbox, NOT git ---
+*.wav
+*.aif
+*.aiff
+*.asd
+*.mp3
+*.m4a
+
+# --- Ableton project ---
+Backing Tracks/
+*.als
+
+# --- Legacy QLab sessions & backups (replaced by ShowRunner) ---
+*.qlab5
+*.qlab5backup
+Belgium Show backups/
+Icon?
+
+# --- Python caches ---
+__pycache__/
+*.pyc
