@@ -28,3 +28,7 @@ __pycache__/
 
 # --- Audio bundle (copy-to-new-Mac; WAVs already excluded above) ---
 ShowAudio/
+
+# --- Claude temporary files ---
+.claude/
+
