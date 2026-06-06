@@ -362,6 +362,18 @@ final class AppController: NSObject, OperatorWindowDelegate {
         }
     }
 
+    /// Bump a master fader by `delta` dB (from the keyboard), clamp, update UI + save.
+    private func nudgeMaster(backing: Bool, delta: Double) {
+        var b = audioEngine.masterBackingDb
+        var c = audioEngine.masterClickDb
+        if backing { b = min(6, max(-40, b + delta)) } else { c = min(6, max(-40, c + delta)) }
+        audioEngine.setMasterGains(backingDb: b, clickDb: c)
+        config.masterBackingGainDb = b
+        config.masterClickGainDb = c
+        operatorController.setMasterLevels(backingDb: b, clickDb: c)
+        scheduleSave()
+    }
+
     private func scheduleSave() {
         saveWorkItem?.cancel()
         let item = DispatchWorkItem { [weak self] in
@@ -423,6 +435,10 @@ final class AppController: NSObject, OperatorWindowDelegate {
             case 53:          // escape
                 if event.isARepeat { return nil }
                 self.stop(); return nil
+            case 33: self.nudgeMaster(backing: true,  delta: -1); return nil  // [  backing down
+            case 30: self.nudgeMaster(backing: true,  delta: +1); return nil  // ]  backing up
+            case 27: self.nudgeMaster(backing: false, delta: -1); return nil  // -  click down
+            case 24: self.nudgeMaster(backing: false, delta: +1); return nil  // =  click up
             default:
                 return event
             }

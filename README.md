@@ -23,6 +23,8 @@ Full path to the app: `/Users/lionelyu/Music/Belgium Concert Program/ShowRunner.
 | **Space** or **Enter** | **GO** — fire the selected piece (title card fades up; EDM also starts backing + click) |
 | **↑ / ↓** | Move the selection up/down (does NOT fire) |
 | **Esc** | **STOP / PANIC** — instant stop + fade card to black |
+| **[** / **]** | Backing master volume down / up (1 dB; hold to ramp) |
+| **−** / **=** | Click master volume down / up (1 dB; hold to ramp) |
 
 Quit the app with **⌘Q**.
 
@@ -63,19 +65,39 @@ backing/click pairs load and route to outs 1·2 / 3·4. Look for `RESULT: PASS �
 | `showrunner.json` — the running order (15 pieces) | `Backing Tracks/` (Ableton project) |
 | `*/TitleCard.png` — the 15 title cards | `*.qlab5` legacy QLab sessions |
 
-## Opening this on another laptop
+## Setting it up on another Mac
 
-1. **Clone:** `git clone https://github.com/musical-basics/belgium-setlist.git`
-2. **Get the audio from Dropbox.** The backing/click WAVs are not in git. Copy each piece's
-   `Backing.wav` / `Click.wav` from Dropbox into the matching `NN - Piece Name/` folder
-   (the folders already exist with their `TitleCard.png`). The expected files are exactly the
-   ones listed in `showrunner.json` (only the 5 EDM pieces have audio).
-   - Tip: if you keep this whole folder *inside* Dropbox, the WAVs sync automatically and git
-     just versions the code — nothing to copy.
-3. **Build & run:**
+Full checklist (macOS 13 or newer):
+
+1. **Install Command Line Tools** (one-time, gives you `swift`; no full Xcode needed):
    ```bash
-   cd ShowRunnerApp && ./build.sh && open ../ShowRunner.app
+   xcode-select --install
    ```
-   Verify everything is in place first with `swift run -c release ShowRunner --selftest`.
+2. **Clone the repo:**
+   ```bash
+   git clone https://github.com/musical-basics/belgium-setlist.git
+   ```
+   This already includes the **15 title cards**, the **running order**, and your **saved
+   levels** (`showrunner.json`) — you do *not* need to transfer those.
+3. **Copy the audio from Dropbox.** Only the WAVs aren't in git. Drop each piece's
+   `Backing.wav` / `Click.wav` into the matching `NN - Piece Name/` folder (the folders already
+   exist with their `TitleCard.png`). Only the 5 EDM pieces have audio.
+   - Tip: if you clone *into* a Dropbox folder, the WAVs sync there automatically.
+4. **Build the app** (the repo ships source, not the built app):
+   ```bash
+   cd belgium-setlist/ShowRunnerApp
+   ./build.sh
+   ```
+   This creates `ShowRunner.app` next to `showrunner.json`. It finds its config relative to
+   itself, so it works no matter where you cloned it or what your username is.
+5. **Pre-flight check** — run the self-test and look for `RESULT: PASS ✅`:
+   ```bash
+   swift run -c release ShowRunner --selftest
+   ```
+   If a WAV is in the wrong place it'll be listed here.
+6. **Plug in the Audient iD44** (or any interface with ≥ 4 outputs). If it's not the iD44, just
+   pick your device — and your **Backing → / Click → output pairs** — from the dropdowns in the app.
+7. **Double-click `ShowRunner.app`.** Pick the audience display, set your levels, hit Space.
 
-Requires macOS 13+ and Command Line Tools (`xcode-select --install`) — no full Xcode needed.
+That's the whole list. No signing/notarization, no entitlements, no extra installs — building it
+locally means macOS runs it without Gatekeeper complaints.

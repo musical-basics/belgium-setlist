@@ -51,6 +51,8 @@ The app reads **`showrunner.json`** from the concert folder
 | **↓** | Move selection to next piece (does **not** fire) |
 | **↑** | Move selection to previous piece (does **not** fire) |
 | **Esc** | **STOP / PANIC** — instantly stop audio and fade the card to black |
+| **[** / **]** | Backing master volume −/+ 1 dB (hold to ramp) |
+| **−** / **=** | Click master volume −/+ 1 dB (hold to ramp) |
 
 The big green **GO** and red **STOP / PANIC** buttons do the same thing with the mouse.
 Clicking a row selects it.
