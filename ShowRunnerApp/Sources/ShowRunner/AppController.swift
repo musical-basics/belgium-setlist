@@ -54,6 +54,10 @@ final class AppController: NSObject, OperatorWindowDelegate {
     private var keyMonitor: Any?
     private var elapsedTimer: Timer?
 
+    /// Optional, fully-isolated lighting module (see LightingBridge). nil = lighting off/unavailable;
+    /// the audio show is identical with or without it. Nothing here writes back into the audio path.
+    private var lighting: LightingBridge?
+
     init(configPath: String?) {
         self.configPath = configPath
         super.init()
@@ -131,6 +135,14 @@ final class AppController: NSObject, OperatorWindowDelegate {
         operatorController.window.orderFrontRegardless()
 
         Logger.shared.info("ShowRunner ready.")
+
+        // --- Lighting module (separate, fail-safe) ---------------------------------------------
+        // Connect the lighting feature. It reads the audio playback clock through a read-only
+        // adapter and runs entirely in its own module/window. If it is disabled or anything goes
+        // wrong, `lighting` stays nil and the audio show is completely unaffected.
+        lighting = LightingBridge(engine: audioEngine, showRoot: root)
+        lighting?.start()
+        // ---------------------------------------------------------------------------------------
 
         // Hidden debug hook: dump the (re-encoded) config to a path and quit — verifies save round-trips.
         if let dump = ProcessInfo.processInfo.environment["SHOWRUNNER_DUMPCONFIG"] {
@@ -340,10 +352,17 @@ final class AppController: NSObject, OperatorWindowDelegate {
             operatorController.setNowPlaying("\(m.piece.order) — \(m.piece.title)  (no audio)")
             operatorController.setElapsed("––:–– / ––:––")
         }
+
+        // Tell the (optional) lighting module which piece fired so it can select that piece's
+        // program. Done LAST — after audioEngine.play() has reset the clock to 0 — so lighting is
+        // never on the GO→sound critical path and never samples the previous piece's stale clock.
+        // No-op when lighting is off; never blocks or affects audio.
+        lighting?.pieceDidStart(order: m.piece.order)
     }
 
     private func stop() {
         Logger.shared.info("STOP / PANIC")
+        lighting?.stop()   // softly fade lights out alongside the audio panic (no-op if off)
         audioEngine.stop()
         audienceWindow.clear()
         playingIndex = nil
@@ -548,6 +567,7 @@ final class AppController: NSObject, OperatorWindowDelegate {
     func teardown() {
         if let k = keyMonitor { NSEvent.removeMonitor(k) }
         elapsedTimer?.invalidate()
+        lighting?.shutdown()   // stop sACN + close the lighting window cleanly (no-op if off)
         audioEngine.stop()
     }
 }

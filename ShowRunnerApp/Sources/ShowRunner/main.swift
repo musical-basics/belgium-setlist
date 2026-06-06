@@ -1,4 +1,5 @@
 import AppKit
+import Lighting
 
 // MARK: - Argument parsing
 
@@ -22,13 +23,25 @@ if arguments.contains("--selftest") {
     exit(code)
 }
 
+// Lighting module's own headless validation (sACN packet layout, config, profiles). Separate
+// from the audio --selftest so the sound app's test is unchanged.
+if arguments.contains("--lighting-selftest") {
+    let root: URL
+    if let loaded = try? ConfigLoader.load(explicit: configArg) { root = loaded.root }
+    else { root = URL(fileURLWithPath: ConfigLoader.defaultShowRoot) }
+    let result = LightingSelfTest.run(showRoot: root)
+    print(result.lines.joined(separator: "\n"))
+    exit(result.failures == 0 ? 0 : 1)
+}
+
 if arguments.contains("--help") || arguments.contains("-h") {
     print("""
     ShowRunner — live concert playback
       ShowRunner [path-to-showrunner.json | show-folder]
       ShowRunner --config <path>
-      ShowRunner --selftest        Run the headless self-test and exit
-      ShowRunner --help            Show this help
+      ShowRunner --selftest          Run the headless audio self-test and exit
+      ShowRunner --lighting-selftest Validate the lighting module (sACN/config) and exit
+      ShowRunner --help              Show this help
 
     Keys:  Space/Enter = GO    ↑/↓ = move selection    Esc = STOP / PANIC
     """)
