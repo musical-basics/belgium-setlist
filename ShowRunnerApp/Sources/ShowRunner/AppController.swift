@@ -82,7 +82,8 @@ final class AppController: NSObject, OperatorWindowDelegate {
         // Audio device
         let rate = config.engineSampleRate ?? 48000
         availableDevices = AudioEngine.outputDevices()
-        if let dev = AudioEngine.findDevice(named: config.audioDeviceName) {
+        let wantedDevice = ProcessInfo.processInfo.environment["SHOWRUNNER_DEVICE"] ?? config.audioDeviceName
+        if let dev = AudioEngine.findDevice(named: wantedDevice) {
             audioEngine.configure(device: dev, requestedRate: rate)
         } else {
             Logger.shared.warn("Audio device '\(config.audioDeviceName)' not found — pick one from the menu.")
@@ -106,6 +107,19 @@ final class AppController: NSObject, OperatorWindowDelegate {
         operatorController.window.orderFrontRegardless()
 
         Logger.shared.info("ShowRunner ready.")
+
+        // Hidden debug hook: SHOWRUNNER_SELFPLAY=6,9,12 auto-fires those pieces 4s apart.
+        if let order = ProcessInfo.processInfo.environment["SHOWRUNNER_SELFPLAY"] {
+            let orders = order.split(separator: ",").map(String.init)
+            for (k, ord) in orders.enumerated() {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0 + Double(k) * 4.0) { [weak self] in
+                    guard let self = self, let idx = self.pieces.firstIndex(where: { $0.piece.order == ord }) else { return }
+                    Logger.shared.info("SELFPLAY firing piece \(ord)")
+                    self.selectIndex(idx)
+                    self.go()
+                }
+            }
+        }
     }
 
     private func preloadImages() {

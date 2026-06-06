@@ -2,39 +2,63 @@ import AppKit
 
 /// A horizontal output-level meter (green → yellow → red) with a fast-rise / slow-fall ballistic
 /// so the operator can see at a glance that audio is actually flowing to each output pair.
+///
+/// Implemented with CALayers + a static caption label — NO custom text drawing in draw(), which
+/// is important: drawing a string with freshly-built font attributes on every redraw can throw
+/// (`NSInvalidArgumentException`) under rapid updates and crash the app.
 final class MeterView: NSView {
-    private let caption: String
     private var level: CGFloat = 0
+    private let barLayer = CALayer()
+    private let captionLabel = NSTextField(labelWithString: "")
 
     init(caption: String) {
-        self.caption = caption
         super.init(frame: .zero)
         wantsLayer = true
-        layer?.cornerRadius = 4
         translatesAutoresizingMaskIntoConstraints = false
+        layer?.cornerRadius = 4
+        layer?.masksToBounds = true
+        layer?.backgroundColor = NSColor.black.withAlphaComponent(0.55).cgColor
+
+        barLayer.anchorPoint = .zero
+        barLayer.backgroundColor = NSColor.systemGreen.cgColor
+        layer?.addSublayer(barLayer)
+
+        captionLabel.stringValue = caption
+        captionLabel.font = .monospacedSystemFont(ofSize: 9, weight: .bold)
+        captionLabel.textColor = .white
+        captionLabel.drawsBackground = false
+        captionLabel.isBordered = false
+        captionLabel.isEditable = false
+        captionLabel.isSelectable = false
+        captionLabel.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(captionLabel)
+        NSLayoutConstraint.activate([
+            captionLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 6),
+            captionLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+        ])
     }
     required init?(coder: NSCoder) { fatalError("not used") }
 
-    /// Feed a new peak (0…1). Rises instantly, decays smoothly.
+    override func layout() {
+        super.layout()
+        updateBar()
+    }
+
+    /// Feed a new peak (0…1). Rises instantly, decays smoothly. Called on the main thread.
     func setLevel(_ newValue: Float) {
         let target = CGFloat(min(1, max(0, newValue)))
         level = target >= level ? target : max(target, level - 0.07)
-        needsDisplay = true
+        updateBar()
     }
 
-    override func draw(_ dirtyRect: NSRect) {
-        NSColor.black.withAlphaComponent(0.55).setFill()
-        bounds.fill()
-        if level > 0.001 {
-            let color: NSColor = level > 0.9 ? .systemRed : (level > 0.7 ? .systemYellow : .systemGreen)
-            color.setFill()
-            NSRect(x: 0, y: 0, width: bounds.width * level, height: bounds.height).fill()
-        }
-        let attrs: [NSAttributedString.Key: Any] = [
-            .font: NSFont.monospacedSystemFont(ofSize: 9, weight: .bold),
-            .foregroundColor: NSColor.white,
-        ]
-        (caption as NSString).draw(at: NSPoint(x: 6, y: bounds.midY - 6), withAttributes: attrs)
+    private func updateBar() {
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+        barLayer.backgroundColor = (level > 0.9 ? NSColor.systemRed
+                                    : level > 0.7 ? NSColor.systemYellow
+                                    : NSColor.systemGreen).cgColor
+        barLayer.frame = CGRect(x: 0, y: 0, width: bounds.width * level, height: bounds.height)
+        CATransaction.commit()
     }
 }
 
