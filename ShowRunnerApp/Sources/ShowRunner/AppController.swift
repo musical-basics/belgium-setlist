@@ -88,11 +88,13 @@ final class AppController: NSObject, OperatorWindowDelegate {
         } else {
             Logger.shared.warn("Audio device '\(config.audioDeviceName)' not found — pick one from the menu.")
         }
+        applyRoutingFromConfig()
         reloadAudio()
 
         // Populate UI
         refreshDevicePopup()
         refreshDisplayPopup()
+        refreshChannelPopups()
         refreshRows()
         selectIndex(0)
         applyAudienceDisplay(index: config.audienceDisplayIndex)
@@ -202,11 +204,42 @@ final class AppController: NSObject, OperatorWindowDelegate {
         operatorController.setDisplays(names.isEmpty ? ["No display"] : names, selected: sel)
     }
 
+    /// Output channel pairs available on the current device, 0-based.
+    private func availablePairs() -> [(Int, Int)] {
+        let c = audioEngine.deviceChannels
+        var pairs: [(Int, Int)] = []
+        var i = 0
+        while i + 1 < c { pairs.append((i, i + 1)); i += 2 }
+        if pairs.isEmpty { pairs.append((0, 1)) }
+        return pairs
+    }
+
+    private func applyRoutingFromConfig() {
+        let b = config.backingChannels ?? [1, 2]
+        let c = config.clickChannels ?? [3, 4]
+        let backing = (max(0, (b.first ?? 1) - 1), max(0, (b.count > 1 ? b[1] : 2) - 1))
+        let click = (max(0, (c.first ?? 3) - 1), max(0, (c.count > 1 ? c[1] : 4) - 1))
+        audioEngine.setRouting(backing: backing, click: click)
+    }
+
+    private func refreshChannelPopups() {
+        let pairs = availablePairs()
+        let labels = pairs.map { "Out \($0.0 + 1)·\($0.1 + 1)" }
+        let bSel = pairs.firstIndex(where: { $0 == audioEngine.backingChannels }) ?? 0
+        let cSel = pairs.firstIndex(where: { $0 == audioEngine.clickChannels }) ?? min(1, pairs.count - 1)
+        operatorController.setChannelPairs(labels, backingSel: bSel, clickSel: cSel)
+    }
+
     private func updateStatus() {
         var parts: [String] = []
         if audioEngine.deviceReady {
             parts.append("Audio: \(audioEngine.deviceName) · \(audioEngine.deviceChannels)ch @ \(Int(audioEngine.sampleRate))Hz")
-            parts.append(audioEngine.clickRouted ? "Backing→1·2  Click→3·4" : "⚠︎ <4 outputs: click NOT routed")
+            let b = audioEngine.backingChannels, c = audioEngine.clickChannels
+            if audioEngine.clickRouted {
+                parts.append("Backing→\(b.0 + 1)·\(b.1 + 1)  Click→\(c.0 + 1)·\(c.1 + 1)")
+            } else {
+                parts.append("⚠︎ Click outs \(c.0 + 1)·\(c.1 + 1) unavailable on this device")
+            }
         } else {
             parts.append("⚠︎ No audio device — EDM pieces will be silent")
         }
@@ -368,8 +401,28 @@ final class AppController: NSObject, OperatorWindowDelegate {
         if wasPlaying { stop() }
         let rate = config.engineSampleRate ?? 48000
         audioEngine.configure(device: dev, requestedRate: rate)
+        applyRoutingFromConfig()
         reloadAudio()
+        refreshChannelPopups()
         refreshRows()
+        updateStatus()
+    }
+
+    func operatorDidChangeBackingPair(index: Int) {
+        let pairs = availablePairs()
+        guard index >= 0, index < pairs.count else { return }
+        if playingIndex != nil { stop() }
+        audioEngine.setRouting(backing: pairs[index], click: audioEngine.clickChannels)
+        config.backingChannels = [pairs[index].0 + 1, pairs[index].1 + 1]
+        updateStatus()
+    }
+
+    func operatorDidChangeClickPair(index: Int) {
+        let pairs = availablePairs()
+        guard index >= 0, index < pairs.count else { return }
+        if playingIndex != nil { stop() }
+        audioEngine.setRouting(backing: audioEngine.backingChannels, click: pairs[index])
+        config.clickChannels = [pairs[index].0 + 1, pairs[index].1 + 1]
         updateStatus()
     }
 

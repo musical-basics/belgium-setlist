@@ -71,8 +71,13 @@ Both are dropdowns at the top of the operator window:
   letterboxed (aspect preserved, black bars, any resolution). Choosing the operator's own
   screen (or having only one screen) shows a **windowed preview** so you can test at home.
 
-Routing is fixed and shown in the status line:
-`backing L/R → out 1/2`, `click L/R → out 3/4`.
+- **Backing → outputs** and **Click → outputs** — two dropdowns that pick which physical
+  output pair each track goes to. Defaults to **Backing → 1·2** and **Click → 3·4**, but on the
+  24-output iD44 you can route either to any pair (e.g. Click → 7·8). Changing a routing stops
+  playback; re-fire the piece. The current routing is shown in the status line, and the two
+  level meters (`BACKING` / `CLICK`) confirm signal is actually reaching each pair.
+
+These defaults come from `showrunner.json` (`backingChannels`, `clickChannels`, 1-based).
 
 ---
 
@@ -86,6 +91,8 @@ Edit **`showrunner.json`** (next to the app). No recompile needed — it is read
   "audioDeviceName": "Audient iD44",// loose name match
   "fadeSeconds": 1.0,               // title-card fade in/out duration
   "engineSampleRate": 48000,        // device + all audio locked to this rate for the whole show
+  "backingChannels": [1, 2],        // default output pair for backing (1-based; editable in the UI)
+  "clickChannels": [3, 4],          // default output pair for click
   "pieces": [
     {
       "order": "1",

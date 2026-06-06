@@ -3,6 +3,8 @@
   "audioDeviceName": "Audient iD44",
   "fadeSeconds": 1.0,
   "engineSampleRate": 48000,
+  "backingChannels": [1, 2],
+  "clickChannels": [3, 4],
   "pieces": [
     {
       "order": "1",

@@ -20,6 +20,10 @@ struct ShowConfig: Codable {
     /// Fixed engine/device sample rate. All audio is resampled to this at load so the
     /// device never relocks mid-show. Defaults to 48000 if absent.
     var engineSampleRate: Double?
+    /// 1-based device output channels for the backing track. Defaults to [1, 2].
+    var backingChannels: [Int]?
+    /// 1-based device output channels for the click track. Defaults to [3, 4].
+    var clickChannels: [Int]?
     var pieces: [Piece]
 }
 

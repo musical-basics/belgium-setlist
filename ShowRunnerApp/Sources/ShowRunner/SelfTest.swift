@@ -82,7 +82,9 @@ enum SelfTest {
                 } else {
                     warn("\(line) — differ by \(drift)f (\(String(format: "%.0f", driftMs))ms) — check this pair")
                 }
-                if r.premix.frameCount > 0 { ok("  → routed: backing L/R = out 1/2, click L/R = out 3/4") }
+                let bc = config.backingChannels ?? [1, 2]
+                let cc = config.clickChannels ?? [3, 4]
+                if r.premix.frameCount > 0 { ok("  → routed: backing L/R → outs \(bc.map(String.init).joined(separator: "·")), click L/R → outs \(cc.map(String.init).joined(separator: "·"))") }
                 else { fail("[\(p.order)] premix is empty") }
             } catch {
                 fail("[\(p.order)] load/resample failed: \(error)")

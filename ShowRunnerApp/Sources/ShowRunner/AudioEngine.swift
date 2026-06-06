@@ -47,11 +47,33 @@ struct RenderState {
     var frameCount: Int = 0
     var currentFrame: Int = 0
     var playing: Int32 = 0   // 0 = silence, 1 = playing
+    // Destination device-output channel (0-based) for each source: backing L/R, click L/R.
+    var dest0: Int = 0   // backing L
+    var dest1: Int = 1   // backing R
+    var dest2: Int = 2   // click L
+    var dest3: Int = 3   // click R
     // Per-channel peak of the most recent render block (0…1), for the UI level meters.
     var peak0: Float = 0
     var peak1: Float = 0
     var peak2: Float = 0
     var peak3: Float = 0
+}
+
+/// Write `n` frames of `src` (starting at `pos`) into device output channel `destCh`, and return
+/// the block peak. RT-safe: no allocation, no ARC. Assumes all device buffers were pre-zeroed.
+@inline(__always)
+private func placeChannel(_ src: UnsafeMutablePointer<Float>?, _ destCh: Int,
+                          _ abl: UnsafeMutableAudioBufferListPointer,
+                          _ pos: Int, _ n: Int) -> Float {
+    guard let src = src, n > 0, destCh >= 0, destCh < abl.count,
+          let raw = abl[destCh].mData else { return 0 }
+    let out = raw.assumingMemoryBound(to: Float.self)
+    let base = src + pos
+    out.update(from: base, count: n)
+    var pk: Float = 0
+    var j = 0
+    while j < n { let v = base[j]; let a = v < 0 ? -v : v; if a > pk { pk = a }; j += 1 }
+    return pk
 }
 
 /// The C render callback. No allocation, no ARC, no locks — reads RenderState via a raw pointer.
@@ -61,11 +83,12 @@ private let showRunnerRenderProc: AURenderCallback = { (inRefCon, _, _, _, inNum
     let frames = Int(inNumberFrames)
     let st = inRefCon.assumingMemoryBound(to: RenderState.self)
 
-    // Not playing -> output pure silence on every channel and clear the meters.
+    // Always start from pure silence on every device output channel.
+    for i in 0..<abl.count {
+        if let d = abl[i].mData { memset(d, 0, Int(abl[i].mDataByteSize)) }
+    }
+
     if st.pointee.playing == 0 {
-        for i in 0..<abl.count {
-            if let d = abl[i].mData { memset(d, 0, Int(abl[i].mDataByteSize)) }
-        }
         st.pointee.peak0 = 0; st.pointee.peak1 = 0; st.pointee.peak2 = 0; st.pointee.peak3 = 0
         return noErr
     }
@@ -75,49 +98,11 @@ private let showRunnerRenderProc: AURenderCallback = { (inRefCon, _, _, _, inNum
     let avail = max(0, total - pos)
     let n = min(frames, avail)
 
-    for i in 0..<abl.count {
-        guard let raw = abl[i].mData else { continue }
-        let out = raw.assumingMemoryBound(to: Float.self)
-        var src: UnsafeMutablePointer<Float>? = nil
-        switch i {
-        case 0: src = st.pointee.ch0
-        case 1: src = st.pointee.ch1
-        case 2: src = st.pointee.ch2
-        case 3: src = st.pointee.ch3
-        default: src = nil
-        }
-        if let src = src, n > 0 {
-            out.update(from: src + pos, count: n)
-            if n < frames { (out + n).update(repeating: 0, count: frames - n) }
-            if i < 4 {   // track peak level for the meters (stack-only, RT-safe)
-                let base = src + pos
-                var pk: Float = 0
-                var j = 0
-                while j < n {
-                    let v = base[j]
-                    let a = v < 0 ? -v : v
-                    if a > pk { pk = a }
-                    j += 1
-                }
-                switch i {
-                case 0: st.pointee.peak0 = pk
-                case 1: st.pointee.peak1 = pk
-                case 2: st.pointee.peak2 = pk
-                case 3: st.pointee.peak3 = pk
-                default: break
-                }
-            }
-        } else {
-            out.update(repeating: 0, count: frames)
-            switch i {
-            case 0: st.pointee.peak0 = 0
-            case 1: st.pointee.peak1 = 0
-            case 2: st.pointee.peak2 = 0
-            case 3: st.pointee.peak3 = 0
-            default: break
-            }
-        }
-    }
+    // Place each source on its configured destination output channel (rest stay silent).
+    st.pointee.peak0 = placeChannel(st.pointee.ch0, st.pointee.dest0, abl, pos, n)
+    st.pointee.peak1 = placeChannel(st.pointee.ch1, st.pointee.dest1, abl, pos, n)
+    st.pointee.peak2 = placeChannel(st.pointee.ch2, st.pointee.dest2, abl, pos, n)
+    st.pointee.peak3 = placeChannel(st.pointee.ch3, st.pointee.dest3, abl, pos, n)
 
     let newPos = pos + n
     st.pointee.currentFrame = min(newPos, total)
@@ -151,8 +136,22 @@ final class AudioEngine {
     private(set) var deviceName: String = "—"
     private(set) var deviceChannels: Int = 0
     private(set) var sampleRate: Double = 48000
-    /// True when the selected device exposes >= 4 output channels (click can be routed to 3-4).
-    var clickRouted: Bool { deviceChannels >= 4 }
+    /// Output routing, 0-based device channels. Defaults: backing 0·1, click 2·3 (outs 1·2 / 3·4).
+    private(set) var backingChannels: (Int, Int) = (0, 1)
+    private(set) var clickChannels: (Int, Int) = (2, 3)
+    /// True when the click's destination channels both exist on the current device.
+    var clickRouted: Bool { clickChannels.0 < deviceChannels && clickChannels.1 < deviceChannels }
+
+    /// Set output routing (0-based device channels). Updates the live render state.
+    func setRouting(backing: (Int, Int), click: (Int, Int)) {
+        backingChannels = backing
+        clickChannels = click
+        statePtr.pointee.dest0 = backing.0
+        statePtr.pointee.dest1 = backing.1
+        statePtr.pointee.dest2 = click.0
+        statePtr.pointee.dest3 = click.1
+        Logger.shared.info("Routing: backing → outs \(backing.0 + 1)·\(backing.1 + 1), click → outs \(click.0 + 1)·\(click.1 + 1)")
+    }
     var deviceReady: Bool { audioUnit != nil }
 
     private var audioUnit: AudioUnit?

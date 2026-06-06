@@ -185,6 +185,8 @@ protocol OperatorWindowDelegate: AnyObject {
     func operatorDidSelect(index: Int)
     func operatorDidChangeDevice(index: Int)
     func operatorDidChangeDisplay(index: Int)
+    func operatorDidChangeBackingPair(index: Int)
+    func operatorDidChangeClickPair(index: Int)
 }
 
 /// The operator's control window: running order, GO/STOP, device + display pickers, elapsed time.
@@ -195,6 +197,8 @@ final class OperatorWindowController {
     private let titleLabel = NSTextField(labelWithString: "ShowRunner")
     private let devicePopup = NSPopUpButton(frame: .zero, pullsDown: false)
     private let displayPopup = NSPopUpButton(frame: .zero, pullsDown: false)
+    private let backingPopup = NSPopUpButton(frame: .zero, pullsDown: false)
+    private let clickPopup = NSPopUpButton(frame: .zero, pullsDown: false)
     private let statusLabel = NSTextField(labelWithString: "")
     private let listStack = NSStackView()
     private let scrollView = NSScrollView()
@@ -205,8 +209,8 @@ final class OperatorWindowController {
     private let elapsedLabel = NSTextField(labelWithString: "")
     private let remainingLabel = NSTextField(labelWithString: "")
     private let progressBar = NSProgressIndicator()
-    private let backingMeter = MeterView(caption: "BACKING  1·2")
-    private let clickMeter = MeterView(caption: "CLICK  3·4")
+    private let backingMeter = MeterView(caption: "BACKING")
+    private let clickMeter = MeterView(caption: "CLICK")
 
     private var rowViews: [PieceRowView] = []
 
@@ -234,6 +238,10 @@ final class OperatorWindowController {
         devicePopup.action = #selector(deviceChanged)
         displayPopup.target = self
         displayPopup.action = #selector(displayChanged)
+        backingPopup.target = self
+        backingPopup.action = #selector(backingPairChanged)
+        clickPopup.target = self
+        clickPopup.action = #selector(clickPairChanged)
 
         onDeckLabel.font = .systemFont(ofSize: 21, weight: .bold)
         onDeckLabel.lineBreakMode = .byTruncatingTail
@@ -282,7 +290,14 @@ final class OperatorWindowController {
         pickerRow.spacing = 24
         pickerRow.alignment = .firstBaseline
 
-        let header = NSStackView(views: [titleLabel, pickerRow, statusLabel])
+        let backingRow = labeledRow("Backing → outputs:", backingPopup)
+        let clickRow = labeledRow("Click → outputs:", clickPopup)
+        let routeRow = NSStackView(views: [backingRow, clickRow])
+        routeRow.orientation = .horizontal
+        routeRow.spacing = 24
+        routeRow.alignment = .firstBaseline
+
+        let header = NSStackView(views: [titleLabel, pickerRow, routeRow, statusLabel])
         header.orientation = .vertical
         header.alignment = .leading
         header.spacing = 8
@@ -414,6 +429,13 @@ final class OperatorWindowController {
         if selected >= 0 && selected < displayPopup.numberOfItems { displayPopup.selectItem(at: selected) }
     }
 
+    func setChannelPairs(_ labels: [String], backingSel: Int, clickSel: Int) {
+        backingPopup.removeAllItems(); backingPopup.addItems(withTitles: labels.isEmpty ? ["—"] : labels)
+        clickPopup.removeAllItems(); clickPopup.addItems(withTitles: labels.isEmpty ? ["—"] : labels)
+        if backingSel >= 0 && backingSel < backingPopup.numberOfItems { backingPopup.selectItem(at: backingSel) }
+        if clickSel >= 0 && clickSel < clickPopup.numberOfItems { clickPopup.selectItem(at: clickSel) }
+    }
+
     func setStatus(_ text: String) { statusLabel.stringValue = text }
 
     func setSelected(_ index: Int) {
@@ -447,4 +469,6 @@ final class OperatorWindowController {
     }
     @objc private func deviceChanged() { delegate?.operatorDidChangeDevice(index: devicePopup.indexOfSelectedItem) }
     @objc private func displayChanged() { delegate?.operatorDidChangeDisplay(index: displayPopup.indexOfSelectedItem) }
+    @objc private func backingPairChanged() { delegate?.operatorDidChangeBackingPair(index: backingPopup.indexOfSelectedItem) }
+    @objc private func clickPairChanged() { delegate?.operatorDidChangeClickPair(index: clickPopup.indexOfSelectedItem) }
 }
