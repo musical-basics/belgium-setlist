@@ -16,8 +16,22 @@ final class PieceModel {
         self.piece = piece
         let folder = root.appendingPathComponent(piece.folder, isDirectory: true)
         self.titleCardURL = folder.appendingPathComponent(piece.titleCard)
-        self.backingURL = piece.backing.map { folder.appendingPathComponent($0) }
-        self.clickURL = piece.click.map { folder.appendingPathComponent($0) }
+        self.backingURL = piece.backing.map { PieceModel.audioURL(root: root, folder: piece.folder, file: $0) }
+        self.clickURL = piece.click.map { PieceModel.audioURL(root: root, folder: piece.folder, file: $0) }
+    }
+
+    /// Single-folder audio bundle (all the non-git WAVs) you can copy to another Mac.
+    static let assetsSubdir = "ShowAudio"
+
+    /// Resolve a backing/click WAV: prefer it in the piece folder, else fall back to the bundled
+    /// `ShowAudio/<folder>/<file>`. Returns the in-place path if neither exists (clear error msg).
+    static func audioURL(root: URL, folder: String, file: String) -> URL {
+        let inPlace = root.appendingPathComponent(folder, isDirectory: true).appendingPathComponent(file)
+        if FileManager.default.fileExists(atPath: inPlace.path) { return inPlace }
+        let bundled = root.appendingPathComponent(assetsSubdir, isDirectory: true)
+            .appendingPathComponent(folder, isDirectory: true).appendingPathComponent(file)
+        if FileManager.default.fileExists(atPath: bundled.path) { return bundled }
+        return inPlace
     }
 }
 

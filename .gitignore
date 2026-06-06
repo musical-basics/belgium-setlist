@@ -25,3 +25,6 @@ Icon?
 # --- Python caches ---
 __pycache__/
 *.pyc
+
+# --- Audio bundle (copy-to-new-Mac; WAVs already excluded above) ---
+ShowAudio/

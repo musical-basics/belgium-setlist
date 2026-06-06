@@ -66,8 +66,8 @@ enum SelfTest {
             guard let bName = p.backing, let cName = p.click else {
                 fail("[\(p.order)] hasAudio but backing/click not set in config"); continue
             }
-            let bURL = folder.appendingPathComponent(bName)
-            let cURL = folder.appendingPathComponent(cName)
+            let bURL = PieceModel.audioURL(root: root, folder: p.folder, file: bName)
+            let cURL = PieceModel.audioURL(root: root, folder: p.folder, file: cName)
             guard FileManager.default.fileExists(atPath: bURL.path) else { fail("[\(p.order)] backing missing: \(bURL.path)"); continue }
             guard FileManager.default.fileExists(atPath: cURL.path) else { fail("[\(p.order)] click missing: \(cURL.path)"); continue }
             do {

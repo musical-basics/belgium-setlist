@@ -11,7 +11,8 @@ before. Takes ~5 minutes. (For what the app does and how to operate it, see
 - A Mac running **macOS 13 (Ventura) or newer**.
 - The **Audient iD44** (or any audio interface with **≥ 4 output channels**). Built-in speakers
   work too, but the click can't be separated — you'd only get the backing track.
-- The **backing/click WAV files** (they live on Dropbox, not in git — see step 3).
+- The **`ShowAudio` folder** — the single bundle of audio files that aren't in git (see step 3).
+  Bring it on a USB stick, in Dropbox, or AirDrop it from the other Mac.
 - An internet connection for the first build.
 
 You do **not** need Xcode, an Apple Developer account, or any paid software.
@@ -46,24 +47,26 @@ the **running order**, and your **saved volume levels** (`showrunner.json`).
 
 ---
 
-## 3. Copy the audio files in from Dropbox
+## 3. Drop in the `ShowAudio` folder
 
-The big WAVs are not in git. Only the **5 EDM pieces** have audio. Copy each piece's
-`Backing.wav` and `Click.wav` from Dropbox into the matching folder (the folders already exist,
-each with its `TitleCard.png`):
+This one folder holds every file that isn't in git — the backing/click WAVs for the 5 EDM pieces.
+Copy the **whole `ShowAudio` folder** into the `belgium-setlist` folder, right next to
+`showrunner.json`:
 
-| Put `Backing.wav` + `Click.wav` into… |
-|---|
-| `04 - Torrent Etude (EDM)/` |
-| `06 - Canon in Dream (EDM)/` |
-| `09 - Moonlight Sonata (EDM)/` |
-| `12 - Fur Elise Dubstep (EDM)/` |
-| `E3 - Still Dre (EDM)/` |
+```
+belgium-setlist/
+├── showrunner.json
+├── ShowRunnerApp/
+├── 01 - Rachmaninoff Prelude G minor/  (title card, from git)
+├── …
+└── ShowAudio/        ← paste this whole folder here
+    ├── 04 - Torrent Etude (EDM)/Backing.wav, Click.wav
+    ├── 06 - Canon in Dream (EDM)/…
+    └── …
+```
 
-The filenames must be exactly **`Backing.wav`** and **`Click.wav`**.
-
-> Easiest option: clone this repo *inside* your Dropbox folder so the WAVs are simply there and
-> stay synced — then you can skip the copying entirely.
+That's the entire "transfer the audio" step. ShowRunner automatically reads the WAVs out of
+`ShowAudio/`, so you don't place anything into the individual piece folders.
 
 ---
 
@@ -127,7 +130,8 @@ It opened behind a full-screen app on another Space. Press **⌘-Tab → ShowRun
 
 **A piece shows red / "MISSING".**
 That piece's title card or WAV isn't where it should be. Run `--selftest` (step 5) — it tells you
-the exact missing file. Re-copy it from Dropbox into the right folder.
+the exact missing file. Usually it means the `ShowAudio` folder wasn't copied into the project
+folder (step 3), or it landed one level too deep.
 
 **No sound on an EDM piece / "device has <4 outputs".**
 The selected device can't carry the click. Plug in the iD44 and pick it (and the output pairs)
@@ -152,7 +156,7 @@ runs without Gatekeeper warnings; a copied one may be blocked.
 xcode-select --install                       # one-time, then click Install
 git clone https://github.com/musical-basics/belgium-setlist.git
 cd belgium-setlist
-# …copy the 5 pieces' Backing.wav / Click.wav from Dropbox into their folders…
+# …copy the whole "ShowAudio" folder into this folder (next to showrunner.json)…
 cd ShowRunnerApp && ./build.sh               # makes ../ShowRunner.app
 swift run -c release ShowRunner --selftest   # expect RESULT: PASS ✅
 open ../ShowRunner.app                        # …or double-click it in Finder

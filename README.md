@@ -59,11 +59,11 @@ backing/click pairs load and route to outs 1·2 / 3·4. Look for `RESULT: PASS �
 
 ## What's in this repo
 
-| Tracked in git | Not in git (too big — see below) |
+| Tracked in git | Not in git — bring separately |
 |---|---|
-| `ShowRunnerApp/` — the Swift app source | `*.wav` backing/click tracks |
-| `showrunner.json` — the running order (15 pieces) | `Backing Tracks/` (Ableton project) |
-| `*/TitleCard.png` — the 15 title cards | `*.qlab5` legacy QLab sessions |
+| `ShowRunnerApp/` — the Swift app source | **`ShowAudio/`** — the one folder with all the backing/click WAVs (copy it over) |
+| `showrunner.json` — running order + saved levels | `Backing Tracks/` (Ableton project), `*.qlab5` (legacy QLab) |
+| `*/TitleCard.png` — the 15 title cards | |
 
 ## Setting it up on another Mac
 
@@ -81,10 +81,10 @@ Full checklist (macOS 13 or newer):
    ```
    This already includes the **15 title cards**, the **running order**, and your **saved
    levels** (`showrunner.json`) — you do *not* need to transfer those.
-3. **Copy the audio from Dropbox.** Only the WAVs aren't in git. Drop each piece's
-   `Backing.wav` / `Click.wav` into the matching `NN - Piece Name/` folder (the folders already
-   exist with their `TitleCard.png`). Only the 5 EDM pieces have audio.
-   - Tip: if you clone *into* a Dropbox folder, the WAVs sync there automatically.
+3. **Drop in the `ShowAudio` folder** — the single bundle of files that isn't in git (the
+   backing/click WAVs). Copy the whole folder into the cloned `belgium-setlist` folder, next to
+   `showrunner.json`. ShowRunner reads the audio straight from `ShowAudio/`, so you never touch
+   the individual piece folders.
 4. **Build the app** (the repo ships source, not the built app):
    ```bash
    cd belgium-setlist/ShowRunnerApp
