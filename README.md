@@ -50,8 +50,10 @@ Requires Command Line Tools only (`xcode-select --install`) — **no full Xcode 
 cd "/Users/lionelyu/Music/Belgium Concert Program/ShowRunnerApp"
 swift run -c release ShowRunner --selftest
 ```
-Confirms the Audient iD44 is found with ≥4 outputs, every title card exists, and all 5 EDM
-backing/click pairs load and route to outs 1·2 / 3·4. Look for `RESULT: PASS ✅`.
+Confirms an audio device is present, every title card exists, and all 5 EDM backing/click pairs
+load and route to outs 1·2 / 3·4. Look for `RESULT: PASS ✅`. (A device with fewer than 4 outputs —
+e.g. the Mac's built-in speakers — is a warning, not a failure: the show still plays with the
+backing **and** click summed to the stereo outs 1·2.)
 
 ---
 
@@ -97,8 +99,11 @@ Full checklist (macOS 13 or newer):
    swift run -c release ShowRunner --selftest
    ```
    If a WAV is in the wrong place it'll be listed here.
-6. **Plug in the Audient iD44** (or any interface with ≥ 4 outputs). If it's not the iD44, just
-   pick your device — and your **Backing → / Click → output pairs** — from the dropdowns in the app.
+6. **Plug in the Audient iD44** (or any interface with ≥ 4 outputs) for a separate click on outs
+   3·4. If it's not the iD44, pick your device — and your **Backing → / Click → output pairs** —
+   from the dropdowns. **No 4-output interface?** It still plays: on a 2-channel device (e.g. the
+   Mac's own speakers) the backing and click are summed to the stereo outs 1·2, so you can run and
+   test the whole show on the laptop. (Pull the **Click** fader down if you don't want to hear it.)
 7. **Double-click `ShowRunner.app`.** Pick the audience display, set your levels, hit Space.
 
 That's the whole list. No signing/notarization, no entitlements, no extra installs — building it

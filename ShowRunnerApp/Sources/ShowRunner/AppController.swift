@@ -277,10 +277,10 @@ final class AppController: NSObject, OperatorWindowDelegate {
         if audioEngine.deviceReady {
             parts.append("Audio: \(audioEngine.deviceName) · \(audioEngine.deviceChannels)ch @ \(Int(audioEngine.sampleRate))Hz")
             let b = audioEngine.backingChannels, c = audioEngine.clickChannels
-            if audioEngine.clickRouted {
-                parts.append("Backing→\(b.0 + 1)·\(b.1 + 1)  Click→\(c.0 + 1)·\(c.1 + 1)")
+            if audioEngine.clickFolded {
+                parts.append("⚠︎ \(audioEngine.deviceChannels)-ch out — backing+click summed to \(b.0 + 1)·\(b.1 + 1) (stereo)")
             } else {
-                parts.append("⚠︎ Click outs \(c.0 + 1)·\(c.1 + 1) unavailable on this device")
+                parts.append("Backing→\(b.0 + 1)·\(b.1 + 1)  Click→\(c.0 + 1)·\(c.1 + 1)")
             }
         } else {
             parts.append("⚠︎ No audio device — EDM pieces will be silent")
@@ -324,21 +324,23 @@ final class AppController: NSObject, OperatorWindowDelegate {
         operatorController.setRemaining("−––:––")
 
         if m.piece.hasAudio {
-            // Refuse to play an EDM piece if the current device can't route the click to
-            // outs 3·4 — better a clear warning than blasting backing out the wrong output.
-            if !audioEngine.deviceReady || !audioEngine.clickRouted {
+            // Only block if there is NO audio device at all. On a device with fewer than 4 outputs
+            // (e.g. the 2-channel Mac speakers) the engine folds the click onto the backing pair so
+            // the show still plays in stereo — no need to refuse.
+            if !audioEngine.deviceReady {
                 playingIndex = nil
                 operatorController.setPlaying(index: nil)
-                let reason = audioEngine.deviceReady ? "device has <4 outputs" : "no audio device"
-                operatorController.setNowPlaying("⛔ \(m.piece.title) — \(reason). Select the Audient iD44.")
+                operatorController.setNowPlaying("⛔ \(m.piece.title) — no audio output device. Pick one from the Audio device menu.")
                 operatorController.setElapsed("––:–– / ––:––")
-                Logger.shared.error("Blocked GO [\(m.piece.order)] — \(reason); click cannot route.")
+                Logger.shared.error("Blocked GO [\(m.piece.order)] — no audio output device.")
             } else if let pre = m.premix {
                 let p = config.pieces[selectedIndex]
                 audioEngine.play(pre, pieceBackingDb: p.backingGainDb ?? 0, pieceClickDb: p.clickGainDb ?? 0)
                 playingIndex = selectedIndex
                 operatorController.setPlaying(index: selectedIndex)
-                operatorController.setNowPlaying("▶  \(m.piece.order) — \(m.piece.title)")
+                let b = audioEngine.backingChannels
+                let fold = audioEngine.clickFolded ? "  (stereo — click summed to outs \(b.0 + 1)·\(b.1 + 1))" : ""
+                operatorController.setNowPlaying("▶  \(m.piece.order) — \(m.piece.title)\(fold)")
             } else {
                 playingIndex = nil
                 operatorController.setPlaying(index: nil)

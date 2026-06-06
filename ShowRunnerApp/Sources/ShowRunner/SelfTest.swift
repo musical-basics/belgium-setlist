@@ -39,7 +39,7 @@ enum SelfTest {
             if dev.outputChannels >= 4 {
                 ok("Device exposes >= 4 outputs → backing 1·2, click 3·4")
             } else {
-                fail("Device has only \(dev.outputChannels) outputs — click cannot route to 3·4")
+                warn("Device has \(dev.outputChannels) outputs — backing+click will fold to stereo outs 1·2 (monitoring OK; use a ≥4-ch device like the Audient iD44 for a separate click)")
             }
             if engine.configure(device: dev, requestedRate: rate) {
                 ok("Audio unit built @ \(Int(engine.sampleRate)) Hz")

@@ -62,9 +62,11 @@ struct RenderState {
     var peak3: Float = 0
 }
 
-/// Write `n` frames of `src` (starting at `pos`) into device output channel `destCh`, scaled by
+/// Mix `n` frames of `src` (starting at `pos`) into device output channel `destCh`, scaled by
 /// `gain`, and return the post-gain block peak. RT-safe: no allocation, no ARC. Assumes all device
-/// buffers were pre-zeroed.
+/// buffers were pre-zeroed. Uses `+=` so that when two sources share a destination channel (the
+/// stereo fold-down on a 2-channel device) they SUM rather than overwrite; on the normal 4-channel
+/// path each source has its own channel, so `+=` into a zeroed buffer is identical to assignment.
 @inline(__always)
 private func placeChannel(_ src: UnsafeMutablePointer<Float>?, _ destCh: Int, _ gain: Float,
                           _ abl: UnsafeMutableAudioBufferListPointer,
@@ -77,7 +79,7 @@ private func placeChannel(_ src: UnsafeMutablePointer<Float>?, _ destCh: Int, _ 
     var j = 0
     while j < n {
         let v = base[j] * gain
-        out[j] = v
+        out[j] += v
         let a = v < 0 ? -v : v
         if a > pk { pk = a }
         j += 1
@@ -150,18 +152,37 @@ final class AudioEngine {
     /// Output routing, 0-based device channels. Defaults: backing 0·1, click 2·3 (outs 1·2 / 3·4).
     private(set) var backingChannels: (Int, Int) = (0, 1)
     private(set) var clickChannels: (Int, Int) = (2, 3)
-    /// True when the click's destination channels both exist on the current device.
+    /// True when the click is summed onto the backing pair because its own pair doesn't exist on
+    /// the current device (e.g. a 2-channel Mac speaker) — everything plays in stereo.
+    private(set) var clickFolded = false
+    /// True when the click reaches an output at all (always true once a device is configured,
+    /// since we fold to stereo when its own pair is missing).
     var clickRouted: Bool { clickChannels.0 < deviceChannels && clickChannels.1 < deviceChannels }
 
-    /// Set output routing (0-based device channels). Updates the live render state.
+    /// Set output routing (0-based device channels). If the requested click pair doesn't exist on
+    /// the current device, the click is FOLDED onto the backing pair so the show still plays in
+    /// stereo (backing + click summed to outs 1·2). Updates the live render state.
     func setRouting(backing: (Int, Int), click: (Int, Int)) {
-        backingChannels = backing
-        clickChannels = click
-        statePtr.pointee.dest0 = backing.0
-        statePtr.pointee.dest1 = backing.1
-        statePtr.pointee.dest2 = click.0
-        statePtr.pointee.dest3 = click.1
-        Logger.shared.info("Routing: backing → outs \(backing.0 + 1)·\(backing.1 + 1), click → outs \(click.0 + 1)·\(click.1 + 1)")
+        let maxCh = max(1, deviceChannels)
+        let b = (min(max(0, backing.0), maxCh - 1), min(max(0, backing.1), maxCh - 1))
+        let c: (Int, Int)
+        if click.0 < deviceChannels && click.1 < deviceChannels {
+            c = (max(0, click.0), max(0, click.1))
+        } else {
+            c = b   // click pair doesn't fit → fold onto backing so a stereo device still plays it
+        }
+        backingChannels = b
+        clickChannels = c
+        clickFolded = (c.0 == b.0 && c.1 == b.1)
+        statePtr.pointee.dest0 = b.0
+        statePtr.pointee.dest1 = b.1
+        statePtr.pointee.dest2 = c.0
+        statePtr.pointee.dest3 = c.1
+        if clickFolded {
+            Logger.shared.info("Routing: \(deviceChannels)-ch device — backing+click summed to outs \(b.0 + 1)·\(b.1 + 1) (stereo fold).")
+        } else {
+            Logger.shared.info("Routing: backing → outs \(b.0 + 1)·\(b.1 + 1), click → outs \(c.0 + 1)·\(c.1 + 1).")
+        }
     }
 
     // MARK: Volume / gain
