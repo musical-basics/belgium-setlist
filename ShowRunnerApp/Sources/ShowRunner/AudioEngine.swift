@@ -60,6 +60,12 @@ struct RenderState {
     var peak1: Float = 0
     var peak2: Float = 0
     var peak3: Float = 0
+    // Lightweight low-end analysis of the backing signal for audio-reactive lighting.
+    // Written by the render callback, read by the lighting/UI threads as a benign stale value.
+    var bassLowpass: Float = 0
+    var bassEnvelope: Float = 0
+    var bassFloor: Float = 0.01
+    var bassFlash: Float = 0
 }
 
 /// Mix `n` frames of `src` (starting at `pos`) into device output channel `destCh`, scaled by
@@ -85,6 +91,56 @@ private func placeChannel(_ src: UnsafeMutablePointer<Float>?, _ destCh: Int, _ 
         j += 1
     }
     return pk
+}
+
+@inline(__always)
+private func resetBassAnalysis(_ st: UnsafeMutablePointer<RenderState>) {
+    st.pointee.bassLowpass = 0
+    st.pointee.bassEnvelope = 0
+    st.pointee.bassFloor = 0.01
+    st.pointee.bassFlash = 0
+}
+
+/// Tiny RT-safe low-pass/envelope follower used only as a lighting trigger. It favors backing
+/// low-end spikes over broad full-range loudness, then publishes a fast-decaying 0...1 hit value.
+@inline(__always)
+private func analyzeBackingBass(_ st: UnsafeMutablePointer<RenderState>, _ pos: Int, _ n: Int, _ gain: Float) {
+    guard n > 0, let left = st.pointee.ch0 else {
+        st.pointee.bassEnvelope *= 0.88
+        st.pointee.bassFlash *= 0.76
+        return
+    }
+    let right = st.pointee.ch1 ?? left
+    let lBase = left + pos
+    let rBase = right + pos
+    var low = st.pointee.bassLowpass
+    var peak: Float = 0
+    let alpha: Float = 0.025   // broad "bass/low-mid thump" follower at 44.1/48 kHz.
+
+    var j = 0
+    while j < n {
+        let mono = (lBase[j] + rBase[j]) * 0.5 * gain
+        low += alpha * (mono - low)
+        let a = low < 0 ? -low : low
+        if a > peak { peak = a }
+        j += 1
+    }
+
+    st.pointee.bassLowpass = low
+    let previous = st.pointee.bassEnvelope
+    let envelope = peak > previous ? peak : previous * 0.88
+    st.pointee.bassEnvelope = envelope
+
+    // Slow adaptive floor, so quiet sections do not flash constantly and drops still pop.
+    var floor = max(0.002, st.pointee.bassFloor)
+    let floorRate: Float = envelope > floor ? 0.002 : 0.025
+    floor += (envelope - floor) * floorRate
+    st.pointee.bassFloor = floor
+
+    let adaptive = (peak - floor * 1.7) / max(0.035, floor * 2.5)
+    let absolute = (peak - 0.18) * 3.0
+    let hit = min(1, max(0, max(adaptive, absolute)))
+    st.pointee.bassFlash = max(st.pointee.bassFlash * 0.76, hit)
 }
 
 /// The C render callback. No allocation, no ARC, no locks — reads RenderState via a raw pointer.
@@ -116,6 +172,7 @@ private let showRunnerRenderProc: AURenderCallback = { (inRefCon, _, _, _, inNum
     st.pointee.peak1 = placeChannel(st.pointee.ch1, st.pointee.dest1, gB, abl, pos, n)
     st.pointee.peak2 = placeChannel(st.pointee.ch2, st.pointee.dest2, gC, abl, pos, n)
     st.pointee.peak3 = placeChannel(st.pointee.ch3, st.pointee.dest3, gC, abl, pos, n)
+    analyzeBackingBass(st, pos, n, gB)
 
     let newPos = pos + n
     st.pointee.currentFrame = min(newPos, total)
@@ -479,6 +536,7 @@ final class AudioEngine {
         statePtr.pointee.ch3 = pre.channels[3]
         statePtr.pointee.frameCount = pre.frameCount
         statePtr.pointee.currentFrame = 0
+        resetBassAnalysis(statePtr)
         activePremix = pre
         OSMemoryBarrier()
         statePtr.pointee.playing = 1
@@ -506,6 +564,71 @@ final class AudioEngine {
         statePtr.pointee.peak2 = 0
         statePtr.pointee.peak3 = 0
         activePremix = nil
+        statePtr.pointee.currentFrame = 0
+        resetBassAnalysis(statePtr)
+    }
+
+    /// Load a piece at a specific playhead without starting audio. This lets the operator scrub an
+    /// EDM piece during rehearsal while the lighting module reads the same timecode position.
+    func cue(_ pre: PremixedAudio, pieceBackingDb: Double, pieceClickDb: Double, atSeconds seconds: Double) {
+        self.pieceBackingDb = pieceBackingDb
+        self.pieceClickDb = pieceClickDb
+        updateEffectiveGains()
+
+        statePtr.pointee.playing = 0
+        OSMemoryBarrier()
+        if let u = audioUnit, running {
+            AudioOutputUnitStop(u)
+            running = false
+        }
+
+        statePtr.pointee.ch0 = pre.channels[0]
+        statePtr.pointee.ch1 = pre.channels[1]
+        statePtr.pointee.ch2 = pre.channels[2]
+        statePtr.pointee.ch3 = pre.channels[3]
+        statePtr.pointee.frameCount = pre.frameCount
+        statePtr.pointee.currentFrame = AudioEngine.frame(forSeconds: seconds, sampleRate: pre.sampleRate, frameCount: pre.frameCount)
+        statePtr.pointee.peak0 = 0
+        statePtr.pointee.peak1 = 0
+        statePtr.pointee.peak2 = 0
+        statePtr.pointee.peak3 = 0
+        resetBassAnalysis(statePtr)
+        activePremix = pre
+    }
+
+    /// Jump the current active piece. If audio was running, the HAL unit is stopped, repositioned,
+    /// and restarted so the render callback never races a playhead mutation.
+    func seek(toSeconds seconds: Double) {
+        guard let pre = activePremix else { return }
+        let wasPlaying = isPlaying
+        let target = AudioEngine.frame(forSeconds: seconds, sampleRate: pre.sampleRate, frameCount: pre.frameCount)
+
+        statePtr.pointee.playing = 0
+        OSMemoryBarrier()
+        if let u = audioUnit, running {
+            AudioOutputUnitStop(u)
+            running = false
+        }
+
+        statePtr.pointee.currentFrame = target
+        statePtr.pointee.peak0 = 0
+        statePtr.pointee.peak1 = 0
+        statePtr.pointee.peak2 = 0
+        statePtr.pointee.peak3 = 0
+        resetBassAnalysis(statePtr)
+
+        guard wasPlaying, target < pre.frameCount, let u = audioUnit else { return }
+        OSMemoryBarrier()
+        statePtr.pointee.playing = 1
+        let status = AudioOutputUnitStart(u)
+        if status == noErr { running = true }
+        else { Logger.shared.error("AudioOutputUnitStart after seek failed: \(status)") }
+    }
+
+    private static func frame(forSeconds seconds: Double, sampleRate: Double, frameCount: Int) -> Int {
+        guard sampleRate > 0, frameCount > 0 else { return 0 }
+        let frame = Int((max(0, seconds) * sampleRate).rounded())
+        return min(max(0, frame), frameCount)
     }
 
     var isPlaying: Bool { statePtr.pointee.playing == 1 }
@@ -517,6 +640,7 @@ final class AudioEngine {
     /// Live output peak (0…1) for the meters. Backing = outs 1·2, click = outs 3·4.
     var backingLevel: Float { max(statePtr.pointee.peak0, statePtr.pointee.peak1) }
     var clickLevel: Float { max(statePtr.pointee.peak2, statePtr.pointee.peak3) }
+    var bassFlashLevel: Float { min(1, max(0, statePtr.pointee.bassFlash)) }
 
     // MARK: Loading & resampling
 

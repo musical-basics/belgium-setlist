@@ -62,6 +62,29 @@ final class MeterView: NSView {
     }
 }
 
+/// A transport scrubber that can be dragged or nudged with a scroll wheel/trackpad.
+final class ScrubSlider: NSSlider {
+    var isUserScrubbing = false
+
+    override func mouseDown(with event: NSEvent) {
+        isUserScrubbing = true
+        super.mouseDown(with: event)
+        isUserScrubbing = false
+    }
+
+    override func scrollWheel(with event: NSEvent) {
+        guard isEnabled else { super.scrollWheel(with: event); return }
+        let primary = abs(event.scrollingDeltaX) > abs(event.scrollingDeltaY)
+            ? event.scrollingDeltaX
+            : -event.scrollingDeltaY
+        let scale = event.hasPreciseScrollingDeltas ? 0.0025 : 0.04
+        doubleValue = min(maxValue, max(minValue, doubleValue + Double(primary) * scale))
+        if let action = action {
+            NSApp.sendAction(action, to: target, from: self)
+        }
+    }
+}
+
 /// Display info for a single piece row.
 struct PieceRowInfo {
     let order: String
@@ -191,6 +214,7 @@ protocol OperatorWindowDelegate: AnyObject {
     func operatorDidSetMasterClick(db: Double)
     func operatorDidSetPieceBacking(db: Double)
     func operatorDidSetPieceClick(db: Double)
+    func operatorDidSeek(toFraction fraction: Double)
 }
 
 /// The operator's control window: running order, GO/STOP, device + display pickers, elapsed time.
@@ -212,7 +236,7 @@ final class OperatorWindowController {
     private let nowPlayingLabel = NSTextField(labelWithString: "—")
     private let elapsedLabel = NSTextField(labelWithString: "")
     private let remainingLabel = NSTextField(labelWithString: "")
-    private let progressBar = NSProgressIndicator()
+    private let scrubSlider = ScrubSlider()
     private let backingMeter = MeterView(caption: "BACKING")
     private let clickMeter = MeterView(caption: "CLICK")
     private let backingFader = NSSlider()
@@ -265,12 +289,14 @@ final class OperatorWindowController {
         remainingLabel.font = .monospacedDigitSystemFont(ofSize: 17, weight: .semibold)
         remainingLabel.textColor = .secondaryLabelColor
         remainingLabel.stringValue = "−––:––"
-        progressBar.isIndeterminate = false
-        progressBar.style = .bar
-        progressBar.minValue = 0
-        progressBar.maxValue = 1
-        progressBar.doubleValue = 0
-        progressBar.translatesAutoresizingMaskIntoConstraints = false
+        scrubSlider.sliderType = .linear
+        scrubSlider.minValue = 0
+        scrubSlider.maxValue = 1
+        scrubSlider.doubleValue = 0
+        scrubSlider.isContinuous = false
+        scrubSlider.target = self
+        scrubSlider.action = #selector(scrubChanged)
+        scrubSlider.translatesAutoresizingMaskIntoConstraints = false
 
         configureFader(backingFader, #selector(masterBackingChanged))
         configureFader(clickFader, #selector(masterClickChanged))
@@ -406,7 +432,7 @@ final class OperatorWindowController {
             d.widthAnchor.constraint(greaterThanOrEqualToConstant: 58).isActive = true
         }
 
-        let footer = NSStackView(views: [onDeckRow, nowPlayingLabel, timeRow, progressBar, mixer, transport])
+        let footer = NSStackView(views: [onDeckRow, nowPlayingLabel, timeRow, scrubSlider, mixer, transport])
         footer.orientation = .vertical
         footer.alignment = .leading
         footer.spacing = 10
@@ -436,8 +462,8 @@ final class OperatorWindowController {
             onDeckRow.trailingAnchor.constraint(equalTo: footer.trailingAnchor),
             timeRow.leadingAnchor.constraint(equalTo: footer.leadingAnchor),
             timeRow.trailingAnchor.constraint(equalTo: footer.trailingAnchor),
-            progressBar.leadingAnchor.constraint(equalTo: footer.leadingAnchor),
-            progressBar.trailingAnchor.constraint(equalTo: footer.trailingAnchor),
+            scrubSlider.leadingAnchor.constraint(equalTo: footer.leadingAnchor),
+            scrubSlider.trailingAnchor.constraint(equalTo: footer.trailingAnchor),
             mixer.leadingAnchor.constraint(equalTo: footer.leadingAnchor),
             mixer.trailingAnchor.constraint(equalTo: footer.trailingAnchor),
         ])
@@ -540,7 +566,14 @@ final class OperatorWindowController {
     func setElapsed(_ text: String) { elapsedLabel.stringValue = text }
     func setOnDeck(_ text: String) { onDeckLabel.stringValue = text }
     func setRemaining(_ text: String) { remainingLabel.stringValue = text }
-    func setProgress(_ fraction: Double) { progressBar.doubleValue = max(0, min(1, fraction)) }
+    func setProgress(_ fraction: Double) {
+        guard !scrubSlider.isUserScrubbing else { return }
+        scrubSlider.doubleValue = max(0, min(1, fraction))
+    }
+    func setScrubEnabled(_ enabled: Bool) {
+        scrubSlider.isEnabled = enabled
+        scrubSlider.alphaValue = enabled ? 1.0 : 0.45
+    }
     func setMeters(backing: Float, click: Float) {
         backingMeter.setLevel(backing)
         clickMeter.setLevel(click)
@@ -557,6 +590,7 @@ final class OperatorWindowController {
     @objc private func displayChanged() { delegate?.operatorDidChangeDisplay(index: displayPopup.indexOfSelectedItem) }
     @objc private func backingPairChanged() { delegate?.operatorDidChangeBackingPair(index: backingPopup.indexOfSelectedItem) }
     @objc private func clickPairChanged() { delegate?.operatorDidChangeClickPair(index: clickPopup.indexOfSelectedItem) }
+    @objc private func scrubChanged() { delegate?.operatorDidSeek(toFraction: scrubSlider.doubleValue) }
     @objc private func masterBackingChanged() {
         backingDbLabel.stringValue = Self.fmtDb(backingFader.doubleValue)
         delegate?.operatorDidSetMasterBacking(db: backingFader.doubleValue)

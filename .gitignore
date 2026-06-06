@@ -17,7 +17,6 @@ Backing Tracks/
 *.als
 
 # --- Legacy QLab sessions & backups (replaced by ShowRunner) ---
-*.qlab5
 *.qlab5backup
 Belgium Show backups/
 Icon?

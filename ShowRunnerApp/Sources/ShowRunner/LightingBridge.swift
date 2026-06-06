@@ -9,6 +9,7 @@ final class AudioShowClock: ShowClock {
     init(engine: AudioEngine) { self.engine = engine }
     var positionSeconds: Double { engine?.elapsedSeconds ?? 0 }
     var isRunning: Bool { engine?.isPlaying ?? false }
+    var audioFlashLevel: Double { Double(engine?.bassFlashLevel ?? 0) }
 }
 
 /// Fail-safe glue between ShowRunner and the lighting module.

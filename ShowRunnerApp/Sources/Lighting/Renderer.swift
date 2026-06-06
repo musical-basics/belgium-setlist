@@ -263,7 +263,7 @@ public final class Renderer {
             let pos = hold ? heldPosition : clock.positionSeconds
             var asg: [String: FixtureState] = [:]
             for track in tl.tracks { asg[track.fixture] = track.sample(at: pos) }
-            liveMap = rig.resolve(asg)
+            liveMap = applyAudioFlash(to: rig.resolve(asg))
             return liveMap
 
         case .cues:
@@ -276,6 +276,30 @@ public final class Renderer {
             liveMap = m
             return liveMap
         }
+    }
+
+    /// EDM overlay: preserve the authored timecode look, but push short low-end hits toward white.
+    /// The audio engine publishes a bass-weighted fast envelope; this maps it into a visual flash.
+    private func applyAudioFlash(to map: [String: FixtureState]) -> [String: FixtureState] {
+        guard clock.isRunning else { return map }
+        let raw = min(1, max(0, clock.audioFlashLevel))
+        guard raw > 0.04 else { return map }
+
+        let hit = Timeline.smoothstep((raw - 0.04) / 0.96)
+        var out = map
+        for f in rig.fixtures {
+            var s = out[f.name] ?? FixtureState()
+            s.red = max(s.red, hit)
+            s.green = max(s.green, hit)
+            s.blue = max(s.blue, hit)
+            s.white = max(s.white, hit)
+            s.intensity = max(s.intensity, 0.25 + 0.75 * hit)
+            if hit > 0.55 {
+                s.strobe = max(s.strobe, (hit - 0.55) / 0.45)
+            }
+            out[f.name] = s
+        }
+        return out
     }
 
     /// Build the proof-of-life look (white envelope on one fixture). Auto-exits when finished.
