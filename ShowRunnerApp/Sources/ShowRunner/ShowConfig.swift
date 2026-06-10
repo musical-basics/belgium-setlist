@@ -5,14 +5,22 @@ struct Piece: Codable {
     let order: String
     let title: String
     let subtitle: String
-    let folder: String
-    let titleCard: String
+    /// nil for speaking cues (no title card / audio folder).
+    let folder: String?
+    let titleCard: String?
     let hasAudio: Bool
     let backing: String?
     let click: String?
+    /// Speaking cue: GO fades the projector to black while Lionel talks. The Mac UI
+    /// shows only the placeholder title; `notes` (the actual speech) are sent ONLY
+    /// to the phone remote, never rendered anywhere the audience could see.
+    var speaking: Bool?
+    var notes: String?
     /// Per-piece volume trim in dB (on top of the master faders). Default 0 dB.
     var backingGainDb: Double?
     var clickGainDb: Double?
+
+    var isSpeaking: Bool { speaking ?? false }
 }
 
 /// Top-level show configuration.

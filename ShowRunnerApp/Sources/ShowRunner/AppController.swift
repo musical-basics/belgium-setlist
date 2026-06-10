@@ -14,10 +14,17 @@ final class PieceModel {
 
     init(piece: Piece, root: URL) {
         self.piece = piece
-        let folder = root.appendingPathComponent(piece.folder, isDirectory: true)
-        self.titleCardURL = folder.appendingPathComponent(piece.titleCard)
-        self.backingURL = piece.backing.map { PieceModel.audioURL(root: root, folder: piece.folder, file: $0) }
-        self.clickURL = piece.click.map { PieceModel.audioURL(root: root, folder: piece.folder, file: $0) }
+        if let folder = piece.folder {
+            let folderURL = root.appendingPathComponent(folder, isDirectory: true)
+            self.titleCardURL = piece.titleCard.map { folderURL.appendingPathComponent($0) }
+            self.backingURL = piece.backing.map { PieceModel.audioURL(root: root, folder: folder, file: $0) }
+            self.clickURL = piece.click.map { PieceModel.audioURL(root: root, folder: folder, file: $0) }
+        } else {
+            // Speaking cue — nothing to load.
+            self.titleCardURL = nil
+            self.backingURL = nil
+            self.clickURL = nil
+        }
     }
 
     /// Single-folder audio bundle (all the non-git WAVs) you can copy to another Mac.
@@ -178,7 +185,7 @@ final class AppController: NSObject, OperatorWindowDelegate {
     }
 
     private func preloadImages() {
-        for m in pieces {
+        for m in pieces where !m.piece.isSpeaking {
             if let url = m.titleCardURL, FileManager.default.fileExists(atPath: url.path),
                let img = NSImage(contentsOf: url) {
                 m.image = img
@@ -224,7 +231,9 @@ final class AppController: NSObject, OperatorWindowDelegate {
         let infos = pieces.map { m -> PieceRowInfo in
             let ready: Bool
             let status: String
-            if !m.imageReady {
+            if m.piece.isSpeaking {
+                ready = true; status = "SPEAKING"
+            } else if !m.imageReady {
                 ready = false; status = "NO TITLE CARD"
             } else if m.piece.hasAudio {
                 ready = m.audioReady
@@ -330,6 +339,23 @@ final class AppController: NSObject, OperatorWindowDelegate {
         let m = pieces[selectedIndex]
         Logger.shared.info("GO [\(m.piece.order)] \(m.piece.title)")
 
+        if m.piece.isSpeaking {
+            // Speaking cue: fade the projector to black, stop any audio, fade lights.
+            // The speech text itself lives only on the phone remote.
+            audioEngine.stop()
+            lighting?.stop()
+            audienceWindow.clear()
+            playingIndex = nil
+            previewLightingIndex = nil
+            operatorController.setPlaying(index: nil)
+            updateScrubEnabled()
+            operatorController.setNowPlaying("🎤  \(m.piece.title)")
+            operatorController.setElapsed("––:–– / ––:––")
+            operatorController.setRemaining("−––:––")
+            operatorController.setProgress(0)
+            return
+        }
+
         audienceWindow.showCard(m.imageReady ? m.image : nil)
         audioEngine.stop()
         operatorController.setProgress(0)
@@ -425,7 +451,7 @@ final class AppController: NSObject, OperatorWindowDelegate {
         selectedIndex = min(max(0, i), pieces.count - 1)
         operatorController.setSelected(selectedIndex)
         let m = pieces[selectedIndex]
-        let tag = m.piece.hasAudio ? "  ♪" : ""
+        let tag = m.piece.isSpeaking ? "  🎤" : (m.piece.hasAudio ? "  ♪" : "")
         operatorController.setOnDeck("\(m.piece.order) — \(m.piece.title)\(tag)")
         updatePieceTrimUI()
         updateScrubEnabled()
@@ -521,9 +547,11 @@ final class AppController: NSObject, OperatorWindowDelegate {
 
     private func remoteState() -> RemoteState {
         let infos = pieces.map { m -> RemotePieceState in
-            let ready = m.imageReady && (!m.piece.hasAudio || m.audioReady)
+            let ready = m.piece.isSpeaking || (m.imageReady && (!m.piece.hasAudio || m.audioReady))
             return RemotePieceState(order: m.piece.order, title: m.piece.title,
-                                    subtitle: m.piece.subtitle, hasAudio: m.piece.hasAudio, ready: ready)
+                                    subtitle: m.piece.subtitle, hasAudio: m.piece.hasAudio,
+                                    ready: ready, speaking: m.piece.isSpeaking,
+                                    notes: m.piece.isSpeaking ? m.piece.notes : nil)
         }
         let playState = playingIndex != nil ? "playing" : (pausedIndex != nil ? "paused" : "stopped")
         return RemoteState(pieces: infos,

@@ -1,0 +1,176 @@
+{
+  "audienceDisplayIndex": 1,
+  "audioDeviceName": "Audient iD44",
+  "fadeSeconds": 1.0,
+  "engineSampleRate": 48000,
+  "backingChannels": [
+    1,
+    2
+  ],
+  "clickChannels": [
+    3,
+    4
+  ],
+  "pieces": [
+    {
+      "order": "1",
+      "title": "Fantaisie-Impromptu",
+      "subtitle": "Frédéric Chopin, Op. 66",
+      "folder": "Fantaisie-Impromptu",
+      "titleCard": "TitleCard.png",
+      "hasAudio": false,
+      "backing": null,
+      "click": null
+    },
+    {
+      "order": "2",
+      "title": "Prelude in G minor",
+      "subtitle": "Sergei Rachmaninoff, Op. 23 No. 5",
+      "folder": "Rachmaninoff Prelude in G minor",
+      "titleCard": "TitleCard.png",
+      "hasAudio": false,
+      "backing": null,
+      "click": null
+    },
+    {
+      "order": "3",
+      "title": "Rolling Thunder",
+      "subtitle": "Lionel Yu",
+      "folder": "Rolling Thunder",
+      "titleCard": "TitleCard.png",
+      "hasAudio": false,
+      "backing": null,
+      "click": null
+    },
+    {
+      "order": "4",
+      "title": "Fires of a Revolution",
+      "subtitle": "Lionel Yu",
+      "folder": "Fires of a Revolution",
+      "titleCard": "TitleCard.png",
+      "hasAudio": false,
+      "backing": null,
+      "click": null
+    },
+    {
+      "order": "5",
+      "title": "Colors of the Soul",
+      "subtitle": "Lionel Yu",
+      "folder": "Colors of the Soul",
+      "titleCard": "TitleCard.png",
+      "hasAudio": false,
+      "backing": null,
+      "click": null
+    },
+    {
+      "order": "6",
+      "title": "Fight for Freedom",
+      "subtitle": "Lionel Yu",
+      "folder": "Fight for Freedom",
+      "titleCard": "TitleCard.png",
+      "hasAudio": false,
+      "backing": null,
+      "click": null
+    },
+    {
+      "order": "7",
+      "title": "Torrent Etude Nightmare",
+      "subtitle": "Chopin · arr. Lionel Yu",
+      "folder": "Torrent Etude Nightmare",
+      "titleCard": "TitleCard.png",
+      "hasAudio": true,
+      "backing": "Backing.wav",
+      "click": "Click.wav"
+    },
+    {
+      "order": "8",
+      "title": "Für Elise Nightmare",
+      "subtitle": "Remix of Beethoven's Für Elise",
+      "folder": "Fur Elise Nightmare",
+      "titleCard": "TitleCard.png",
+      "hasAudio": true,
+      "backing": "Backing.wav",
+      "click": "Click.wav"
+    },
+    {
+      "order": "9",
+      "title": "Canon in Dream",
+      "subtitle": "Remix of Pachelbel's Canon in D",
+      "folder": "Canon in Dream",
+      "titleCard": "TitleCard.png",
+      "hasAudio": true,
+      "backing": "Backing.wav",
+      "click": "Click.wav"
+    },
+    {
+      "order": "10",
+      "title": "Moonlight Sonata Nightmare",
+      "subtitle": "Remix of Beethoven's Moonlight Sonata",
+      "folder": "Moonlight Sonata Nightmare",
+      "titleCard": "TitleCard.png",
+      "hasAudio": true,
+      "backing": "Backing.wav",
+      "click": "Click.wav"
+    },
+    {
+      "order": "11",
+      "title": "Dreams of a Violin",
+      "subtitle": "Lionel Yu · violin & piano",
+      "folder": "Dreams of a Violin",
+      "titleCard": "TitleCard.png",
+      "hasAudio": false,
+      "backing": null,
+      "click": null
+    },
+    {
+      "order": "12",
+      "title": "Gallop",
+      "subtitle": "Lionel Yu · piano trio",
+      "folder": "Gallop",
+      "titleCard": "TitleCard.png",
+      "hasAudio": false,
+      "backing": null,
+      "click": null
+    },
+    {
+      "order": "13",
+      "title": "Beethoven Virus",
+      "subtitle": "arr. Lionel Yu · piano trio",
+      "folder": "Beethoven Virus",
+      "titleCard": "TitleCard.png",
+      "hasAudio": false,
+      "backing": null,
+      "click": null
+    },
+    {
+      "order": "E1",
+      "title": "Sunflowers",
+      "subtitle": "Lionel Yu",
+      "folder": "Sunflowers",
+      "titleCard": "TitleCard.png",
+      "hasAudio": false,
+      "backing": null,
+      "click": null
+    },
+    {
+      "order": "E2",
+      "title": "Flight of the Bumblebee",
+      "subtitle": "Rimsky-Korsakov",
+      "folder": "Flight of the Bumblebee",
+      "titleCard": "TitleCard.png",
+      "hasAudio": false,
+      "backing": null,
+      "click": null
+    },
+    {
+      "order": "E3",
+      "title": "Still D.R.E.",
+      "subtitle": "arr. Lionel Yu",
+      "folder": "Still Dre",
+      "titleCard": "TitleCard.png",
+      "hasAudio": true,
+      "backing": "Backing.wav",
+      "click": "Click.wav"
+    }
+  ]
+}

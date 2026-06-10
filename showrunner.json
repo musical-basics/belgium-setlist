@@ -43,10 +43,22 @@
       "click": null
     },
     {
+      "order": "S1",
+      "title": "Lionel Speaking Portion",
+      "subtitle": "Speech 1 of 4",
+      "folder": null,
+      "titleCard": null,
+      "hasAudio": false,
+      "backing": null,
+      "click": null,
+      "speaking": true,
+      "notes": "Hello everyone! Thank you so much for being here.\n\nI want to thank the Lions Club of Zaventem for making this concert happen.\n\nI am curious about Belgium, because I feel like half the people here speak French, the other half speak Dutch or Flemish. So who here speaks French? Who here speaks Dutch? Who here speaks Flemish? It’s the same people right?\n\nBefore this show I was told Belgians speak Dutch. Then I was warned never to call it Dutch, it's Flemish. Then I was told it actually is Dutch, just pronounced properly.\n\nAnd now I want to ask, who here is part of Lions Club? Raise your hand.\n\nWho here knows my music from before this show and has seen me on Youtube? And who here has been to one of my previous concerts?\n\nWho here came the furthest?"
+    },
+    {
       "order": "4",
-      "title": "Fires of a Revolution",
+      "title": "Fight for Freedom",
       "subtitle": "Lionel Yu",
-      "folder": "Fires of a Revolution",
+      "folder": "Fight for Freedom",
       "titleCard": "TitleCard.png",
       "hasAudio": false,
       "backing": null,
@@ -64,16 +76,6 @@
     },
     {
       "order": "6",
-      "title": "Fight for Freedom",
-      "subtitle": "Lionel Yu",
-      "folder": "Fight for Freedom",
-      "titleCard": "TitleCard.png",
-      "hasAudio": false,
-      "backing": null,
-      "click": null
-    },
-    {
-      "order": "7",
       "title": "Torrent Etude Nightmare",
       "subtitle": "Chopin · arr. Lionel Yu",
       "folder": "Torrent Etude Nightmare",
@@ -83,7 +85,19 @@
       "click": "Click.wav"
     },
     {
-      "order": "8",
+      "order": "S2",
+      "title": "Lionel Speaking Portion",
+      "subtitle": "Speech 2 of 4",
+      "folder": null,
+      "titleCard": null,
+      "hasAudio": false,
+      "backing": null,
+      "click": null,
+      "speaking": true,
+      "notes": "So 2 years ago, I did a concert in Amsterdam.\n\nIs anyone here from the netherlands? Ok, there’s not many, and I think I know the reason why. It’s because the tickets were not free.\n\nLast week there was a news report about 2 taxis having an accident in Amsterdam. Fortunately no one died but 22 people ended up in the hospital.\n\nOk last one. A Belgian, German and Dutchman are drinking together when a fly lands in each of their beers. The Belgian pushes his glass away and orders a new one. The German throws the fly away and keeps drinking. The Dutchman picks up the fly, and yells “Spit it out!”"
+    },
+    {
+      "order": "7",
       "title": "Für Elise Nightmare",
       "subtitle": "Remix of Beethoven's Für Elise",
       "folder": "Fur Elise Nightmare",
@@ -93,7 +107,7 @@
       "click": "Click.wav"
     },
     {
-      "order": "9",
+      "order": "8",
       "title": "Canon in Dream",
       "subtitle": "Remix of Pachelbel's Canon in D",
       "folder": "Canon in Dream",
@@ -103,7 +117,7 @@
       "click": "Click.wav"
     },
     {
-      "order": "10",
+      "order": "9",
       "title": "Moonlight Sonata Nightmare",
       "subtitle": "Remix of Beethoven's Moonlight Sonata",
       "folder": "Moonlight Sonata Nightmare",
@@ -113,7 +127,19 @@
       "click": "Click.wav"
     },
     {
-      "order": "11",
+      "order": "S3",
+      "title": "Lionel Speaking Portion",
+      "subtitle": "Speech 3 of 4",
+      "folder": null,
+      "titleCard": null,
+      "hasAudio": false,
+      "backing": null,
+      "click": null,
+      "speaking": true,
+      "notes": "So actually I’m a Chinese American, born in China and live in America. Half of my family is in China and is in the communist party and the other half lives in America and voted for Trump. So if you have any complaints about either of these countries, you can come talk to me.\n\nAnd you know what’s crazy today, is AI. Who here uses AI? Who here hates AI and refuses to use it?\n\nI was a hater once too but recently I’ve started using it. It’s really good if you know what you want, if you have a vision for something that doesn’t exist. It’s really bad if you don’t know what you want, and you just tell the AI, “please help me because I have no brain.”\n\nBut the thing is, while AI is perfect for logic and reasoning, it is completely inadequate for the higher forms of intelligence, such as intuition, imagination, empathy, and the most important which is the divine."
+    },
+    {
+      "order": "10",
       "title": "Dreams of a Violin",
       "subtitle": "Lionel Yu · violin & piano",
       "folder": "Dreams of a Violin",
@@ -123,7 +149,7 @@
       "click": null
     },
     {
-      "order": "12",
+      "order": "11",
       "title": "Gallop",
       "subtitle": "Lionel Yu · piano trio",
       "folder": "Gallop",
@@ -133,7 +159,7 @@
       "click": null
     },
     {
-      "order": "13",
+      "order": "12",
       "title": "Beethoven Virus",
       "subtitle": "arr. Lionel Yu · piano trio",
       "folder": "Beethoven Virus",
@@ -141,6 +167,28 @@
       "hasAudio": false,
       "backing": null,
       "click": null
+    },
+    {
+      "order": "S4",
+      "title": "Lionel Speaking Portion",
+      "subtitle": "Speech 4 of 4",
+      "folder": null,
+      "titleCard": null,
+      "hasAudio": false,
+      "backing": null,
+      "click": null,
+      "speaking": true,
+      "notes": "So now we are at our final piece.\n\nI want to first thank the Lions Club of Zaventem for making this all possible. The Lions Club is truly an amazing organization that does so much for its members.\n\nI want to thank especially Luc from Lions Club for putting in so much work and supporting my music. Without him this event simply could not have happened. Luc can you stand up?\n\nI also want to thank the talented performers tonight from the Zaventem Music Academy. Truly, I’m amazed at the students quality, of their skill. When I was their age, I wasn’t playing classical music on stages like this, I was playing video games.\n\nSo I want to talk about encores."
+    },
+    {
+      "order": "13",
+      "title": "Four Seasons Nightmare",
+      "subtitle": "Remix of Vivaldi's Four Seasons",
+      "folder": "Four Seasons Nightmare",
+      "titleCard": "TitleCard.png",
+      "hasAudio": true,
+      "backing": "Backing.wav",
+      "click": "Click.wav"
     },
     {
       "order": "E1",

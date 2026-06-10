@@ -54,8 +54,19 @@ enum SelfTest {
         print("\nTitle cards & audio")
         var edmCount = 0
         for p in config.pieces {
-            let folder = root.appendingPathComponent(p.folder, isDirectory: true)
-            let card = folder.appendingPathComponent(p.titleCard)
+            if p.isSpeaking {
+                if p.notes?.isEmpty == false {
+                    ok("[\(p.order)] \(p.title): speaking cue, notes present")
+                } else {
+                    fail("[\(p.order)] \(p.title): speaking cue has NO notes")
+                }
+                continue
+            }
+            guard let folderName = p.folder, let cardName = p.titleCard else {
+                fail("[\(p.order)] \(p.title): non-speaking piece missing folder/titleCard in config"); continue
+            }
+            let folder = root.appendingPathComponent(folderName, isDirectory: true)
+            let card = folder.appendingPathComponent(cardName)
             if FileManager.default.fileExists(atPath: card.path) {
                 ok("[\(p.order)] \(p.title): title card OK")
             } else {
@@ -66,8 +77,8 @@ enum SelfTest {
             guard let bName = p.backing, let cName = p.click else {
                 fail("[\(p.order)] hasAudio but backing/click not set in config"); continue
             }
-            let bURL = PieceModel.audioURL(root: root, folder: p.folder, file: bName)
-            let cURL = PieceModel.audioURL(root: root, folder: p.folder, file: cName)
+            let bURL = PieceModel.audioURL(root: root, folder: folderName, file: bName)
+            let cURL = PieceModel.audioURL(root: root, folder: folderName, file: cName)
             guard FileManager.default.fileExists(atPath: bURL.path) else { fail("[\(p.order)] backing missing: \(bURL.path)"); continue }
             guard FileManager.default.fileExists(atPath: cURL.path) else { fail("[\(p.order)] click missing: \(cURL.path)"); continue }
             do {

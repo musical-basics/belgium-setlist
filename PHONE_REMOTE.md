@@ -28,6 +28,16 @@ Mac's keyboard remains a full backup at all times.
 The line refreshes every few seconds, so when the Mac hops networks (venue Wi-Fi →
 hotspot) the current URLs are always shown.
 
+**Speaking cues:** segments marked SPEAKING in the running order carry the actual speech
+text in `showrunner.json` (`"notes"`). The full text renders **only on the phone** — it
+expands under the cue when selected. The Mac (and anything the audience could see) shows
+just "Lionel Speaking Portion", and GO on a speaking cue fades the projector to black and
+stops any audio.
+
+**One-command start:** `./showtime.sh` quits any running ShowRunner, connects Tailscale,
+relaunches the app, and prints the phone URLs. No `tailscale up` needed — the script
+handles it (the macOS app connects itself; it only needs a one-time login).
+
 ## Network plan for the concert
 
 **Primary — Tailscale over venue Wi-Fi.** Both the Mac and the phone on the venue Wi-Fi,

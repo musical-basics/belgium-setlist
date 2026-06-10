@@ -14,6 +14,9 @@ struct RemotePieceState: Codable {
     let subtitle: String
     let hasAudio: Bool
     let ready: Bool
+    let speaking: Bool
+    /// Speech text — present only for speaking cues, shown only on the phone.
+    let notes: String?
 }
 
 struct RemoteState: Codable {
@@ -242,10 +245,16 @@ header { padding:calc(env(safe-area-inset-top) + 8px) 16px 10px; background:#171
 .row .su { font-size:12px; color:#8a8a95; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .row .badge { font-size:10px; font-weight:800; background:#2b5ccc; color:#fff;
               border-radius:4px; padding:2px 6px; }
+.row .speak { font-size:10px; font-weight:800; background:#7c3aed; color:#fff;
+              border-radius:4px; padding:2px 6px; }
 .row .warn { font-size:10px; font-weight:800; background:#c62828; color:#fff;
              border-radius:4px; padding:2px 6px; }
 .row.sel { background:rgba(80,120,255,.30); }
 .row.play { background:rgba(46,204,64,.26); }
+.notes { display:none; margin:0 6px 10px; padding:14px 16px; background:#1b1626;
+         border:1px solid #4c3a78; border-radius:12px; font-size:18px; line-height:1.5;
+         color:#efeaf7; white-space:pre-wrap; -webkit-user-select:none; }
+.notes.show { display:block; }
 footer { padding:10px 12px calc(env(safe-area-inset-bottom) + 10px); background:#17171c;
          border-top:1px solid #26262e; display:grid; grid-template-columns:1fr 1fr; gap:10px; }
 button { border:none; border-radius:12px; font-weight:800; color:#fff; font-family:inherit; }
@@ -275,7 +284,7 @@ button:active { filter:brightness(1.25); }
   <button id="stop">STOP / PANIC</button>
 </footer>
 <script>
-var rows = [], stopTimer = null;
+var rows = [], noteEls = [], lastSelected = -1, stopTimer = null;
 function $(id){ return document.getElementById(id); }
 function handle(p){ return p.then(function(r){ if(!r.ok) throw 0; return r.json(); })
                      .then(function(s){ render(s); online(true); })
@@ -289,7 +298,7 @@ function online(ok){
 function buildList(pieces){
   var list = $('list');
   list.innerHTML = '';
-  rows = [];
+  rows = []; noteEls = []; lastSelected = -1;
   pieces.forEach(function(p, i){
     var row = document.createElement('div'); row.className = 'row';
     var num = document.createElement('div'); num.className = 'num'; num.textContent = p.order;
@@ -298,18 +307,30 @@ function buildList(pieces){
     var su = document.createElement('div'); su.className = 'su'; su.textContent = p.subtitle;
     t.appendChild(ti); t.appendChild(su);
     row.appendChild(num); row.appendChild(t);
-    if (!p.ready) { var w = document.createElement('div'); w.className = 'warn'; w.textContent = 'MISSING'; row.appendChild(w); }
+    if (p.speaking) { var sp = document.createElement('div'); sp.className = 'speak'; sp.textContent = 'SPEAKING'; row.appendChild(sp); }
+    else if (!p.ready) { var w = document.createElement('div'); w.className = 'warn'; w.textContent = 'MISSING'; row.appendChild(w); }
     else if (p.hasAudio) { var b = document.createElement('div'); b.className = 'badge'; b.textContent = 'AUDIO'; row.appendChild(b); }
     row.onclick = function(){ send('/select?i=' + i); };
     list.appendChild(row);
     rows.push(row);
+    var n = null;
+    if (p.speaking && p.notes) {
+      n = document.createElement('div'); n.className = 'notes'; n.textContent = p.notes;
+      list.appendChild(n);
+    }
+    noteEls.push(n);
   });
 }
 function render(s){
   if (rows.length !== s.pieces.length) buildList(s.pieces);
   rows.forEach(function(row, i){
     row.className = 'row' + (i === s.playing ? ' play' : (i === s.selected ? ' sel' : ''));
+    if (noteEls[i]) noteEls[i].className = 'notes' + (i === s.selected ? ' show' : '');
   });
+  if (s.selected !== lastSelected) {
+    lastSelected = s.selected;
+    if (rows[s.selected]) rows[s.selected].scrollIntoView({block:'start', behavior:'smooth'});
+  }
   $('ondecktext').textContent = s.onDeck;
   $('nowplaying').textContent = s.nowPlaying;
   var bt = $('bigtime');
