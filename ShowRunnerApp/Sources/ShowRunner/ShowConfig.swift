@@ -30,6 +30,8 @@ struct ShowConfig: Codable {
     /// Master volume faders in dB. Default 0 dB (unity).
     var masterBackingGainDb: Double?
     var masterClickGainDb: Double?
+    /// TCP port for the phone web remote. Defaults to 8088 if absent.
+    var remotePort: Int?
     var pieces: [Piece]
 }
 

@@ -55,6 +55,9 @@ final class AppController: NSObject, OperatorWindowDelegate {
     private var keyMonitor: Any?
     private var elapsedTimer: Timer?
 
+    private var remoteServer: RemoteServer?
+    private var remoteInfoTick = 0
+
     /// Optional, fully-isolated lighting module (see LightingBridge). nil = lighting off/unavailable;
     /// the audio show is identical with or without it. Nothing here writes back into the audio path.
     private var lighting: LightingBridge?
@@ -144,6 +147,11 @@ final class AppController: NSObject, OperatorWindowDelegate {
         lighting = LightingBridge(engine: audioEngine, showRoot: root)
         lighting?.start()
         // ---------------------------------------------------------------------------------------
+
+        // Phone web remote (separate, fail-safe): serves a control page the operator's phone
+        // opens in Safari over Wi-Fi/Tailscale. Purely additive — if it fails to start or the
+        // network dies, the keyboard still runs the entire show.
+        startRemoteServer()
 
         // Hidden debug hook: dump the (re-encoded) config to a path and quit — verifies save round-trips.
         if let dump = ProcessInfo.processInfo.environment["SHOWRUNNER_DUMPCONFIG"] {
@@ -453,6 +461,66 @@ final class AppController: NSObject, OperatorWindowDelegate {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.8, execute: item)
     }
 
+    // MARK: Phone remote
+
+    private func startRemoteServer() {
+        let port = UInt16(clamping: config.remotePort ?? 8088)
+        let server = RemoteServer(port: port)
+        server.onAction = { [weak self] action in
+            guard let self = self else { return }
+            switch action {
+            case .next: self.selectIndex(self.selectedIndex + 1)
+            case .prev: self.selectIndex(self.selectedIndex - 1)
+            case .go:   self.go()
+            case .stop: self.stop()
+            }
+        }
+        server.onSelect = { [weak self] i in self?.selectIndex(i) }
+        server.stateProvider = { [weak self] in
+            self?.remoteState() ?? RemoteState(pieces: [], selected: 0, playing: nil, onDeck: "",
+                                               nowPlaying: "", elapsed: "", remaining: "", progress: 0)
+        }
+        if let err = server.start() {
+            Logger.shared.error("Phone remote failed to start on port \(port): \(err)")
+            operatorController.setRemoteInfo("⚠︎ Phone remote OFF — port \(port) unavailable")
+        } else {
+            remoteServer = server
+            refreshRemoteInfo()
+        }
+    }
+
+    private func remoteState() -> RemoteState {
+        let infos = pieces.map { m -> RemotePieceState in
+            let ready = m.imageReady && (!m.piece.hasAudio || m.audioReady)
+            return RemotePieceState(order: m.piece.order, title: m.piece.title,
+                                    subtitle: m.piece.subtitle, hasAudio: m.piece.hasAudio, ready: ready)
+        }
+        return RemoteState(pieces: infos,
+                           selected: selectedIndex,
+                           playing: playingIndex,
+                           onDeck: operatorController.onDeckText,
+                           nowPlaying: operatorController.nowPlayingText,
+                           elapsed: operatorController.elapsedText,
+                           remaining: operatorController.remainingText,
+                           progress: operatorController.progressValue)
+    }
+
+    /// Show the URL(s) the phone can reach us on. Re-checked every few seconds because the
+    /// Mac's addresses change when it hops networks (venue Wi-Fi → hotspot) mid-soundcheck.
+    private func refreshRemoteInfo() {
+        guard let server = remoteServer else { return }
+        let addrs = RemoteServer.localIPv4Addresses()
+        guard !addrs.isEmpty else {
+            operatorController.setRemoteInfo("📱 Phone remote: waiting for a network… (port \(server.port))")
+            return
+        }
+        let parts = addrs.prefix(3).map { a -> String in
+            let tag = a.isTailscale ? " (Tailscale)" : ""
+            return "http://\(a.address):\(server.port)\(tag)"
+        }
+        operatorController.setRemoteInfo("📱 Phone remote:  " + parts.joined(separator: "   ·   "))
+    }
+
     // MARK: Elapsed timer
 
     private func startElapsedTimer() {
@@ -465,6 +533,11 @@ final class AppController: NSObject, OperatorWindowDelegate {
     @objc private func tick() {
         // Meters always reflect the engine, so they decay to zero when audio stops.
         operatorController.setMeters(backing: audioEngine.backingLevel, click: audioEngine.clickLevel)
+        remoteInfoTick += 1
+        if remoteInfoTick >= 50 {   // every ~5s: cheap, and tracks network hops
+            remoteInfoTick = 0
+            refreshRemoteInfo()
+        }
         guard let pi = playingIndex, pi < pieces.count, let pre = pieces[pi].premix else { return }
         let rate = pre.sampleRate > 0 ? pre.sampleRate : audioEngine.sampleRate
         let total = rate > 0 ? Double(pre.frameCount) / rate : 0
@@ -630,6 +703,7 @@ final class AppController: NSObject, OperatorWindowDelegate {
     func teardown() {
         if let k = keyMonitor { NSEvent.removeMonitor(k) }
         elapsedTimer?.invalidate()
+        remoteServer?.stop()
         lighting?.shutdown()   // stop sACN + close the lighting window cleanly (no-op if off)
         audioEngine.stop()
     }

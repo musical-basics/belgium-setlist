@@ -250,6 +250,7 @@ final class OperatorWindowController {
     private let pieceBackingDbLabel = NSTextField(labelWithString: "0.0 dB")
     private let pieceClickDbLabel = NSTextField(labelWithString: "0.0 dB")
     private let trimCaptionLabel = NSTextField(labelWithString: "Per-piece trim")
+    private let remoteLabel = NSTextField(labelWithString: "")
 
     private var rowViews: [PieceRowView] = []
 
@@ -272,6 +273,11 @@ final class OperatorWindowController {
         statusLabel.font = .monospacedSystemFont(ofSize: 12, weight: .regular)
         statusLabel.textColor = .secondaryLabelColor
         statusLabel.lineBreakMode = .byTruncatingMiddle
+
+        remoteLabel.font = .monospacedSystemFont(ofSize: 12, weight: .medium)
+        remoteLabel.textColor = .systemTeal
+        remoteLabel.lineBreakMode = .byTruncatingMiddle
+        remoteLabel.isSelectable = true
 
         devicePopup.target = self
         devicePopup.action = #selector(deviceChanged)
@@ -367,7 +373,7 @@ final class OperatorWindowController {
         routeRow.spacing = 24
         routeRow.alignment = .firstBaseline
 
-        let header = NSStackView(views: [titleRow, pickerRow, routeRow, statusLabel])
+        let header = NSStackView(views: [titleRow, pickerRow, routeRow, statusLabel, remoteLabel])
         header.orientation = .vertical
         header.alignment = .leading
         header.spacing = 8
@@ -571,6 +577,14 @@ final class OperatorWindowController {
     }
 
     func setStatus(_ text: String) { statusLabel.stringValue = text }
+    func setRemoteInfo(_ text: String) { remoteLabel.stringValue = text }
+
+    // Read-backs so the phone remote mirrors EXACTLY what the operator window shows.
+    var onDeckText: String { onDeckLabel.stringValue }
+    var nowPlayingText: String { nowPlayingLabel.stringValue }
+    var elapsedText: String { elapsedLabel.stringValue }
+    var remainingText: String { remainingLabel.stringValue }
+    var progressValue: Double { scrubSlider.doubleValue }
 
     func setSelected(_ index: Int) {
         for (i, row) in rowViews.enumerated() { row.isSelected = (i == index) }

@@ -28,6 +28,14 @@ Full path to the app: `/Users/lionelyu/Music/Belgium Concert Program/ShowRunner.
 
 Quit the app with **⌘Q**.
 
+## 📱 Control it from your phone
+ShowRunner serves a web remote on port **8088** — the operator window shows the URL
+(e.g. `http://192.168.1.23:8088`). Open it in Safari on your iPhone for PREV / NEXT /
+GO / STOP plus the full running order. The show never depends on the network: if Wi-Fi
+drops, audio and the projector are unaffected and the keyboard still works.
+Setup, the Tailscale-primary / hotspot-backup network plan, and show-day checklist:
+**[PHONE_REMOTE.md](PHONE_REMOTE.md)**.
+
 ## ⚠️ "I launched it but I don't see the window!"
 It opened **behind your full-screen editor on another Space**. Do ONE of these:
 - Press **⌘-Tab** and pick **ShowRunner**, or
