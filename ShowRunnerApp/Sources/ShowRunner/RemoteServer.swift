@@ -3,7 +3,7 @@ import Network
 
 /// Actions the phone remote can trigger. Mirrors the keyboard exactly.
 enum RemoteAction: String {
-    case next, prev, go, stop
+    case next, prev, go, stop, toggle
 }
 
 /// Snapshot sent to the phone as JSON. Text fields are read straight off the operator
@@ -20,6 +20,8 @@ struct RemoteState: Codable {
     let pieces: [RemotePieceState]
     let selected: Int
     let playing: Int?
+    /// "stopped" | "playing" | "paused" — drives the phone's GO/PAUSE/RESUME button.
+    let playState: String
     let onDeck: String
     let nowPlaying: String
     let elapsed: String
@@ -152,7 +154,7 @@ final class RemoteServer {
                  body: Data(Self.pageHTML.utf8))
         case "/state":
             respondWithState(conn)
-        case "/next", "/prev", "/go", "/stop":
+        case "/next", "/prev", "/go", "/stop", "/toggle":
             let action = RemoteAction(rawValue: String(path.dropFirst()))!
             DispatchQueue.main.async { [weak self] in self?.onAction?(action) }
             // The state hop below is queued on main AFTER the action, so the
@@ -223,10 +225,12 @@ header { padding:calc(env(safe-area-inset-top) + 8px) 16px 10px; background:#171
 .dot.ok { background:#2ecc40; } .dot.bad { background:#ff4136; }
 #ondeck { font-size:20px; font-weight:700; margin-top:6px; }
 #ondeck small { color:#7f9cf5; font-size:11px; font-weight:800; letter-spacing:1px; display:block; }
-#nowline { display:flex; justify-content:space-between; align-items:baseline; margin-top:6px; }
-#nowplaying { font-size:14px; color:#bdbdc7; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-#time { font-size:14px; font-variant-numeric:tabular-nums; color:#bdbdc7;
-        padding-left:10px; white-space:nowrap; }
+#nowplaying { font-size:14px; color:#bdbdc7; margin-top:6px;
+              overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+#timerow { display:flex; justify-content:space-between; align-items:baseline; margin-top:4px; }
+#bigtime { font-size:34px; font-weight:700; font-variant-numeric:tabular-nums; color:#f2f2f5; }
+#bigtime.idle { color:#55555f; }
+#remaining { font-size:17px; font-weight:600; font-variant-numeric:tabular-nums; color:#9a9aa5; }
 #bar { height:3px; background:#26262e; margin-top:8px; border-radius:2px; overflow:hidden; }
 #fill { height:100%; width:0%; background:#2ecc40; }
 #list { flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; padding:8px 10px; }
@@ -247,6 +251,8 @@ footer { padding:10px 12px calc(env(safe-area-inset-bottom) + 10px); background:
 button { border:none; border-radius:12px; font-weight:800; color:#fff; font-family:inherit; }
 #prev, #next { background:#2c2c34; font-size:18px; padding:16px 0; }
 #go { grid-column:1/-1; background:#1f9d40; font-size:24px; padding:20px 0; }
+#go.pause { background:#c87f0a; }
+#go.resume { background:#2563c9; }
 #stop { grid-column:1/-1; background:#8c1d1d; font-size:15px; padding:12px 0; }
 #stop.armed { background:#e53935; font-size:18px; }
 button:active { filter:brightness(1.25); }
@@ -257,7 +263,8 @@ button:active { filter:brightness(1.25); }
 <header>
   <div id="hdrRow"><h1>SHOWRUNNER REMOTE</h1><div class="dot" id="dot"></div></div>
   <div id="ondeck"><small>ON DECK</small><span id="ondecktext">&mdash;</span></div>
-  <div id="nowline"><div id="nowplaying">&mdash;</div><div id="time"></div></div>
+  <div id="nowplaying">&mdash;</div>
+  <div id="timerow"><div id="bigtime" class="idle">&ndash;&ndash;:&ndash;&ndash;</div><div id="remaining"></div></div>
   <div id="bar"><div id="fill"></div></div>
 </header>
 <div id="list"></div>
@@ -305,12 +312,19 @@ function render(s){
   });
   $('ondecktext').textContent = s.onDeck;
   $('nowplaying').textContent = s.nowPlaying;
-  $('time').textContent = s.elapsed;
+  var bt = $('bigtime');
+  bt.textContent = s.elapsed;
+  bt.className = (s.playState === 'stopped') ? 'idle' : '';
+  $('remaining').textContent = s.remaining;
   $('fill').style.width = (s.progress * 100) + '%';
+  var go = $('go');
+  if (s.playState === 'playing') { go.className = 'pause'; go.textContent = '⏸ PAUSE'; }
+  else if (s.playState === 'paused') { go.className = 'resume'; go.textContent = '▶ RESUME'; }
+  else { go.className = ''; go.textContent = 'GO'; }
 }
 $('prev').onclick = function(){ send('/prev'); };
 $('next').onclick = function(){ send('/next'); };
-$('go').onclick = function(){ send('/go'); };
+$('go').onclick = function(){ send('/toggle'); };
 $('stop').onclick = function(){
   var b = $('stop');
   if (b.classList.contains('armed')) {

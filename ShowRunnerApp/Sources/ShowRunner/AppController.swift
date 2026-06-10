@@ -50,6 +50,8 @@ final class AppController: NSObject, OperatorWindowDelegate {
     private var availableDevices: [AudioDeviceInfo] = []
     private var selectedIndex = 0
     private var playingIndex: Int?
+    /// Piece paused mid-playback by the phone's PAUSE button; RESUME continues it.
+    private var pausedIndex: Int?
     private var previewLightingIndex: Int?
 
     private var keyMonitor: Any?
@@ -324,6 +326,7 @@ final class AppController: NSObject, OperatorWindowDelegate {
 
     private func go() {
         guard selectedIndex >= 0, selectedIndex < pieces.count else { return }
+        pausedIndex = nil
         let m = pieces[selectedIndex]
         Logger.shared.info("GO [\(m.piece.order)] \(m.piece.title)")
 
@@ -382,6 +385,7 @@ final class AppController: NSObject, OperatorWindowDelegate {
         audioEngine.stop()
         audienceWindow.clear()
         playingIndex = nil
+        pausedIndex = nil
         previewLightingIndex = nil
         operatorController.setPlaying(index: nil)
         operatorController.setNowPlaying("— stopped —")
@@ -389,6 +393,31 @@ final class AppController: NSObject, OperatorWindowDelegate {
         operatorController.setRemaining("−––:––")
         operatorController.setProgress(0)
         updateScrubEnabled()
+    }
+
+    /// Phone PLAY/PAUSE button: pause the playing piece, resume the paused one,
+    /// or — when nothing is active — behave exactly like GO.
+    private func togglePlayPause() {
+        if let pi = playingIndex, audioEngine.isPlaying {
+            audioEngine.pause()
+            pausedIndex = pi
+            playingIndex = nil
+            // Keep the green "active piece" row highlight while paused.
+            operatorController.setPlaying(index: pi)
+            let m = pieces[pi]
+            operatorController.setNowPlaying("⏸  \(m.piece.order) — \(m.piece.title)  (paused)")
+            Logger.shared.info("PAUSE [\(m.piece.order)] \(m.piece.title) at \(String(format: "%.1f", audioEngine.elapsedSeconds))s")
+        } else if let qi = pausedIndex {
+            audioEngine.resume()
+            pausedIndex = nil
+            playingIndex = qi
+            operatorController.setPlaying(index: qi)
+            let m = pieces[qi]
+            operatorController.setNowPlaying("▶  \(m.piece.order) — \(m.piece.title)")
+            Logger.shared.info("RESUME [\(m.piece.order)] \(m.piece.title)")
+        } else {
+            go()
+        }
     }
 
     private func selectIndex(_ i: Int) {
@@ -471,14 +500,15 @@ final class AppController: NSObject, OperatorWindowDelegate {
             switch action {
             case .next: self.selectIndex(self.selectedIndex + 1)
             case .prev: self.selectIndex(self.selectedIndex - 1)
-            case .go:   self.go()
-            case .stop: self.stop()
+            case .go:     self.go()
+            case .stop:   self.stop()
+            case .toggle: self.togglePlayPause()
             }
         }
         server.onSelect = { [weak self] i in self?.selectIndex(i) }
         server.stateProvider = { [weak self] in
-            self?.remoteState() ?? RemoteState(pieces: [], selected: 0, playing: nil, onDeck: "",
-                                               nowPlaying: "", elapsed: "", remaining: "", progress: 0)
+            self?.remoteState() ?? RemoteState(pieces: [], selected: 0, playing: nil, playState: "stopped",
+                                               onDeck: "", nowPlaying: "", elapsed: "", remaining: "", progress: 0)
         }
         if let err = server.start() {
             Logger.shared.error("Phone remote failed to start on port \(port): \(err)")
@@ -495,9 +525,11 @@ final class AppController: NSObject, OperatorWindowDelegate {
             return RemotePieceState(order: m.piece.order, title: m.piece.title,
                                     subtitle: m.piece.subtitle, hasAudio: m.piece.hasAudio, ready: ready)
         }
+        let playState = playingIndex != nil ? "playing" : (pausedIndex != nil ? "paused" : "stopped")
         return RemoteState(pieces: infos,
                            selected: selectedIndex,
-                           playing: playingIndex,
+                           playing: playingIndex ?? pausedIndex,
+                           playState: playState,
                            onDeck: operatorController.onDeckText,
                            nowPlaying: operatorController.nowPlayingText,
                            elapsed: operatorController.elapsedText,

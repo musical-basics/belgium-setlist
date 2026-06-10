@@ -568,6 +568,34 @@ final class AudioEngine {
         resetBassAnalysis(statePtr)
     }
 
+    /// Pause: stop the HAL unit but keep the buffers and playhead, so resume() continues
+    /// from the exact same frame (backing + click stay sample-locked by construction —
+    /// they live in the same premixed buffer).
+    func pause() {
+        guard activePremix != nil, isPlaying else { return }
+        statePtr.pointee.playing = 0
+        OSMemoryBarrier()
+        if let u = audioUnit, running {
+            AudioOutputUnitStop(u)
+            running = false
+        }
+        statePtr.pointee.peak0 = 0
+        statePtr.pointee.peak1 = 0
+        statePtr.pointee.peak2 = 0
+        statePtr.pointee.peak3 = 0
+    }
+
+    /// Continue a paused (or cued) piece from the current playhead.
+    func resume() {
+        guard let u = audioUnit, activePremix != nil, !isPlaying,
+              statePtr.pointee.currentFrame < statePtr.pointee.frameCount else { return }
+        OSMemoryBarrier()
+        statePtr.pointee.playing = 1
+        let status = AudioOutputUnitStart(u)
+        if status == noErr { running = true }
+        else { Logger.shared.error("AudioOutputUnitStart on resume failed: \(status)") }
+    }
+
     /// Load a piece at a specific playhead without starting audio. This lets the operator scrub an
     /// EDM piece during rehearsal while the lighting module reads the same timecode position.
     func cue(_ pre: PremixedAudio, pieceBackingDb: Double, pieceClickDb: Double, atSeconds seconds: Double) {

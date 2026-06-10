@@ -14,10 +14,14 @@ Mac's keyboard remains a full backup at all times.
 1. Launch ShowRunner. The operator window header shows a teal line like:
    `📱 Phone remote:  http://192.168.1.23:8088 · http://100.x.y.z:8088 (Tailscale)`
 2. On your iPhone, open that URL in Safari.
-3. Tap a piece to select it, or use **▲ PREV / ▼ NEXT**. **GO** fires the selected piece
-   (title card + audio if it has any) — exactly like pressing Space on the Mac.
-   **STOP / PANIC** needs **two taps** (tap once to arm, tap again within 2.5 s) so a
-   pocket-tap can't kill a piece.
+3. Tap a piece to select it, or use **▲ PREV / ▼ NEXT**. The big button is a
+   **GO / PAUSE / RESUME** toggle: when nothing is playing it's green **GO** and fires the
+   selected piece (title card + audio) exactly like pressing Space on the Mac; while audio
+   plays it turns amber **⏸ PAUSE** (freezes the playhead, title card stays up); paused, it
+   turns blue **▶ RESUME** and continues from the exact same sample. A large running
+   timecode (elapsed / total, with remaining on the right) appears as soon as playback
+   begins. **STOP / PANIC** needs **two taps** (tap once to arm, tap again within 2.5 s)
+   so a pocket-tap can't kill a piece.
 4. Tip: add it to the Home Screen (Share → Add to Home Screen) for a full-screen,
    app-like remote. The page asks iOS to keep the screen awake while it's open.
 
@@ -58,6 +62,7 @@ Tailscale URL keeps working over the hotspot; the Mac's hotspot address (usually
 - `GET /` — the phone page
 - `GET /state` — JSON snapshot (pieces, selected, playing, on-deck, now-playing, elapsed)
 - `POST /next` `/prev` `/go` `/stop` — same actions as the keyboard
+- `POST /toggle` — play/pause: GO when stopped, pause when playing, resume when paused
 - `POST /select?i=N` — select piece at index N (0-based)
 
 `curl -s localhost:8088/state | python3 -m json.tool` is a quick health check.
