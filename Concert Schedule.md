@@ -3,9 +3,15 @@
 **Lionel Yu** · Thursday 11 June 2026 · Theaterzaal Maupertuis, CC De Factorij, Zaventem
 **Doors/start:** 19:30 · **Target length:** ~75–90 min (window confirmed)
 
-Two clock columns below:
+> **Reworked running order (10 June 2026).** Now **13 main pieces + 3 encores**.
+> Changes vs. previous version: **Fantaisie-Impromptu** promoted to the opener;
+> two new originals added — **Rolling Thunder** and **Fires of a Revolution**;
+> **Winter Wind dropped**; the four EDM pieces are now grouped as one block
+> (Torrent · Für Elise · Canon · Moonlight). Old version archived in `/backup`.
+
+Two clock columns idea as before:
 - **Music-only** = pieces + ~30s transitions, no talking.
-- **With talk** = the realistic running clock, ~15 min of speaking distributed
+- **With talk** = the realistic running clock, ~13 min of speaking distributed
   at natural breaks (marked 🎤). Use this one on the night.
 
 Legend: **EDM** = backing + click (your show app) · **TRIO** = +violin & cello ·
@@ -18,22 +24,25 @@ Legend: **EDM** = backing + click (your show app) · **TRIO** = +violin & cello 
 | # | Time (w/ talk) | Min | Piece | Notes |
 |---|---|---|---|---|
 |  | **19:30** | — | 🎤 Welcome / intro | ~2 min |
-| 1 | 19:32 | 4.0 | Rachmaninoff Prelude in G minor | solo · opener |
-| 2 | 19:36 | 4.0 | Colors of the Soul | solo · original |
-| 3 | 19:41 | 5.0 | Gallop | **TRIO** (vln + vc) |
-| 4 | 19:47 | 6.0 | Torrent Etude Nightmare | **EDM** (replaced La Campanella) |
-|  | 19:53 | — | 🎤 Talk | ~3 min |
-| 5 | 19:56 | 4.5 | Beethoven Virus | **TRIO** (vln + vc) |
-| 6 | 20:01 | 4.5 | Canon in Dream | **EDM** |
-| 7 | 20:06 | 4.0 | Winter Wind Etude | solo · *pick-one vs Fight for Freedom* |
-| 8 | 20:10 | 6.0 | Moonlight Sonata Nightmare | **EDM** |
-|  | 20:16 | — | 🎤 Talk | ~3 min |
-| 9 | 20:19 | 5.0 | Sunflowers | solo · original |
-| 10 | 20:25 | 5.0 | Dreams of a Violin | **DUET** (vln + pno) |
-| 11 | 20:31 | 5.0 | Für Elise Nightmare | **EDM** |
-|  | 20:36 | — | 🎤 Closing remarks | ~4 min |
+| 1 | 19:32 | 5.0 | Fantaisie-Impromptu | solo · opener (Chopin Op. 66) |
+| 2 | 19:38 | 4.0 | Rachmaninoff Prelude in G minor | solo · Op. 23 No. 5 |
+| 3 | 19:42 | 4.0 | Rolling Thunder | solo · original · **NEW** |
+| 4 | 19:46 | 4.0 | Fires of a Revolution | solo · original · **NEW** |
+|  | 19:51 | — | 🎤 Talk | ~3 min |
+| 5 | 19:54 | 4.0 | Colors of the Soul | solo · original |
+| 6 | 19:58 | 5.0 | Fight for Freedom | solo · original |
+|  | 20:04 | — | 🎤 Talk (intro the EDM set) | ~2 min |
+| 7 | 20:06 | 6.0 | Torrent Etude Nightmare | **EDM** |
+| 8 | 20:12 | 5.0 | Für Elise Nightmare | **EDM** |
+| 9 | 20:18 | 4.5 | Canon in Dream | **EDM** |
+| 10 | 20:23 | 6.0 | Moonlight Sonata Nightmare | **EDM** |
+|  | 20:29 | — | 🎤 Talk | ~3 min |
+| 11 | 20:32 | 5.0 | Dreams of a Violin | **DUET** (vln + pno) |
+| 12 | 20:38 | 5.0 | Gallop | **TRIO** (vln + vc) |
+| 13 | 20:43 | 4.5 | Beethoven Virus | **TRIO** (vln + vc) |
+|  | 20:48 | — | 🎤 Closing remarks | ~3 min |
 
-**Main set ends ≈ 20:40** (with talk). Music-only would end ≈ 20:28.
+**Main set ends ≈ 20:51** (with talk). Music-only would end ≈ 20:40.
 
 ---
 
@@ -41,12 +50,12 @@ Legend: **EDM** = backing + click (your show app) · **TRIO** = +violin & cello 
 
 | # | Time | Min | Piece | Notes |
 |---|---|---|---|---|
-| E1 | 20:40 | 5.0 | Fantaisie-Impromptu | solo · *tentative* |
-| E2 | 20:46 | 2.0 | Flight of the Bumblebee | solo · showpiece |
-| E3 | 20:49 | 3.5 | Still D.R.E. | **EDM** · closer |
+| E1 | 20:51 | 5.0 | Sunflowers | solo · original |
+| E2 | 20:57 | 2.0 | Flight of the Bumblebee | solo · showpiece |
+| E3 | 20:59 | 3.5 | Still D.R.E. | **EDM** · closer |
 
-**Show ends ≈ 20:52** with all encores (≈ 82 min total). Comfortably inside the
-75–90 min window.
+**Show ends ≈ 21:03** with all encores (≈ 93 min total). This is a touch over the
+75–90 min window — see cut levers below.
 
 ---
 
@@ -54,19 +63,22 @@ Legend: **EDM** = backing + click (your show app) · **TRIO** = +violin & cello 
 
 | | Minutes |
 |---|---|
-| Music (main, 11 pieces) | 53.5 |
+| Music (main, 13 pieces) | 62.0 |
 | Music (encores, 3) | 10.5 |
-| Transitions (~30s × 14) | ~7 |
-| Talking | ~15 |
-| **Total show** | **~82 min** (≈ 19:30 → 20:52) |
+| Transitions (~30s × 16) | ~8 |
+| Talking | ~13 |
+| **Total show** | **~93 min** (≈ 19:30 → 21:03) |
 
-## Cut levers (if running long)
-- Resolve the pick-one — you only play **one** of Winter Wind / Fight for Freedom (already assumed).
-- Drop the *Fantaisie-Impromptu* encore → saves ~6 min.
-- Trim talking from 15 → 10 min → saves 5 min.
+## Cut levers (if running long, ~93 → ≤90 min)
+- Drop **one** of the two new originals (Rolling Thunder / Fires of a Revolution) → saves ~4–5 min.
+- Drop the **Sunflowers** encore → saves ~5 min.
+- Trim talking from 13 → 9 min → saves ~4 min.
+- Decision still pending on **Fight for Freedom** (folder marked "maybe").
 
 ## EDM cue order (for your show app — pieces needing backing+click)
-4 Torrent · 6 Canon in Dream · 8 Moonlight · 11 Für Elise · E3 Still D.R.E.
+7 Torrent · 8 Für Elise · 9 Canon in Dream · 10 Moonlight · E3 Still D.R.E.
+*(Same 5 EDM tracks as before — no new audio files. Winter Wind was never EDM.)*
 
-*Times are estimates from your stated runtimes; transitions assume ~30s for
+*Times are estimates from your stated runtimes; the two new originals are penciled
+at 4 min each — adjust once you have final durations. Transitions assume ~30s for
 applause / trio entrances / cueing. Adjust talk blocks live as needed.*

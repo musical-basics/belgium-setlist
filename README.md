@@ -11,7 +11,7 @@ full-screen title card on the projector with a 1-second fade.
 
 ## Just launch it — double-click the app
 In **Finder**, open this folder (`Belgium Concert Program`) and **double-click `ShowRunner.app`**.
-That's the whole thing. The control window opens with the 15-piece running order.
+That's the whole thing. The control window opens with the 16-piece running order.
 
 Full path to the app: `/Users/lionelyu/Music/Belgium Concert Program/ShowRunner.app`
 
@@ -65,7 +65,7 @@ backing **and** click summed to the stereo outs 1·2.)
 |---|---|
 | `ShowRunnerApp/` — the Swift app source | **`ShowAudio/`** — the one folder with all the backing/click WAVs (copy it over) |
 | `showrunner.json` — running order + saved levels | `Backing Tracks/` (Ableton project), `*.qlab5` (legacy QLab) |
-| `*/TitleCard.png` — the 15 title cards | |
+| `*/TitleCard.png` — the 16 title cards | |
 
 ## Setting it up on another Mac
 
@@ -81,7 +81,7 @@ Full checklist (macOS 13 or newer):
    ```bash
    git clone https://github.com/musical-basics/belgium-setlist.git
    ```
-   This already includes the **15 title cards**, the **running order**, and your **saved
+   This already includes the **16 title cards**, the **running order**, and your **saved
    levels** (`showrunner.json`) — you do *not* need to transfer those.
 3. **Drop in the `ShowAudio` folder** — the single bundle of files that isn't in git (the
    backing/click WAVs). Copy the whole folder into the cloned `belgium-setlist` folder, next to

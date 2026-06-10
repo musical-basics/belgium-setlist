@@ -18,7 +18,7 @@ No timeline, no editing, no licensing. Built to be boring and unbreakable.
 
 **The normal way: double-click `ShowRunner.app` in Finder.**
 It's in the concert folder: `/Users/lionelyu/Music/Belgium Concert Program/ShowRunner.app`.
-The control window opens with all 15 pieces. (Terminal equivalent: `open "../ShowRunner.app"`.)
+The control window opens with all 16 pieces. (Terminal equivalent: `open "../ShowRunner.app"`.)
 
 **Don't see the window after launching?** It opened behind a full-screen editor on another
 Space. Press **⌘-Tab → ShowRunner**, click its **Dock icon**, or swipe to the desktop Space.
@@ -123,16 +123,18 @@ Edit **`showrunner.json`** (next to the app). No recompile needed — it is read
   "pieces": [
     // each audio piece may also carry "backingGainDb" / "clickGainDb" trims (set via the UI)
     {
-      "order": "1",
-      "title": "Prelude in G minor",
-      "subtitle": "Sergei Rachmaninoff, Op. 23 No. 5",
-      "folder": "01 - Rachmaninoff Prelude G minor", // relative to the concert folder
+      "order": "1",                 // display label only; running order = array order
+      "title": "Fantaisie-Impromptu",
+      "subtitle": "Frédéric Chopin, Op. 66",
+      "folder": "Fantaisie-Impromptu", // relative to the concert folder; named by piece, NOT order
       "titleCard": "TitleCard.png",
       "hasAudio": false,            // true only for the 5 EDM pieces
       "backing": null,              // e.g. "Backing.wav" when hasAudio
       "click": null                 // e.g. "Click.wav"   when hasAudio
     }
-    // …15 pieces total
+    // …16 pieces total. Folders are named by piece (alphabetical on disk), so the
+    // running order is just the order of this array + the "order" labels — to
+    // reorder the show, move array entries; no folders need renaming.
   ]
 }
 ```

@@ -57,11 +57,11 @@ Copy the **whole `ShowAudio` folder** into the `belgium-setlist` folder, right n
 belgium-setlist/
 ├── showrunner.json
 ├── ShowRunnerApp/
-├── 01 - Rachmaninoff Prelude G minor/  (title card, from git)
+├── Rachmaninoff Prelude in G minor/  (title card, from git)
 ├── …
 └── ShowAudio/        ← paste this whole folder here
-    ├── 04 - Torrent Etude (EDM)/Backing.wav, Click.wav
-    ├── 06 - Canon in Dream (EDM)/…
+    ├── Torrent Etude Nightmare/Backing.wav, Click.wav
+    ├── Canon in Dream/…
     └── …
 ```
 
