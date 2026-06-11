@@ -121,7 +121,7 @@ public final class Rig {
     /// intensity, zoom and the non-mover fixtures (FrontWash, Dalis) are left untouched.
     public func applyStageAnchor(_ states: [String: FixtureState]) -> [String: FixtureState] {
         let s = stage
-        if s.stretch == 1.0 && !s.invertTilt { return states }   // identity — skip the work on the default rig
+        if s.stretch == 1.0 && !s.invertTilt && s.t1BackKeyTilt == nil { return states }   // identity — skip the work on the default rig
         func anchored(_ v: Double, about root: Double) -> Double {
             min(1, max(0, root + (v - root) * s.stretch))
         }
@@ -129,9 +129,17 @@ public final class Rig {
         for f in fixtures where f.profile.id == "spiider_mode3" || f.profile.id == "t1_mode3" {
             guard var st = out[f.name] else { continue }
             st.pan = anchored(st.pan, about: s.pianoPan)
-            var tilt = anchored(st.tilt, about: s.pianoTilt)
-            if s.invertTilt { tilt = 1 - tilt }   // rig hangs inverted: flip beam from upstage to the piano up front
-            st.tilt = tilt
+            // The two T1s are back-key specials hung far upstage by the screen. When `t1BackKeyTilt`
+            // is set, PIN their tilt to that absolute value — from up there the authored sweep never
+            // tilts forward enough to reach the downstage piano, so following it (in either invert
+            // sense) just grazes the cyc/screen. One dialled number lands them on the piano.
+            if f.profile.id == "t1_mode3", let pin = s.t1BackKeyTilt {
+                st.tilt = min(1, max(0, pin))
+            } else {
+                var tilt = anchored(st.tilt, about: s.pianoTilt)
+                if s.invertTilt { tilt = 1 - tilt }   // rig hangs inverted: flip beam from upstage to the piano up front
+                st.tilt = tilt
+            }
             out[f.name] = st
         }
         return out
