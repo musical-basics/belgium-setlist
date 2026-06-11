@@ -76,12 +76,19 @@ public final class SACNSender {
         var tv = timeval(tv_sec: 0, tv_usec: 50_000)
         _ = setsockopt(s, SOL_SOCKET, SO_SNDTIMEO, &tv, socklen_t(MemoryLayout<timeval>.size))
 
-        // Pin the outgoing interface for multicast if the operator supplied one.
-        if mode == .multicast, let ip = interfaceIP, let inaddr = ipv4(ip) {
-            var mreqIf = inaddr
-            let rc = setsockopt(s, IPPROTO_IP, IP_MULTICAST_IF, &mreqIf, socklen_t(MemoryLayout<in_addr>.size))
-            if rc != 0 { onLog("sACN: could not bind multicast interface \(ip) (errno \(errno))") }
-            else { onLog("sACN: multicast egress pinned to \(ip)") }
+        // Pin the outgoing interface for multicast if the operator named one. Without this, a
+        // multi-NIC Mac sends sACN out its DEFAULT route (usually Wi-Fi / the house LAN) while the
+        // rig listens on the lighting LAN — packets leave, nothing arrives. The spec may be an
+        // interface name ("en14"), a subnet prefix ("192.168.202"), or a literal local IP.
+        if mode == .multicast, let spec = interfaceIP {
+            if let r = SACNSender.resolveInterface(spec) {
+                var inaddr = r.addr
+                let rc = setsockopt(s, IPPROTO_IP, IP_MULTICAST_IF, &inaddr, socklen_t(MemoryLayout<in_addr>.size))
+                if rc != 0 { onLog("sACN: could not bind multicast interface \(r.label) (errno \(errno))") }
+                else { onLog("sACN: multicast egress pinned to \(r.label)") }
+            } else {
+                onLog("sACN: interface '\(spec)' not found — multicast will use the DEFAULT route (may be the wrong NIC). Available IPv4: \(SACNSender.availableIPv4Interfaces())")
+            }
         }
         onLog("sACN: socket open (\(mode == .multicast ? "multicast" : "unicast → \(unicastHost)"), port \(port))")
     }
@@ -201,6 +208,55 @@ public final class SACNSender {
         var addr = in_addr()
         let rc = s.withCString { inet_pton(AF_INET, $0, &addr) }
         return rc == 1 ? addr : nil
+    }
+
+    /// Resolve an interface spec — a full dotted-quad IP, an interface name ("en14"), or a subnet
+    /// prefix ("192.168.202") — to a concrete local IPv4 + a label for logging. nil if no NIC matches.
+    private static func resolveInterface(_ spec: String) -> (addr: in_addr, label: String)? {
+        // A full dotted-quad? bind it directly.
+        var literal = in_addr()
+        if spec.withCString({ inet_pton(AF_INET, $0, &literal) }) == 1 {
+            return (literal, "\(spec) (literal)")
+        }
+        // Otherwise scan the live interfaces for a name / subnet-prefix match.
+        let prefix = spec.hasSuffix(".") ? spec : spec + "."
+        var ifap: UnsafeMutablePointer<ifaddrs>?
+        guard getifaddrs(&ifap) == 0 else { return nil }
+        defer { freeifaddrs(ifap) }
+        var ptr = ifap
+        while let p = ptr {
+            let ifa = p.pointee
+            ptr = ifa.ifa_next
+            guard let sa = ifa.ifa_addr, sa.pointee.sa_family == UInt8(AF_INET) else { continue }
+            let name = String(cString: ifa.ifa_name)
+            var a = sockaddr_in()
+            memcpy(&a, sa, Int(MemoryLayout<sockaddr_in>.size))
+            let ip = String(cString: inet_ntoa(a.sin_addr))
+            if name == spec || ip == spec || ip.hasPrefix(prefix) {
+                return (a.sin_addr, "\(ip) (\(name))")
+            }
+        }
+        return nil
+    }
+
+    /// "en0=192.168.26.7, en14=192.168.202.102, …" — for a helpful log when the spec doesn't match.
+    private static func availableIPv4Interfaces() -> String {
+        var ifap: UnsafeMutablePointer<ifaddrs>?
+        guard getifaddrs(&ifap) == 0 else { return "(none)" }
+        defer { freeifaddrs(ifap) }
+        var parts: [String] = []
+        var ptr = ifap
+        while let p = ptr {
+            let ifa = p.pointee
+            ptr = ifa.ifa_next
+            guard let sa = ifa.ifa_addr, sa.pointee.sa_family == UInt8(AF_INET) else { continue }
+            var a = sockaddr_in()
+            memcpy(&a, sa, Int(MemoryLayout<sockaddr_in>.size))
+            let ip = String(cString: inet_ntoa(a.sin_addr))
+            if ip == "127.0.0.1" { continue }
+            parts.append("\(String(cString: ifa.ifa_name))=\(ip)")
+        }
+        return parts.isEmpty ? "(none)" : parts.joined(separator: ", ")
     }
 
     // MARK: Test hook

@@ -36,6 +36,10 @@ public struct LightingConfig {
         public enum Mode: String { case multicast, unicast }
         public var mode: Mode
         public var unicastHost: String
+        /// Which local NIC sACN multicast must leave by — empty = OS default route (often the
+        /// wrong one on a multi-NIC Mac). Accepts an interface name ("en14"), a subnet prefix
+        /// ("192.168.202"), or a literal local IP. Resolved to an address at socket-open time.
+        public var interface: String
         public var port: UInt16
         public var sourceName: String
         public var cid: [UInt8]   // 16 bytes, stable per source
@@ -92,6 +96,7 @@ private struct LightingConfigFile: Codable {
     struct NetworkFile: Codable {
         var mode: String?
         var unicastHost: String?
+        var interface: String?
         var port: Int?
         var sourceName: String?
         var cid: String?
@@ -148,6 +153,7 @@ public enum LightingConfigLoader {
         let network = LightingConfig.ResolvedNetwork(
             mode: mode,
             unicastHost: f.network?.unicastHost ?? d.network.unicastHost,
+            interface: f.network?.interface ?? d.network.interface,
             port: UInt16(f.network?.port ?? Int(d.network.port)),
             sourceName: f.network?.sourceName ?? d.network.sourceName,
             cid: cid)
@@ -205,6 +211,7 @@ public enum LightingConfigLoader {
         let network = LightingConfig.ResolvedNetwork(
             mode: .multicast,                 // venue: "default lighting network protocol is sACN"
             unicastHost: "",                  // set when mode == unicast (the node's IP)
+            interface: "192.168.202",         // venue light network 192.168.202.0/24 — pin egress here, not Wi-Fi
             port: 5568,
             sourceName: "ShowRunner Lighting",
             cid: cid)

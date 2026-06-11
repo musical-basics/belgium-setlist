@@ -36,7 +36,7 @@ public final class LightingController {
         self.sender = SACNSender(
             mode: cfg.network.mode == .unicast ? .unicast : .multicast,
             unicastHost: cfg.network.unicastHost,
-            interfaceIP: nil,
+            interfaceIP: cfg.network.interface,
             port: cfg.network.port,
             cid: cfg.network.cid,
             sourceName: cfg.network.sourceName,

@@ -4,7 +4,7 @@
   "_POSITIONS": "From the plot (top view): Spiider1/2 downstage pair at ±2 m; Spiider3/4 wide pair at ±7 m; Spiider5/6 wide pair at ±7 m one batten upstage; Spiider7/8 upstage inner pair at ±3 m; T1L/T1R upstage-centre back-key specials over the piano; Dalis 4–10 one even row washing the cyc. Mirrored pairs: 1↔2, 3↔4, 5↔6, 7↔8 (right pan = 1 − left pan).",
   "_CONFIRM": {
     "modes": "Modes come from the venue's own patch sheet and the profiles are built from the OFFICIAL charts (Robe Spiider chart v2.3 Mode 3; Robe T1 Profile chart v2.1 Mode 3; RJ Dalis 860 manual DN41077600-B Mode 2). Remaining risk is paper vs reality: on the day confirm each fixture's PATCHED mode matches the plot, then tap ARM MOVERS (Spiiders + T1s stay dark until armed). The Dalis profile is live (no arming) — sanity-check its colours at soundcheck.",
-    "network": "'mode' = 'multicast' (onto the venue sACN lighting LAN, 239.255.x.x) or 'unicast' (to a node IP via 'unicastHost'). Venue: light network 192.168.202.0/24 with DHCP, default protocol sACN — multicast should work as-is; coordinate with the venue tech.",
+    "network": "'mode' = 'multicast' (onto the venue sACN lighting LAN, 239.255.x.x) or 'unicast' (to a node IP via 'unicastHost'). Venue: light network 192.168.202.0/24 with DHCP, default protocol sACN. CRITICAL on a multi-NIC Mac: 'interface' pins which NIC multicast LEAVES by — without it macOS sends sACN out the default route (usually Wi-Fi/house LAN) while the rig listens on the lighting LAN, so packets go out but nothing arrives. Accepts an interface name ('en14'), a subnet PREFIX ('192.168.202' — DHCP-robust, recommended, binds to whatever .202.x address the Mac gets), or a literal local IP. Empty = OS default route. Startup log prints 'multicast egress pinned to <ip> (<nic>)' — verify it names the lighting NIC. (See also showtime.sh: it forces Tailscale accept-routes off so the tunnel can't swallow 224.0.0/4.)",
     "front_catwalk": "Universe 1 addr 2–24 are the venue's 2KW Profile/PC front-catwalk dimmers, driven as ONE level ('FrontWash'). Their focus is the venue's — ask for an even piano-centred front wash.",
     "hazer": "MDG ATMe on universe 1: 509 heater (always on), 510 pressure, 511 fog on/off, 512 fan. Deliberately NOT patched — agree haze level with the venue tech (the EDM beam looks want haze)."
   },
@@ -13,6 +13,7 @@
   "network": {
     "mode": "multicast",
     "unicastHost": "",
+    "interface": "192.168.202",
     "port": 5568,
     "sourceName": "ShowRunner Lighting",
     "cid": "5A6F574D-0000-4000-8000-53484F574C49"
