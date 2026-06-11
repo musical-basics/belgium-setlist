@@ -2,6 +2,30 @@
   "pieces" : [
     {
       "titleCard" : "TitleCard.png",
+      "order" : "P1",
+      "title" : "Pre-Show 1 · Tweede Wals",
+      "subtitle" : "Ianis Merino Bessi — Shostakovich",
+      "folder" : "Preshow 1 - Shostakovich Waltz",
+      "hasAudio" : false
+    },
+    {
+      "titleCard" : "TitleCard.png",
+      "order" : "P2",
+      "title" : "Pre-Show 2 · Canon in D",
+      "subtitle" : "De Pooter · Smeets · Nguyen — Pachelbel",
+      "folder" : "Preshow 2 - Pachelbel Canon",
+      "hasAudio" : false
+    },
+    {
+      "titleCard" : "TitleCard.png",
+      "order" : "P3",
+      "title" : "Pre-Show 3 · Für Elise",
+      "subtitle" : "Rithika Garbham — Beethoven",
+      "folder" : "Preshow 3 - Fur Elise",
+      "hasAudio" : false
+    },
+    {
+      "titleCard" : "TitleCard.png",
       "order" : "1",
       "title" : "Fantaisie-Impromptu",
       "subtitle" : "Frédéric Chopin, Op. 66",
