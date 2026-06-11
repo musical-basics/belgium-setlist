@@ -67,21 +67,13 @@
       "speaking" : true
     },
     {
-      "titleCard" : "TitleCard.png",
-      "folder" : "Fur Elise Nightmare",
-      "hasAudio" : false,
-      "title" : "Für Elise",
-      "order" : "7A",
-      "subtitle" : "Ludwig van Beethoven"
-    },
-    {
       "click" : "Click.wav",
       "titleCard" : "TitleCard.png",
       "folder" : "Fur Elise Nightmare",
       "backing" : "Backing.wav",
       "hasAudio" : true,
       "title" : "Für Elise Nightmare",
-      "order" : "7B",
+      "order" : "7",
       "subtitle" : "Remix of Beethoven's Für Elise"
     },
     {
@@ -95,21 +87,13 @@
       "subtitle" : "Remix of Pachelbel's Canon in D"
     },
     {
-      "titleCard" : "TitleCard.png",
-      "folder" : "Moonlight Sonata Nightmare",
-      "hasAudio" : false,
-      "title" : "Moonlight Sonata",
-      "order" : "9A",
-      "subtitle" : "Beethoven · 1st Movement"
-    },
-    {
       "click" : "Click.wav",
       "titleCard" : "TitleCard.png",
       "folder" : "Moonlight Sonata Nightmare",
       "backing" : "Backing.wav",
       "hasAudio" : true,
       "title" : "Moonlight Sonata Nightmare",
-      "order" : "9B",
+      "order" : "9",
       "subtitle" : "Remix of Beethoven's Moonlight Sonata"
     },
     {

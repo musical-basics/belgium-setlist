@@ -230,9 +230,11 @@ public enum LightingConfigLoader {
             "5":  auto("Timelines/colorsofthesoul.json", [0.40, 0.70, 0.0]), // Colors of the Soul — kaleidoscope yellow/green
             "6":  edm("Timelines/torrent.json"),  // Torrent Etude (EDM) — REFERENCE piece
             "S2": speech,
-            "7":  edm("Timelines/furelise.json"),
+            "7A": auto("Timelines/furelise_solo.json", [0.92, 0.18, 0.35]),  // Für Elise SOLO/REG — romantic pink/red (+teal)
+            "7B": edm("Timelines/furelise.json"),                            // Für Elise NIGHTMARE — purple/red
             "8":  edm("Timelines/canon.json"),
-            "9":  edm("Timelines/moonlight.json"),
+            "9A": auto("Timelines/moonlight_solo.json", [0.08, 0.14, 0.55]), // Moonlight SOLO/REG — blue dark moonlight
+            "9B": edm("Timelines/moonlight.json"),                           // Moonlight NIGHTMARE — dark blue/purple electric
             "S3": speech,
             "10": trio([0.25, 0.10, 0.40]),   // Dreams of a Violin (duet) — violet
             "11": trio([0.55, 0.30, 0.08]),   // Gallop (trio) — warm amber
