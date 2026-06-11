@@ -23,7 +23,7 @@ public struct LightingStatus {
 /// that hasn't been armed) so the preview can flag it.
 public struct FixtureVisual {
     public let name: String
-    public let kind: String        // profile id: "fargo_9ch" | "spiider_mode2" | "dalis_stub"
+    public let kind: String        // profile id: "spiider_mode3" | "t1_mode3" | "dalis_mode2" | "front_wash"
     public let address: Int
     public let universe: Int
     public let isProvisional: Bool
@@ -194,7 +194,7 @@ public final class Renderer {
     public func setArmProvisional(_ armed: Bool) {
         queue.async { [weak self] in
             self?.rig.armProvisional = armed
-            self?.onLog("Lighting: provisional fixtures (Spiider/Dalis) \(armed ? "ARMED" : "disarmed").")
+            self?.onLog("Lighting: provisional fixtures (Spiiders/T1s) \(armed ? "ARMED" : "disarmed").")
         }
     }
 

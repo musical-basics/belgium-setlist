@@ -7,15 +7,19 @@ import Foundation
 /// synthesizable here for cloning the reference piece to the other EDM tracks.
 
 public enum SoloTemplate {
-    /// SOLO: mostly static, piano lit clean, one cyc colour with slow drift, movers parked.
-    /// 2–3 state changes. `cyc` is the cyclorama colour [r,g,b] 0…1.
+    /// SOLO: mostly static, piano lit clean — front catwalk wash + the two T1 back-key specials —
+    /// one cyc colour with slow drift, movers parked. 2–3 state changes.
+    /// `cyc` is the cyclorama colour [r,g,b] 0…1.
     public static func build(piece: String, cyc: [Double], intensity: Double) -> CueList {
         let c = rgb(cyc)
-        // Front wash: a clean, slightly warm key on the piano (Fargos), restrained.
+        // Front catwalk: the clean key on the piano (single-level dimmer wash), restrained.
+        var front = FixtureState(); front.intensity = intensity * 0.65
+
+        // T1 back-key over the piano: slightly warm, tilted onto the lid, narrow-ish.
         var key = FixtureState()
-        key.red = 1.0; key.green = 0.78; key.blue = 0.55; key.white = 0.85
+        key.red = 1.0; key.green = 0.78; key.blue = 0.55; key.white = 0.35
         key.intensity = intensity
-        key.zoom = 0.35
+        key.tilt = 0.35; key.zoom = 0.35
 
         // Cyc colour at a low, calm level (the named colour).
         let cycLow = FixtureState.rgb(c.r, c.g, c.b, intensity: 0.45)
@@ -25,7 +29,7 @@ public enum SoloTemplate {
         var parked = FixtureState(); parked.intensity = 0; parked.pan = 0.5; parked.tilt = 0.55
 
         return CueList(piece: piece, cues: [
-            Cue(label: "Settle", fadeSeconds: 3.0, states: ["Fargos": key, "Dalis": cycLow, "Spiiders": parked]),
+            Cue(label: "Settle", fadeSeconds: 3.0, states: ["Front": front, "T1s": key, "Dalis": cycLow, "Spiiders": parked]),
             Cue(label: "Drift",  fadeSeconds: 25.0, states: ["Dalis": cycDrift]),               // slow colour drift
             Cue(label: "Out",    fadeSeconds: 4.0, states: ["All": FixtureState.blackout()]),
         ])
@@ -33,20 +37,23 @@ public enum SoloTemplate {
 }
 
 public enum TrioTemplate {
-    /// TRIO: a wider, warm wash so all three players read evenly; slightly richer cyc; restrained.
+    /// TRIO: a wider, warm look so all three players read evenly — fuller front wash, T1s opened
+    /// up as a warm top, slightly richer cyc; restrained.
     public static func build(piece: String, cyc: [Double], intensity: Double) -> CueList {
         let c = rgb(cyc)
-        var wash = FixtureState()
-        wash.red = 1.0; wash.green = 0.82; wash.blue = 0.60; wash.white = 1.0
-        wash.intensity = intensity
-        wash.zoom = 0.7   // wider so three players are covered evenly
+        var front = FixtureState(); front.intensity = intensity * 0.85
+
+        var top = FixtureState()
+        top.red = 1.0; top.green = 0.82; top.blue = 0.60; top.white = 0.5
+        top.intensity = intensity
+        top.tilt = 0.4; top.zoom = 0.7   // wider so three players are covered evenly
 
         let cycRich = FixtureState.rgb(c.r, c.g, c.b, intensity: 0.7)
         var parked = FixtureState(); parked.intensity = 0; parked.pan = 0.5; parked.tilt = 0.55
 
         return CueList(piece: piece, cues: [
-            Cue(label: "Trio up", fadeSeconds: 3.0, states: ["Fargos": wash, "Dalis": cycRich, "Spiiders": parked]),
-            Cue(label: "Lift",    fadeSeconds: 8.0, states: ["Fargos": brighten(wash, by: 0.1)]),
+            Cue(label: "Trio up", fadeSeconds: 3.0, states: ["Front": front, "T1s": top, "Dalis": cycRich, "Spiiders": parked]),
+            Cue(label: "Lift",    fadeSeconds: 8.0, states: ["T1s": brighten(top, by: 0.1)]),
             Cue(label: "Out",     fadeSeconds: 4.0, states: ["All": FixtureState.blackout()]),
         ])
     }
@@ -63,17 +70,17 @@ public struct EDMSection {
 }
 
 public enum EDMTemplate {
-    /// Synthesize a timecoded timeline from section markers + a palette. The two Spiiders move
-    /// symmetrically (mirrored pan) so the movement reads as intentional. Drops get the biggest
+    /// Synthesize a timecoded timeline from section markers + a palette. The eight Spiiders move
+    /// as two mirrored side-stacks so the movement reads as intentional. Drops get the biggest
     /// moves + full colour hits + strobe accents + zoom punches; builds ramp; breakdowns pull
     /// back to the cyc; intro/outro stay minimal. Use this to clone the reference EDM piece.
     ///
     /// `palette` is an ordered list of [r,g,b] the piece moves through (no rainbow-cycling).
     public static func build(piece: String, sections: [EDMSection], palette: [[Double]], totalSeconds: Double) -> Timeline {
         let pal = palette.isEmpty ? [[0.1, 0.2, 0.9], [0.9, 0.1, 0.3]] : palette
-        var fargo: [Keyframe] = []
-        var spiiderA: [Keyframe] = []
-        var spiiderB: [Keyframe] = []
+        var t1s: [Keyframe] = []
+        var spiiderA: [Keyframe] = []   // left stack (odd-numbered Spiiders)
+        var spiiderB: [Keyframe] = []   // right stack (mirrored pan)
         var dalis: [Keyframe] = []
 
         for (i, sec) in sections.enumerated() {
@@ -81,43 +88,43 @@ public enum EDMTemplate {
             let t = sec.start
             switch sec.kind {
             case .intro:
-                fargo.append(Keyframe(t: t, ease: .smooth, state: FixtureState.rgb(color.r, color.g, color.b, intensity: 0.25)))
+                t1s.append(Keyframe(t: t, ease: .smooth, state: FixtureState.rgb(color.r, color.g, color.b, intensity: 0.25)))
                 dalis.append(Keyframe(t: t, ease: .smooth, state: FixtureState.rgb(color.r, color.g, color.b, intensity: 0.3)))
                 spiiderA.append(parked(t))
                 spiiderB.append(parked(t))
             case .build:
-                fargo.append(Keyframe(t: t, ease: .linear, state: beam(color, intensity: 0.6, zoom: 0.4)))
+                t1s.append(Keyframe(t: t, ease: .linear, state: beam(color, intensity: 0.6, zoom: 0.4)))
                 spiiderA.append(sweep(t, pan: 0.35, tilt: 0.45, color: color, intensity: 0.6))
                 spiiderB.append(sweep(t, pan: 0.65, tilt: 0.45, color: color, intensity: 0.6)) // mirrored pan
             case .drop:
                 var hit = beam(color, intensity: 1.0, zoom: 0.9)
                 hit.strobe = 0.0
-                fargo.append(Keyframe(t: t, ease: .hold, state: hit)) // instant full-intensity colour hit
-                fargo.append(Keyframe(t: t + 0.12, ease: .hold, state: punchZoom(hit))) // zoom punch
+                t1s.append(Keyframe(t: t, ease: .hold, state: hit)) // instant full-intensity colour hit
+                t1s.append(Keyframe(t: t + 0.12, ease: .hold, state: punchZoom(hit))) // zoom punch
                 spiiderA.append(bigMove(t, pan: 0.1, tilt: 0.2, color: color))
                 spiiderB.append(bigMove(t, pan: 0.9, tilt: 0.2, color: color)) // mirrored
                 dalis.append(Keyframe(t: t, ease: .hold, state: FixtureState.rgb(color.r, color.g, color.b, intensity: 0.9)))
             case .breakdown:
-                fargo.append(Keyframe(t: t, ease: .smooth, state: FixtureState.rgb(color.r, color.g, color.b, intensity: 0.3)))
+                t1s.append(Keyframe(t: t, ease: .smooth, state: FixtureState.rgb(color.r, color.g, color.b, intensity: 0.3)))
                 dalis.append(Keyframe(t: t, ease: .smooth, state: FixtureState.rgb(color.r, color.g, color.b, intensity: 0.5)))
                 spiiderA.append(sweep(t, pan: 0.45, tilt: 0.5, color: color, intensity: 0.3))
                 spiiderB.append(sweep(t, pan: 0.55, tilt: 0.5, color: color, intensity: 0.3))
             case .outro:
-                fargo.append(Keyframe(t: t, ease: .smooth, state: FixtureState.rgb(color.r, color.g, color.b, intensity: 0.15)))
+                t1s.append(Keyframe(t: t, ease: .smooth, state: FixtureState.rgb(color.r, color.g, color.b, intensity: 0.15)))
                 dalis.append(Keyframe(t: t, ease: .smooth, state: FixtureState.rgb(color.r, color.g, color.b, intensity: 0.2)))
                 spiiderA.append(parked(t)); spiiderB.append(parked(t))
             }
         }
         // Tidy blackout at the very end.
-        fargo.append(Keyframe(t: totalSeconds, ease: .smooth, state: .blackout()))
+        t1s.append(Keyframe(t: totalSeconds, ease: .smooth, state: .blackout()))
         dalis.append(Keyframe(t: totalSeconds, ease: .smooth, state: .blackout()))
         spiiderA.append(Keyframe(t: totalSeconds, ease: .smooth, state: parkedState()))
         spiiderB.append(Keyframe(t: totalSeconds, ease: .smooth, state: parkedState()))
 
         return Timeline(piece: piece, template: "edm", durationSeconds: totalSeconds, tracks: [
-            FixtureTrack(fixture: "Fargos", keyframes: fargo),
-            FixtureTrack(fixture: "Spiider1", keyframes: spiiderA),
-            FixtureTrack(fixture: "Spiider2", keyframes: spiiderB),
+            FixtureTrack(fixture: "T1s", keyframes: t1s),
+            FixtureTrack(fixture: "Spiider1+Spiider3+Spiider5+Spiider7", keyframes: spiiderA),
+            FixtureTrack(fixture: "Spiider2+Spiider4+Spiider6+Spiider8", keyframes: spiiderB),
             FixtureTrack(fixture: "Dalis", keyframes: dalis),
         ])
     }

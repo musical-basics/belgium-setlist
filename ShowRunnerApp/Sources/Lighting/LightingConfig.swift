@@ -8,7 +8,7 @@ public struct LightingConfig {
     public var enabled: Bool
     public var frameRateHz: Double
     public var network: ResolvedNetwork
-    /// sACN universe number per logical role (CONFIRM). e.g. ["spiider": 1, "fargoDalis": 2]
+    /// sACN universe number per logical role. e.g. ["front": 1, "movers": 2, "dalis": 3]
     public var universes: [String: Int]
     public var fixtures: [FixtureConfig]
     /// Per-piece lighting, keyed by the piece `order` string used in showrunner.json.
@@ -24,9 +24,9 @@ public struct LightingConfig {
     }
 
     public struct FixtureConfig {
-        public let name: String        // logical name, e.g. "Fargo1"
-        public let profile: String     // profile id, e.g. "fargo_9ch"
-        public let universeRole: String// key into `universes`, e.g. "fargoDalis"
+        public let name: String        // logical name, e.g. "Spiider1"
+        public let profile: String     // profile id, e.g. "spiider_mode3"
+        public let universeRole: String// key into `universes`, e.g. "movers"
         public let address: Int        // 1-based DMX start address
     }
 
@@ -164,29 +164,40 @@ public enum LightingConfigLoader {
         return [b.0, b.1, b.2, b.3, b.4, b.5, b.6, b.7, b.8, b.9, b.10, b.11, b.12, b.13, b.14, b.15]
     }
 
-    /// The brief's provisional rig — used when lighting.json is missing or partial.
-    /// 8 fixtures, 2 universes. ALL of these are CONFIRM values isolated here + in lighting.json.
+    /// The FINAL venue plot (Lighting_Plot/Lions patchv01.pdf) — used when lighting.json is
+    /// missing or partial. 17 fixtures, 3 universes, addresses straight from the patch sheet.
     public static func defaults() -> LightingConfig {
         let cid = parseCID(defaultCIDString) ?? [UInt8](repeating: 0, count: 16)
         let network = LightingConfig.ResolvedNetwork(
-            mode: .multicast,                 // CONFIRM: network-direct (multicast) vs own node (unicast)
+            mode: .multicast,                 // venue: "default lighting network protocol is sACN"
             unicastHost: "",                  // set when mode == unicast (the node's IP)
             port: 5568,
             sourceName: "ShowRunner Lighting",
             cid: cid)
 
-        let universes = ["spiider": 1, "fargoDalis": 2]   // CONFIRM: the two sACN universe numbers
+        // Universe numbers per the venue patch sheet: 1 = front catwalk (+ hazer/house, untouched),
+        // 2 = Spiiders + T1s, 3 = Dalis cyc row.
+        let universes = ["front": 1, "movers": 2, "dalis": 3]
 
-        // Universe 1: two Spiiders.  Universe 2: four Fargos + two Dalis. Addresses per the brief.
         let fixtures: [LightingConfig.FixtureConfig] = [
-            .init(name: "Spiider1", profile: "spiider_mode2", universeRole: "spiider",    address: 1),
-            .init(name: "Spiider2", profile: "spiider_mode2", universeRole: "spiider",    address: 28),
-            .init(name: "Fargo1",   profile: "fargo_9ch",     universeRole: "fargoDalis", address: 1),
-            .init(name: "Fargo2",   profile: "fargo_9ch",     universeRole: "fargoDalis", address: 10),
-            .init(name: "Fargo3",   profile: "fargo_9ch",     universeRole: "fargoDalis", address: 19),
-            .init(name: "Fargo4",   profile: "fargo_9ch",     universeRole: "fargoDalis", address: 28),
-            .init(name: "Dalis1",   profile: "dalis_stub",    universeRole: "fargoDalis", address: 40),
-            .init(name: "Dalis2",   profile: "dalis_stub",    universeRole: "fargoDalis", address: 60),
+            .init(name: "FrontWash", profile: "front_wash",   universeRole: "front",  address: 2),
+            .init(name: "Spiider1",  profile: "spiider_mode3", universeRole: "movers", address: 1),
+            .init(name: "Spiider2",  profile: "spiider_mode3", universeRole: "movers", address: 41),
+            .init(name: "Spiider3",  profile: "spiider_mode3", universeRole: "movers", address: 81),
+            .init(name: "Spiider4",  profile: "spiider_mode3", universeRole: "movers", address: 121),
+            .init(name: "Spiider5",  profile: "spiider_mode3", universeRole: "movers", address: 161),
+            .init(name: "Spiider6",  profile: "spiider_mode3", universeRole: "movers", address: 201),
+            .init(name: "Spiider7",  profile: "spiider_mode3", universeRole: "movers", address: 241),
+            .init(name: "Spiider8",  profile: "spiider_mode3", universeRole: "movers", address: 281),
+            .init(name: "T1L",       profile: "t1_mode3",      universeRole: "movers", address: 321),
+            .init(name: "T1R",       profile: "t1_mode3",      universeRole: "movers", address: 381),
+            .init(name: "Dalis4",    profile: "dalis_mode2",   universeRole: "dalis",  address: 67),
+            .init(name: "Dalis5",    profile: "dalis_mode2",   universeRole: "dalis",  address: 89),
+            .init(name: "Dalis6",    profile: "dalis_mode2",   universeRole: "dalis",  address: 111),
+            .init(name: "Dalis7",    profile: "dalis_mode2",   universeRole: "dalis",  address: 133),
+            .init(name: "Dalis8",    profile: "dalis_mode2",   universeRole: "dalis",  address: 155),
+            .init(name: "Dalis9",    profile: "dalis_mode2",   universeRole: "dalis",  address: 177),
+            .init(name: "Dalis10",   profile: "dalis_mode2",   universeRole: "dalis",  address: 199),
         ]
 
         // Per-piece lighting languages (the 12 pieces collapse into SOLO / TRIO / EDM).

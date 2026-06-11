@@ -7,7 +7,7 @@ import Foundation
 public struct Cue {
     public var label: String
     public var fadeSeconds: Double
-    /// Target state keyed by fixture name or group token ("Fargos", "Spiiders", "Dalis", "All").
+    /// Target state keyed by fixture name or group token ("Spiiders", "T1s", "Dalis", "Front", "All").
     public var states: [String: FixtureState]
 
     public init(label: String, fadeSeconds: Double, states: [String: FixtureState]) {

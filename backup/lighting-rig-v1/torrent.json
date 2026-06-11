@@ -1,0 +1,65 @@
+{
+  "_note": "REFERENCE EDM timeline (piece 4, Torrent Etude). All times are SECONDS and are PROVISIONAL placeholders for a ~150s arrangement — set the section boundaries from the actual audio during soundcheck (intro/build/drop/breakdown/outro). Spiider2 mirrors Spiider1's pan (1 - pan) so the movement reads as intentional. Spiiders/Dalis only emit once their profile is confirmed AND 'ARM MOVERS' is enabled in the Lighting window. Palette: deep blue → cyan → hot magenta/red on drops (no rainbow cycling). states are sparse: any omitted field uses its default (pan/tilt default 0.5 = centre).",
+  "piece": "4",
+  "template": "edm",
+  "durationSeconds": 149,
+  "tracks": [
+    {
+      "fixture": "Fargos",
+      "keyframes": [
+        { "t": 0,    "ease": "smooth", "state": { "red": 0.10, "green": 0.15, "blue": 0.60, "intensity": 0.22, "zoom": 0.40 } },
+        { "t": 16,   "ease": "linear", "state": { "red": 0.00, "green": 0.50, "blue": 0.80, "intensity": 0.60, "zoom": 0.40 } },
+        { "t": 40,   "ease": "hold",   "state": { "red": 0.90, "green": 0.05, "blue": 0.30, "intensity": 1.00, "zoom": 0.90, "strobe": 0.65 } },
+        { "t": 41.5, "ease": "hold",   "state": { "red": 0.90, "green": 0.05, "blue": 0.30, "intensity": 1.00, "zoom": 0.15, "strobe": 0.00 } },
+        { "t": 56,   "ease": "smooth", "state": { "red": 0.85, "green": 0.10, "blue": 0.35, "intensity": 0.85, "zoom": 0.55 } },
+        { "t": 72,   "ease": "smooth", "state": { "red": 0.30, "green": 0.10, "blue": 0.50, "intensity": 0.30, "zoom": 0.50 } },
+        { "t": 96,   "ease": "linear", "state": { "red": 0.20, "green": 0.60, "blue": 0.90, "intensity": 0.70, "zoom": 0.45 } },
+        { "t": 112,  "ease": "hold",   "state": { "red": 1.00, "green": 0.20, "blue": 0.20, "intensity": 1.00, "zoom": 0.90, "strobe": 0.70 } },
+        { "t": 113.5,"ease": "hold",   "state": { "red": 1.00, "green": 0.20, "blue": 0.20, "intensity": 1.00, "zoom": 0.15, "strobe": 0.00 } },
+        { "t": 144,  "ease": "smooth", "state": { "red": 0.10, "green": 0.15, "blue": 0.60, "intensity": 0.20, "zoom": 0.40 } },
+        { "t": 149,  "ease": "smooth", "state": { "intensity": 0.0 } }
+      ]
+    },
+    {
+      "fixture": "Spiider1",
+      "keyframes": [
+        { "t": 0,   "ease": "smooth", "state": { "intensity": 0.0, "pan": 0.50, "tilt": 0.55 } },
+        { "t": 16,  "ease": "smooth", "state": { "red": 0.00, "green": 0.50, "blue": 0.80, "intensity": 0.55, "pan": 0.35, "tilt": 0.45, "zoom": 0.50 } },
+        { "t": 40,  "ease": "smooth", "state": { "red": 0.90, "green": 0.05, "blue": 0.30, "intensity": 1.00, "pan": 0.10, "tilt": 0.20, "zoom": 0.85 } },
+        { "t": 56,  "ease": "smooth", "state": { "red": 0.90, "green": 0.05, "blue": 0.30, "intensity": 1.00, "pan": 0.30, "tilt": 0.35, "zoom": 0.70 } },
+        { "t": 72,  "ease": "smooth", "state": { "red": 0.30, "green": 0.10, "blue": 0.50, "intensity": 0.30, "pan": 0.45, "tilt": 0.50, "zoom": 0.50 } },
+        { "t": 96,  "ease": "smooth", "state": { "red": 0.20, "green": 0.60, "blue": 0.90, "intensity": 0.60, "pan": 0.35, "tilt": 0.40, "zoom": 0.55 } },
+        { "t": 112, "ease": "smooth", "state": { "red": 1.00, "green": 0.20, "blue": 0.20, "intensity": 1.00, "pan": 0.10, "tilt": 0.20, "zoom": 0.85 } },
+        { "t": 128, "ease": "smooth", "state": { "red": 1.00, "green": 0.20, "blue": 0.20, "intensity": 1.00, "pan": 0.30, "tilt": 0.35, "zoom": 0.70 } },
+        { "t": 144, "ease": "smooth", "state": { "intensity": 0.0, "pan": 0.50, "tilt": 0.55 } },
+        { "t": 149, "ease": "smooth", "state": { "intensity": 0.0, "pan": 0.50, "tilt": 0.55 } }
+      ]
+    },
+    {
+      "fixture": "Spiider2",
+      "keyframes": [
+        { "t": 0,   "ease": "smooth", "state": { "intensity": 0.0, "pan": 0.50, "tilt": 0.55 } },
+        { "t": 16,  "ease": "smooth", "state": { "red": 0.00, "green": 0.50, "blue": 0.80, "intensity": 0.55, "pan": 0.65, "tilt": 0.45, "zoom": 0.50 } },
+        { "t": 40,  "ease": "smooth", "state": { "red": 0.90, "green": 0.05, "blue": 0.30, "intensity": 1.00, "pan": 0.90, "tilt": 0.20, "zoom": 0.85 } },
+        { "t": 56,  "ease": "smooth", "state": { "red": 0.90, "green": 0.05, "blue": 0.30, "intensity": 1.00, "pan": 0.70, "tilt": 0.35, "zoom": 0.70 } },
+        { "t": 72,  "ease": "smooth", "state": { "red": 0.30, "green": 0.10, "blue": 0.50, "intensity": 0.30, "pan": 0.55, "tilt": 0.50, "zoom": 0.50 } },
+        { "t": 96,  "ease": "smooth", "state": { "red": 0.20, "green": 0.60, "blue": 0.90, "intensity": 0.60, "pan": 0.65, "tilt": 0.40, "zoom": 0.55 } },
+        { "t": 112, "ease": "smooth", "state": { "red": 1.00, "green": 0.20, "blue": 0.20, "intensity": 1.00, "pan": 0.90, "tilt": 0.20, "zoom": 0.85 } },
+        { "t": 128, "ease": "smooth", "state": { "red": 1.00, "green": 0.20, "blue": 0.20, "intensity": 1.00, "pan": 0.70, "tilt": 0.35, "zoom": 0.70 } },
+        { "t": 144, "ease": "smooth", "state": { "intensity": 0.0, "pan": 0.50, "tilt": 0.55 } },
+        { "t": 149, "ease": "smooth", "state": { "intensity": 0.0, "pan": 0.50, "tilt": 0.55 } }
+      ]
+    },
+    {
+      "fixture": "Dalis",
+      "keyframes": [
+        { "t": 0,   "ease": "smooth", "state": { "red": 0.10, "green": 0.15, "blue": 0.60, "intensity": 0.30 } },
+        { "t": 40,  "ease": "hold",   "state": { "red": 0.90, "green": 0.05, "blue": 0.30, "intensity": 0.90 } },
+        { "t": 72,  "ease": "smooth", "state": { "red": 0.30, "green": 0.10, "blue": 0.50, "intensity": 0.50 } },
+        { "t": 112, "ease": "hold",   "state": { "red": 1.00, "green": 0.20, "blue": 0.20, "intensity": 0.90 } },
+        { "t": 144, "ease": "smooth", "state": { "red": 0.10, "green": 0.15, "blue": 0.60, "intensity": 0.25 } },
+        { "t": 149, "ease": "smooth", "state": { "intensity": 0.0 } }
+      ]
+    }
+  ]
+}

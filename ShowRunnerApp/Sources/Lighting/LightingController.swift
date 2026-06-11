@@ -128,17 +128,23 @@ public final class LightingController {
 
     /// A safe neutral wash so an EDM piece is never accidentally dark if its timeline is missing.
     private func neutralWash(_ order: String) -> CueList {
+        var front = FixtureState(); front.intensity = 0.6
         var wash = FixtureState()
-        wash.red = 1.0; wash.green = 0.8; wash.blue = 0.6; wash.white = 0.9; wash.intensity = 0.8; wash.zoom = 0.6
+        wash.red = 1.0; wash.green = 0.8; wash.blue = 0.6; wash.white = 0.5; wash.intensity = 0.8
+        wash.tilt = 0.4; wash.zoom = 0.6
         let cyc = FixtureState.rgb(0.15, 0.10, 0.35, intensity: 0.5)
         var parked = FixtureState(); parked.intensity = 0; parked.pan = 0.5; parked.tilt = 0.55
         return CueList(piece: order, cues: [
-            Cue(label: "NEUTRAL WASH (no timeline)", fadeSeconds: 2.0, states: ["Fargos": wash, "Dalis": cyc, "Spiiders": parked]),
+            Cue(label: "NEUTRAL WASH (no timeline)", fadeSeconds: 2.0,
+                states: ["Front": front, "T1s": wash, "Dalis": cyc, "Spiiders": parked]),
         ])
     }
 
+    /// Proof-of-life target: the first fixture that can emit without arming (a Dalis — its Mode 2
+    /// map is live), falling back to the first fixture in the patch.
     private func defaultProofFixture() -> String {
-        rig.fixtures.first(where: { $0.profile.id == "fargo_9ch" })?.name ?? (rig.fixtures.first?.name ?? "Fargo1")
+        rig.fixtures.first(where: { !$0.profile.isProvisional && $0.profile.id != "front_wash" })?.name
+            ?? (rig.fixtures.first?.name ?? "Dalis4")
     }
 
     private func logConfirmChecklist() {
@@ -151,9 +157,10 @@ public final class LightingController {
         lines.append("Network: \(config.network.mode == .unicast ? "unicast → \(config.network.unicastHost)" : "multicast (239.255.x.x)"), port \(config.network.port)")
         let prov = rig.fixtures.filter { $0.profile.isProvisional }.map { $0.name }
         if !prov.isEmpty {
-            lines.append("PROVISIONAL profiles (dark until armed + chart confirmed): \(prov.joined(separator: ", "))")
+            lines.append("PROVISIONAL profiles (dark until armed + mode confirmed on the rig): \(prov.joined(separator: ", "))")
         }
-        lines.append("Fargo channel order is from the brief's patch — VERIFY on the day against the fixture's DMX chart.")
+        lines.append("Patch is the FINAL venue plot (Lighting_Plot/Lions patchv01.pdf): Spiider Mode 3 33ch, T1 Mode 3 53ch (universe 2); Dalis MKII Mode 2 22ch (universe 3); front catwalk dimmers 2–24 (universe 1).")
+        lines.append("On the day: confirm each fixture's PATCHED mode matches the plot, then ARM MOVERS (Spiiders + T1s).")
         return lines
     }
 

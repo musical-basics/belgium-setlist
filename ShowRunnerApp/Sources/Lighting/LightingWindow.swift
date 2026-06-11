@@ -210,11 +210,11 @@ public final class LightingWindowController {
         holdButton.layer?.backgroundColor = (s.hold ? NSColor.systemYellow : NSColor.systemGray).cgColor
 
         if s.hasProvisional {
-            armButton.title = s.armProvisional ? "● MOVERS ARMED" : "ARM MOVERS (Spiider/Dalis)"
+            armButton.title = s.armProvisional ? "● MOVERS ARMED" : "ARM MOVERS (Spiider/T1)"
             armButton.layer?.backgroundColor = (s.armProvisional ? NSColor.systemOrange : NSColor.systemGray).cgColor
             provLabel.stringValue = s.armProvisional
-                ? "⚠︎ Movers ARMED — verify Spiider mode matches the official chart before trusting output."
-                : "Movers disarmed (Spiider/Dalis stay dark until their mode is confirmed)."
+                ? "⚠︎ Movers ARMED — verify the Spiiders are patched Mode 3 (33ch) and T1s Mode 3 (53ch) before trusting output."
+                : "Movers disarmed (Spiiders/T1s stay dark until their patched mode is confirmed)."
             armButton.isHidden = false
             provLabel.isHidden = false
         } else {

@@ -2,7 +2,7 @@ import Foundation
 
 /// The semantic state of one fixture, all normalized to 0…1 (or a neutral default).
 ///
-/// Show logic only ever speaks in these terms — "Fargo1.intensity = 0.8", "Spiider1.pan = 0.5".
+/// Show logic only ever speaks in these terms — "Dalis4.intensity = 0.8", "Spiider1.pan = 0.5".
 /// A `FixtureProfile` translates this into the raw DMX channels for the fixture's confirmed mode.
 /// This is the layer that makes the CONFIRM values changeable in ONE place: when the venue
 /// confirms a different Spiider mode, only that profile's channel map changes — not a single cue.
@@ -21,8 +21,8 @@ public struct FixtureState: Equatable {
     public var tilt: Double = 0.5
     /// Beam zoom, 0…1 (0 = narrow, 1 = wide — direction is normalized in the profile).
     public var zoom: Double = 0.5
-    /// Colour-wheel / colour-macro position, 0…1 (used by fixtures that have a colour channel
-    /// distinct from RGBW, e.g. the Fargo "Color" channel). 0 = no macro (RGBW shows through).
+    /// Colour-wheel / colour-macro position, 0…1 (kept for fixtures with a colour channel
+    /// distinct from RGBW; unused by the current rig). 0 = no macro (RGBW shows through).
     public var colorMacro: Double = 0
 
     public init() {}
@@ -56,7 +56,7 @@ public struct FixtureState: Equatable {
 /// (channel order, channel count, whether the mode exists at all) is captured here so a mode
 /// change is a one-file edit.
 public protocol FixtureProfile {
-    /// Stable identifier used in lighting.json (e.g. "fargo_9ch", "spiider_mode2").
+    /// Stable identifier used in lighting.json (e.g. "spiider_mode3", "dalis_mode2").
     var id: String { get }
     /// Human label for logs / UI.
     var label: String { get }
@@ -80,8 +80,8 @@ public final class ProfileRegistry {
 
     public func profile(id: String) -> FixtureProfile? { profiles[id] }
 
-    /// The default set of profiles for this show's rig.
+    /// The default set of profiles for this show's rig (the FINAL venue plot in Lighting_Plot/).
     public static func standard() -> ProfileRegistry {
-        ProfileRegistry([FargoProfile(), SpiiderMode2Profile(), DalisStubProfile()])
+        ProfileRegistry([SpiiderMode3Profile(), T1Mode3Profile(), DalisMode2Profile(), FrontWashProfile()])
     }
 }

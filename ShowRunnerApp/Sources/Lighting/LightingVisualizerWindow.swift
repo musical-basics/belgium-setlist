@@ -3,8 +3,8 @@ import AppKit
 /// An ABSTRACT stage preview — a "what the hall roughly looks like" visualizer so colour and scale
 /// can be checked at home before the rig exists. It is NOT photoreal and not a renderer of the
 /// real beam optics: it reads the same per-fixture look the engine computes each frame and paints
-/// a front-of-house cartoon — a cyclorama wash (Dalis), front-light pools (Fargos), and aerial
-/// mover beams (Spiiders) — with each fixture's live colour, intensity and zoom/spread.
+/// a front-of-house cartoon — a cyclorama wash (Dalis row), the front-catwalk wash band, and
+/// aerial mover beams (Spiiders + T1s) — with each fixture's live colour, intensity and zoom.
 ///
 /// It is purely a reader: it polls a lock-protected snapshot on the main thread and draws. It never
 /// touches the renderer state or the audio path. Fixtures that are not actually emitting live
@@ -117,21 +117,38 @@ final class StageView: NSView {
         return (NSColor(srgbRed: r, green: g, blue: b, alpha: 1), CGFloat(max(0, min(1, s.intensity))))
     }
 
+    /// Across-stage position (0 = far left … 1 = far right) per fixture, matching the FINAL plot
+    /// (Lighting_Plot/Lions v01.pdf): Spiider pairs at ±2 m (1/2), ±7 m (3/4 and 5/6), ±3 m (7/8);
+    /// T1s upstage-centre. Unknown names fall back to an even spread.
+    private static let plotX: [String: CGFloat] = [
+        "Spiider1": 0.42, "Spiider2": 0.58,
+        "Spiider3": 0.21, "Spiider4": 0.79,
+        "Spiider5": 0.26, "Spiider6": 0.74,
+        "Spiider7": 0.38, "Spiider8": 0.62,
+        "T1L": 0.46, "T1R": 0.54,
+    ]
+    private func mountX(_ v: FixtureVisual, index: Int, count: Int, W: CGFloat) -> CGFloat {
+        let pos = StageView.plotX[v.name] ?? (count <= 1 ? 0.5 : CGFloat(index) / CGFloat(count - 1))
+        return W * (0.16 + 0.68 * pos)
+    }
+
     override func draw(_ dirtyRect: NSRect) {
         let W = bounds.width, H = bounds.height
         guard W > 10, H > 10 else { return }
         NSColor.black.setFill(); bounds.fill()
 
-        let fargos   = visuals.filter { $0.kind == "fargo_9ch" }.sorted { $0.address < $1.address }
-        let spiiders = visuals.filter { $0.kind == "spiider_mode2" }.sorted { $0.address < $1.address }
-        let dalis    = visuals.filter { $0.kind == "dalis_stub" }
+        let fronts   = visuals.filter { $0.kind == "front_wash" }
+        let spiiders = visuals.filter { $0.kind == "spiider_mode3" }.sorted { $0.address < $1.address }
+        let t1s      = visuals.filter { $0.kind == "t1_mode3" }.sorted { $0.address < $1.address }
+        let dalis    = visuals.filter { $0.kind == "dalis_mode2" }.sorted { $0.address < $1.address }
 
         drawCyc(W: W, H: H, dalis: dalis)
         drawFloor(W: W, H: H)
-        for (i, s) in spiiders.enumerated() { drawSpiiderBeam(s, index: i, count: spiiders.count, W: W, H: H) }
-        for (i, f) in fargos.enumerated()   { drawFargoPool(f, index: i, count: fargos.count, W: W, H: H) }
+        for f in fronts { drawFrontWash(f, W: W, H: H) }
+        for (i, s) in spiiders.enumerated() { drawBeam(s, index: i, count: spiiders.count, W: W, H: H, widthScale: 1.0) }
+        for (i, t) in t1s.enumerated()      { drawBeam(t, index: i, count: t1s.count, W: W, H: H, widthScale: 0.55) }
 
-        drawFixtureMarkers(fargos: fargos, spiiders: spiiders, dalis: dalis, W: W, H: H)
+        drawFixtureMarkers(fronts: fronts, spiiders: spiiders, t1s: t1s, dalis: dalis, W: W, H: H)
     }
 
     // The upstage cyclorama, washed by the Dalis fixtures (their intended colours blended).
@@ -158,30 +175,27 @@ final class StageView: NSView {
         NSColor(white: 0.10, alpha: 1).setFill(); NSBezierPath(roundedRect: floor, xRadius: 4, yRadius: 4).fill()
     }
 
-    // Fargo front-light pool: a soft elliptical glow on the stage. Size grows with zoom (beam width).
-    private func drawFargoPool(_ f: FixtureVisual, index: Int, count: Int, W: CGFloat, H: CGFloat) {
-        let (col, bright) = display(f.state)
-        let cx = W * (0.16 + 0.68 * (count <= 1 ? 0.5 : CGFloat(index) / CGFloat(count - 1)))
-        let cy = H * 0.30
-        let rx = W * (0.05 + 0.11 * CGFloat(f.state.zoom))
-        let ry = rx * 0.52
-        let rect = NSRect(x: cx - rx, y: cy - ry, width: rx * 2, height: ry * 2)
-        let a = bright * (f.emitting ? 1.0 : 0.8)
-        if a > 0.01 {
-            let grad = NSGradient(colors: [col.withAlphaComponent(a), col.withAlphaComponent(0)])
-            grad?.draw(in: NSBezierPath(ovalIn: rect), relativeCenterPosition: NSPoint(x: 0, y: 0))
-        }
+    // The front-catwalk wash: one soft warm-white band across the playing area. Brightness is the
+    // single dimmer level all 23 conventionals share.
+    private func drawFrontWash(_ f: FixtureVisual, W: CGFloat, H: CGFloat) {
+        let bright = CGFloat(max(0, min(1, f.state.intensity)))
+        let a = bright * (f.emitting ? 0.85 : 0.6)
+        guard a > 0.01 else { return }
+        let col = NSColor(srgbRed: 1.0, green: 0.93, blue: 0.82, alpha: 1)   // tungsten-ish 2 kW
+        let rect = NSRect(x: 0.10 * W, y: 0.18 * H, width: 0.80 * W, height: 0.20 * H)
+        let grad = NSGradient(colors: [col.withAlphaComponent(a * 0.7), col.withAlphaComponent(0)])
+        grad?.draw(in: NSBezierPath(ovalIn: rect), relativeCenterPosition: .zero)
     }
 
-    // Spiider aerial beam: a translucent cone from the mover (top) toward a target set by pan/tilt.
-    private func drawSpiiderBeam(_ s: FixtureVisual, index: Int, count: Int, W: CGFloat, H: CGFloat) {
+    // Mover aerial beam (Spiider / T1): a translucent cone from the mover (top) toward a target
+    // set by pan/tilt. T1s draw narrower (profile fixture) via `widthScale`.
+    private func drawBeam(_ s: FixtureVisual, index: Int, count: Int, W: CGFloat, H: CGFloat, widthScale: CGFloat) {
         let (col, bright) = display(s.state)
-        let mountX = W * (count <= 1 ? 0.5 : 0.16 + 0.68 * CGFloat(index) / CGFloat(count - 1))
-        let mount = NSPoint(x: mountX, y: H * 0.92)
+        let mount = NSPoint(x: mountX(s, index: index, count: count, W: W), y: H * 0.92)
         // pan → horizontal aim across the stage; tilt → vertical aim (high = toward cyc).
         let tx = W * (0.12 + 0.76 * CGFloat(s.state.pan))
         let ty = H * (0.20 + 0.50 * CGFloat(s.state.tilt))
-        let halfW = W * (0.02 + 0.10 * CGFloat(s.state.zoom))
+        let halfW = W * (0.02 + 0.10 * CGFloat(s.state.zoom)) * widthScale
         // perpendicular spread at the target
         let dx = tx - mount.x, dy = ty - mount.y
         let len = max(1, (dx * dx + dy * dy).squareRoot())
@@ -206,7 +220,7 @@ final class StageView: NSView {
         }
     }
 
-    private func drawFixtureMarkers(fargos: [FixtureVisual], spiiders: [FixtureVisual], dalis: [FixtureVisual], W: CGFloat, H: CGFloat) {
+    private func drawFixtureMarkers(fronts: [FixtureVisual], spiiders: [FixtureVisual], t1s: [FixtureVisual], dalis: [FixtureVisual], W: CGFloat, H: CGFloat) {
         func marker(at p: NSPoint, _ v: FixtureVisual, label: String) {
             let (col, bright) = display(v.state)
             let r: CGFloat = 5
@@ -222,13 +236,14 @@ final class StageView: NSView {
             }
             (label as NSString).draw(at: NSPoint(x: p.x - r, y: p.y - r - 12), withAttributes: labelAttrs)
         }
-        for (i, f) in fargos.enumerated() {
-            let cx = W * (0.16 + 0.68 * (fargos.count <= 1 ? 0.5 : CGFloat(i) / CGFloat(fargos.count - 1)))
-            marker(at: NSPoint(x: cx, y: H * 0.40), f, label: f.name)
+        for f in fronts {
+            marker(at: NSPoint(x: W * 0.5, y: H * 0.14), f, label: f.name)
         }
         for (i, s) in spiiders.enumerated() {
-            let mx = W * (spiiders.count <= 1 ? 0.5 : 0.16 + 0.68 * CGFloat(i) / CGFloat(spiiders.count - 1))
-            marker(at: NSPoint(x: mx, y: H * 0.92), s, label: s.name)
+            marker(at: NSPoint(x: mountX(s, index: i, count: spiiders.count, W: W), y: H * 0.92), s, label: s.name)
+        }
+        for (i, t) in t1s.enumerated() {
+            marker(at: NSPoint(x: mountX(t, index: i, count: t1s.count, W: W), y: H * 0.86), t, label: t.name)
         }
         for (i, d) in dalis.enumerated() {
             let cx = W * (0.18 + 0.64 * (dalis.count <= 1 ? 0.5 : CGFloat(i) / CGFloat(dalis.count - 1)))

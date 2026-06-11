@@ -59,7 +59,7 @@ public struct FixtureTrack: Codable {
 }
 
 /// A full piece's lighting, as data. `fixture` tokens in tracks are resolved by the renderer
-/// against the rig; a track may name a single fixture ("Fargo1") or a group ("Fargos",
+/// against the rig; a track may name a single fixture ("Spiider1") or a group ("T1s",
 /// "Spiiders", "All") so a chase can address many fixtures from one track.
 public struct Timeline: Codable {
     public var piece: String          // piece order, informational

@@ -1,0 +1,50 @@
+{
+  "_README": "Lighting config for ShowRunner — read at launch by the (separate) Lighting module. Editing this file NEVER affects the audio show. Keys starting with _ are notes and are ignored by the app. Set 'enabled' to false to turn lighting off entirely.",
+  "_VENUE": "CC De Factorij (Maupertuis hall), Zaventem. Rider-confirmed fixtures present: 12x Robe Spiider, 28x Fargo Stagepar 19 Pro Zoom MKII, 14x Robert Juliat 860 Dalis MKII (plus 8x Robe Robin Viva CMY, 9x Showtec LED Bar — unused). We patch a subset: 2 Spiider, 4 Fargo, 2 Dalis. DMX is sACN: 8 ceiling looms + 10 floor DMX ports, each assignable to ANY universe — coordinate which physical ports carry universes 1 & 2 with the venue tech.",
+  "_CONFIRM": {
+    "spiider_mode": "Robe Robin Spiider CONFIRMED present (12 at venue). The Mode 2 'Basic' (27ch) channel map in SpiiderMode2Profile.swift is now filled from the OFFICIAL Robe chart v2.3 (verified). Still provisional: confirm the fixture is actually patched in Mode 2 on the day, then tap ARM MOVERS. If it's set to Mode 1/3/4 instead, re-pull that column.",
+    "dalis": "CONFIRMED model: Robert Juliat 860 Dalis MKII (NOT Robe; 14 at venue). DalisStubProfile.swift now implements Mode 3 'Full 1 group 8b' (13ch) from the official RJ manual (verified). Still provisional: confirm the MKII reports 13ch in Mode 3 (SETUP>DMX>PERSONALITY), patch it, then ARM MOVERS.",
+    "sacn_universes": "The two 'universes' numbers below are yours to choose — the venue assigns any DMX port to any universe. Coordinate with the venue tech so universes 1 & 2 reach the Spiider and Fargo/Dalis ports respectively.",
+    "network": "'mode' = 'multicast' (onto the venue sACN lighting LAN, 239.255.x.x) or 'unicast' (to a node IP via 'unicastHost'). The rider uses sACN over the ceiling/floor DMX looms — confirm whether you plug into their lighting network or a node.",
+    "fargo_order": "Fargo Stagepar 19 Pro Zoom MKII, 9ch order (R,G,B,W,Dim,DimFine,Strobe,Color,Zoom) is from the brief's patch — VERIFY on the day against the fixture's DMX chart. If wrong, edit FargoProfile.swift only.",
+    "addresses": "Fixture DMX start addresses per the brief. Re-patch here if the venue assigns different addresses."
+  },
+  "enabled": true,
+  "frameRateHz": 40,
+  "network": {
+    "mode": "multicast",
+    "unicastHost": "",
+    "port": 5568,
+    "sourceName": "ShowRunner Lighting",
+    "cid": "5A6F574D-0000-4000-8000-53484F574C49"
+  },
+  "universes": {
+    "spiider": 1,
+    "fargoDalis": 2
+  },
+  "fixtures": [
+    { "name": "Spiider1", "profile": "spiider_mode2", "universe": "spiider",    "address": 1 },
+    { "name": "Spiider2", "profile": "spiider_mode2", "universe": "spiider",    "address": 28 },
+    { "name": "Fargo1",   "profile": "fargo_9ch",     "universe": "fargoDalis", "address": 1 },
+    { "name": "Fargo2",   "profile": "fargo_9ch",     "universe": "fargoDalis", "address": 10 },
+    { "name": "Fargo3",   "profile": "fargo_9ch",     "universe": "fargoDalis", "address": 19 },
+    { "name": "Fargo4",   "profile": "fargo_9ch",     "universe": "fargoDalis", "address": 28 },
+    { "name": "Dalis1",   "profile": "dalis_stub",    "universe": "fargoDalis", "address": 40 },
+    { "name": "Dalis2",   "profile": "dalis_stub",    "universe": "fargoDalis", "address": 60 }
+  ],
+  "pieces": {
+    "1":  { "template": "solo", "cycColor": [0.10, 0.10, 0.45], "intensity": 0.85 },
+    "2":  { "template": "solo", "cycColor": [0.35, 0.05, 0.30], "intensity": 0.85 },
+    "3":  { "template": "trio", "cycColor": [0.55, 0.30, 0.08], "intensity": 0.90 },
+    "4":  { "template": "edm",  "timeline": "Timelines/torrent.json" },
+    "5":  { "template": "trio", "cycColor": [0.50, 0.10, 0.10], "intensity": 0.90 },
+    "6":  { "template": "edm",  "timeline": "Timelines/canon.json" },
+    "7":  { "template": "solo", "cycColor": [0.20, 0.35, 0.15], "intensity": 0.85 },
+    "8":  { "template": "solo", "cycColor": [0.08, 0.20, 0.45], "intensity": 0.85 },
+    "9":  { "template": "edm",  "timeline": "Timelines/moonlight.json" },
+    "10": { "template": "solo", "cycColor": [0.55, 0.40, 0.05], "intensity": 0.85 },
+    "11": { "template": "trio", "cycColor": [0.25, 0.10, 0.40], "intensity": 0.90 },
+    "12": { "template": "edm",  "timeline": "Timelines/furelise.json" },
+    "E3": { "template": "edm",  "timeline": "Timelines/stilldre.json" }
+  }
+}

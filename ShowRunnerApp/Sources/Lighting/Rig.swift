@@ -63,23 +63,35 @@ public final class Rig {
     public func universeFrames() -> [DMXUniverse] { universeOrder.compactMap { universes[$0] } }
 
     /// Expand a token into the fixtures it addresses.
-    /// Tokens: an exact fixture name, or a group — "All", "Fargos", "Spiiders", "Dalis".
+    /// Tokens: an exact fixture name, a group — "All", "Spiiders", "T1s", "Dalis", "Front" —
+    /// or a "+"-joined list of names/groups (e.g. "Spiider1+Spiider3+Spiider5") so a timeline
+    /// track can drive several fixtures (a mirrored pair, a side stack) from one keyframe list.
     public func expand(_ token: String) -> [Fixture] {
+        if token.contains("+") {
+            var out: [Fixture] = []
+            for part in token.split(separator: "+") {
+                for f in expand(String(part)) where !out.contains(where: { $0.name == f.name }) {
+                    out.append(f)
+                }
+            }
+            return out
+        }
         switch token {
         case "All":      return fixtures
-        case "Fargos":   return fixtures.filter { $0.profile.id == "fargo_9ch" }
-        case "Spiiders": return fixtures.filter { $0.profile.id == "spiider_mode2" }
-        case "Dalis":    return fixtures.filter { $0.profile.id == "dalis_stub" }
+        case "Spiiders": return fixtures.filter { $0.profile.id == "spiider_mode3" }
+        case "T1s":      return fixtures.filter { $0.profile.id == "t1_mode3" }
+        case "Dalis":    return fixtures.filter { $0.profile.id == "dalis_mode2" }
+        case "Front":    return fixtures.filter { $0.profile.id == "front_wash" }
         default:         return fixtures.filter { $0.name == token }
         }
     }
 
     /// Specificity for resolving overlapping tokens — broader groups are applied first so a more
-    /// specific token wins (e.g. "All" then "Fargos" then "Fargo1").
+    /// specific token wins (e.g. "All" then "Spiiders" then "Spiider1").
     private func specificity(_ token: String) -> Int {
         switch token {
         case "All": return 0
-        case "Fargos", "Spiiders", "Dalis": return 1
+        case "Spiiders", "T1s", "Dalis", "Front": return 1
         default: return 2
         }
     }

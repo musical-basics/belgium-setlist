@@ -2,7 +2,8 @@ import Foundation
 
 /// Headless validation of the lighting module: confirms the sACN packet is byte-exact to the
 /// ANSI E1.31 spec, the multicast formula is right, config loads, every fixture resolves to a
-/// profile, and the (confirmed) Fargo profile renders correctly. No network or fixtures needed.
+/// profile, and the plot-final profiles (Spiider Mode 3, T1 Mode 3, Dalis Mode 2, front wash)
+/// render their chart-critical bytes correctly. No network or fixtures needed.
 ///
 /// Returns the number of failures and a human-readable report the host can print.
 public enum LightingSelfTest {
@@ -53,13 +54,44 @@ public enum LightingSelfTest {
         check(&failures, &lines, "data slot 512 at offset 637", pkt[637] == 0xFF)
         sender.closeSocket()
 
-        // --- Fargo profile (confirmed) renders white correctly ---
-        let u = DMXUniverse(number: 2)
+        // --- Profile chart-critical bytes (official Robe/RJ charts; see each profile's header) ---
         var white = FixtureState(); white.white = 1; white.intensity = 1
-        FargoProfile().render(white, into: u, startAddress: 1)
-        // address 4 (white) -> slot index 3; dimmer coarse/fine -> index 4/5
-        check(&failures, &lines, "Fargo white → DMX addr 4 = 255", u.slots[3] == 255)
-        check(&failures, &lines, "Fargo full dimmer → addr 5/6 = 255/255", u.slots[4] == 255 && u.slots[5] == 255)
+
+        // Dalis Mode 2 (22ch, live): 16-bit dimmer at 1/2, cool white at 15/16, response OFF at 21.
+        let uD = DMXUniverse(number: 3)
+        DalisMode2Profile().render(white, into: uD, startAddress: 1)
+        check(&failures, &lines, "Dalis full dimmer → addr 1/2 = 255/255", uD.slots[0] == 255 && uD.slots[1] == 255)
+        check(&failures, &lines, "Dalis white → cool white addr 15 = 255", uD.slots[14] == 255)
+        check(&failures, &lines, "Dalis strobe OFF → addr 19 = 0", uD.slots[18] == 0)
+        check(&failures, &lines, "Dalis response time OFF → addr 21 = 255", uD.slots[20] == 255)
+
+        // Spiider Mode 3 (33ch): shutter ch31 MUST be 32 (open) when not strobing; dimmer ch32.
+        let uS = DMXUniverse(number: 2)
+        SpiiderMode3Profile().render(white, into: uS, startAddress: 1)
+        check(&failures, &lines, "Spiider no-strobe → shutter addr 31 = 32 (open, not 0=closed)", uS.slots[30] == 32)
+        check(&failures, &lines, "Spiider full dimmer → addr 32 = 255", uS.slots[31] == 255)
+        check(&failures, &lines, "Spiider white → addr 14 = 255", uS.slots[13] == 255)
+        check(&failures, &lines, "Spiider power/special addr 6 stays 0", uS.slots[5] == 0)
+        var strobing = white; strobing.strobe = 1
+        SpiiderMode3Profile().render(strobing, into: uS, startAddress: 1)
+        check(&failures, &lines, "Spiider full strobe → shutter addr 31 = 95", uS.slots[30] == 95)
+
+        // T1 Mode 3 (53ch): the non-zero park values that keep the beam neutral + open.
+        let uT = DMXUniverse(number: 2)
+        T1Mode3Profile().render(white, into: uT, startAddress: 1)
+        check(&failures, &lines, "T1 CTO parked neutral → addr 22 = 110 (5600 K)", uT.slots[21] == 110)
+        check(&failures, &lines, "T1 green correction parked → addr 23 = 128", uT.slots[22] == 128)
+        check(&failures, &lines, "T1 no-strobe → shutter addr 51 = 32 (open)", uT.slots[50] == 32)
+        check(&failures, &lines, "T1 full dimmer → addr 52 = 255", uT.slots[51] == 255)
+        check(&failures, &lines, "T1 white lifts all five emitters (R+amber+lime full)",
+              uT.slots[11] == 255 && uT.slots[17] == 255 && uT.slots[19] == 255)
+
+        // Front wash: one level across exactly addresses 2…24.
+        let uF = DMXUniverse(number: 1)
+        var half = FixtureState(); half.intensity = 0.5
+        FrontWashProfile().render(half, into: uF, startAddress: 2)
+        check(&failures, &lines, "Front wash covers addr 2…24 only",
+              uF.slots[0] == 0 && uF.slots[1] == 128 && uF.slots[23] == 128 && uF.slots[24] == 0)
 
         // --- Config loads + fixtures resolve to profiles ---
         let cfg = LightingConfigLoader.load(showRoot: showRoot)
@@ -70,7 +102,7 @@ public enum LightingSelfTest {
         } else {
             fail("config: \(rig.fixtures.count)/\(cfg.fixtures.count) fixtures resolved to profiles")
         }
-        check(&failures, &lines, "provisional fixtures are isolated (Spiider/Dalis)",
+        check(&failures, &lines, "provisional fixtures are isolated (Spiiders/T1s gated by ARM)",
               rig.fixtures.contains { $0.profile.isProvisional })
 
         lines.append(String(repeating: "-", count: 56))

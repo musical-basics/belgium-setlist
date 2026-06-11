@@ -1,13 +1,12 @@
 {
   "_README": "Lighting config for ShowRunner — read at launch by the (separate) Lighting module. Editing this file NEVER affects the audio show. Keys starting with _ are notes and are ignored by the app. Set 'enabled' to false to turn lighting off entirely.",
-  "_VENUE": "CC De Factorij (Maupertuis hall), Zaventem. Rider-confirmed fixtures present: 12x Robe Spiider, 28x Fargo Stagepar 19 Pro Zoom MKII, 14x Robert Juliat 860 Dalis MKII (plus 8x Robe Robin Viva CMY, 9x Showtec LED Bar — unused). We patch a subset: 2 Spiider, 4 Fargo, 2 Dalis. DMX is sACN: 8 ceiling looms + 10 floor DMX ports, each assignable to ANY universe — coordinate which physical ports carry universes 1 & 2 with the venue tech.",
+  "_VENUE": "CC De Factorij (Theaterzaal Maupertuis), Zaventem. This patch is the FINAL venue lighting plot: Lighting_Plot/Lions patchv01.pdf + Lions v01.pdf (drawing 'Lions v01', Bruno Peysmans, 11/6/2026). Universe 1 = front catwalk 2KW dimmers (addr 2–24) + house lights 501–506 + MDG ATMe hazer 509–512 (house/hazer NOT patched here — venue-run). Universe 2 = 8× Robe Spiider Mode 3 33ch + 2× Robe T1 Profile Mode 3 53ch. Universe 3 = 7× Robert Juliat Dalis 860 MKII Mode 2 22ch (plot labels Dalis 4–10, the upstage cyc row). Light network: 192.168.202.0/24, DHCP, protocol sACN.",
+  "_POSITIONS": "From the plot (top view): Spiider1/2 downstage pair at ±2 m; Spiider3/4 wide pair at ±7 m; Spiider5/6 wide pair at ±7 m one batten upstage; Spiider7/8 upstage inner pair at ±3 m; T1L/T1R upstage-centre back-key specials over the piano; Dalis 4–10 one even row washing the cyc. Mirrored pairs: 1↔2, 3↔4, 5↔6, 7↔8 (right pan = 1 − left pan).",
   "_CONFIRM": {
-    "spiider_mode": "Robe Robin Spiider CONFIRMED present (12 at venue). The Mode 2 'Basic' (27ch) channel map in SpiiderMode2Profile.swift is now filled from the OFFICIAL Robe chart v2.3 (verified). Still provisional: confirm the fixture is actually patched in Mode 2 on the day, then tap ARM MOVERS. If it's set to Mode 1/3/4 instead, re-pull that column.",
-    "dalis": "CONFIRMED model: Robert Juliat 860 Dalis MKII (NOT Robe; 14 at venue). DalisStubProfile.swift now implements Mode 3 'Full 1 group 8b' (13ch) from the official RJ manual (verified). Still provisional: confirm the MKII reports 13ch in Mode 3 (SETUP>DMX>PERSONALITY), patch it, then ARM MOVERS.",
-    "sacn_universes": "The two 'universes' numbers below are yours to choose — the venue assigns any DMX port to any universe. Coordinate with the venue tech so universes 1 & 2 reach the Spiider and Fargo/Dalis ports respectively.",
-    "network": "'mode' = 'multicast' (onto the venue sACN lighting LAN, 239.255.x.x) or 'unicast' (to a node IP via 'unicastHost'). The rider uses sACN over the ceiling/floor DMX looms — confirm whether you plug into their lighting network or a node.",
-    "fargo_order": "Fargo Stagepar 19 Pro Zoom MKII, 9ch order (R,G,B,W,Dim,DimFine,Strobe,Color,Zoom) is from the brief's patch — VERIFY on the day against the fixture's DMX chart. If wrong, edit FargoProfile.swift only.",
-    "addresses": "Fixture DMX start addresses per the brief. Re-patch here if the venue assigns different addresses."
+    "modes": "Modes come from the venue's own patch sheet and the profiles are built from the OFFICIAL charts (Robe Spiider chart v2.3 Mode 3; Robe T1 Profile chart v2.1 Mode 3; RJ Dalis 860 manual DN41077600-B Mode 2). Remaining risk is paper vs reality: on the day confirm each fixture's PATCHED mode matches the plot, then tap ARM MOVERS (Spiiders + T1s stay dark until armed). The Dalis profile is live (no arming) — sanity-check its colours at soundcheck.",
+    "network": "'mode' = 'multicast' (onto the venue sACN lighting LAN, 239.255.x.x) or 'unicast' (to a node IP via 'unicastHost'). Venue: light network 192.168.202.0/24 with DHCP, default protocol sACN — multicast should work as-is; coordinate with the venue tech.",
+    "front_catwalk": "Universe 1 addr 2–24 are the venue's 2KW Profile/PC front-catwalk dimmers, driven as ONE level ('FrontWash'). Their focus is the venue's — ask for an even piano-centred front wash.",
+    "hazer": "MDG ATMe on universe 1: 509 heater (always on), 510 pressure, 511 fog on/off, 512 fan. Deliberately NOT patched — agree haze level with the venue tech (the EDM beam looks want haze)."
   },
   "enabled": true,
   "frameRateHz": 40,
@@ -19,18 +18,29 @@
     "cid": "5A6F574D-0000-4000-8000-53484F574C49"
   },
   "universes": {
-    "spiider": 1,
-    "fargoDalis": 2
+    "front": 1,
+    "movers": 2,
+    "dalis": 3
   },
   "fixtures": [
-    { "name": "Spiider1", "profile": "spiider_mode2", "universe": "spiider",    "address": 1 },
-    { "name": "Spiider2", "profile": "spiider_mode2", "universe": "spiider",    "address": 28 },
-    { "name": "Fargo1",   "profile": "fargo_9ch",     "universe": "fargoDalis", "address": 1 },
-    { "name": "Fargo2",   "profile": "fargo_9ch",     "universe": "fargoDalis", "address": 10 },
-    { "name": "Fargo3",   "profile": "fargo_9ch",     "universe": "fargoDalis", "address": 19 },
-    { "name": "Fargo4",   "profile": "fargo_9ch",     "universe": "fargoDalis", "address": 28 },
-    { "name": "Dalis1",   "profile": "dalis_stub",    "universe": "fargoDalis", "address": 40 },
-    { "name": "Dalis2",   "profile": "dalis_stub",    "universe": "fargoDalis", "address": 60 }
+    { "name": "FrontWash", "profile": "front_wash",    "universe": "front",  "address": 2 },
+    { "name": "Spiider1",  "profile": "spiider_mode3", "universe": "movers", "address": 1 },
+    { "name": "Spiider2",  "profile": "spiider_mode3", "universe": "movers", "address": 41 },
+    { "name": "Spiider3",  "profile": "spiider_mode3", "universe": "movers", "address": 81 },
+    { "name": "Spiider4",  "profile": "spiider_mode3", "universe": "movers", "address": 121 },
+    { "name": "Spiider5",  "profile": "spiider_mode3", "universe": "movers", "address": 161 },
+    { "name": "Spiider6",  "profile": "spiider_mode3", "universe": "movers", "address": 201 },
+    { "name": "Spiider7",  "profile": "spiider_mode3", "universe": "movers", "address": 241 },
+    { "name": "Spiider8",  "profile": "spiider_mode3", "universe": "movers", "address": 281 },
+    { "name": "T1L",       "profile": "t1_mode3",      "universe": "movers", "address": 321 },
+    { "name": "T1R",       "profile": "t1_mode3",      "universe": "movers", "address": 381 },
+    { "name": "Dalis4",    "profile": "dalis_mode2",   "universe": "dalis",  "address": 67 },
+    { "name": "Dalis5",    "profile": "dalis_mode2",   "universe": "dalis",  "address": 89 },
+    { "name": "Dalis6",    "profile": "dalis_mode2",   "universe": "dalis",  "address": 111 },
+    { "name": "Dalis7",    "profile": "dalis_mode2",   "universe": "dalis",  "address": 133 },
+    { "name": "Dalis8",    "profile": "dalis_mode2",   "universe": "dalis",  "address": 155 },
+    { "name": "Dalis9",    "profile": "dalis_mode2",   "universe": "dalis",  "address": 177 },
+    { "name": "Dalis10",   "profile": "dalis_mode2",   "universe": "dalis",  "address": 199 }
   ],
   "pieces": {
     "1":  { "template": "solo", "cycColor": [0.10, 0.10, 0.45], "intensity": 0.85 },
