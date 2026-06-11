@@ -275,6 +275,40 @@ If `lighting.json` is missing or partial, the module falls back to the brief's p
 never crashes. The rig also **warns on overlapping DMX addresses or unknown universe roles** (common
 show-day mis-patches).
 
+### The piano anchor — `stage` (last-minute "point the rig at the piano" knob)
+
+This is a piano show, so the **whole mover rig is parametrised on where the piano sits**. Instead of
+re-aiming eight Spiiders + two T1s across every timeline by hand, edit ONE block in `lighting.json`:
+
+```jsonc
+"stage": { "pianoPan": 0.46, "pianoTilt": 0.40, "stretch": 1.0 }
+```
+
+- **`pianoPan` / `pianoTilt`** (0…1, 0.5 = stage centre) — the **root**: where the piano is. The plot
+  puts it centre, slightly left, so `pianoPan` defaults just under 0.5. **If the piano moves on the
+  day, change these two numbers — nothing else.**
+- **`stretch`** — one gain on how far every mover's aim deviates from that root:
+  `finalAim = root + (authoredAim − root) × stretch`, clamped 0…1.
+  - `1.0` = **identity** — the authored timelines/cues play exactly as designed (the safe default).
+  - `< 1` pulls the whole rig **in toward the piano**; `0` = every beam lands on the piano.
+  - `> 1` exaggerates the spread (beams fan wider than authored).
+
+**Scope:** aim (pan/tilt) only — colour, intensity, zoom and the non-movers (FrontWash, Dalis) are
+never touched. It applies to all movers (Spiiders + T1s).
+
+**How to make a last-minute adjustment (no recompile, no code):**
+1. Edit the `stage` block in `lighting.json` (it's plain config, read at launch).
+2. Preview without the rig: `"../ShowRunner.app/Contents/MacOS/ShowRunner" --lighting-preview out.png 6 50.9`
+   (Torrent drop 1 — a wide-fan moment, so the effect is obvious). Lower `stretch`, re-export, compare.
+3. Relaunch the app (or it picks it up on next launch). The live rig **and** the preview focal point
+   both follow — they share the same transform.
+
+**Where the logic lives (don't rewrite it):** the transform is `Rig.applyStageAnchor(_:)` in
+`Sources/Lighting/Rig.swift`, called once per frame from `Renderer.tick()` (after `computeFrame`, so
+cue tracking stays in authored space) and once in `LightingPreview.renderPNG`. The config plumbing is
+`LightingConfig.StageAnchor` in `Sources/Lighting/LightingConfig.swift`. **For a show-day tweak you
+should only ever need to touch the three numbers in `lighting.json` — leave the Swift alone.**
+
 ---
 
 <a name="edm-timelines"></a>

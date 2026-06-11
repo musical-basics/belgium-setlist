@@ -198,7 +198,7 @@ as ONE submaster level. Their focus is the venue's — ask for an even piano-cen
 
 | File | Role |
 |---|---|
-| `lighting.json` | **The patch + per-piece lighting config.** Fixtures (names → profiles → universe roles → addresses), sACN network mode, piece templates. Read at launch; never affects audio. Universe roles: `front`=1, `movers`=2, `dalis`=3 |
+| `lighting.json` | **The patch + per-piece lighting config.** Fixtures (names → profiles → universe roles → addresses), sACN network mode, piece templates, and the **`stage` piano anchor** (see §5.1). Read at launch; never affects audio. Universe roles: `front`=1, `movers`=2, `dalis`=3 |
 | `Timelines/torrent.json` | Piece 6 (Torrent Etude) EDM timeline — **the reference**. 10 tracks: `Front`, `Dalis`, `T1s`, `Spiider1`, `Spiider2`, `Spiider3+Spiider5`, `Spiider4+Spiider6`, `Spiider7`, `Spiider8`. Section times measured from the backing track (see §6) |
 | `Timelines/furelise.json` (7) / `canon.json` (8) / `moonlight.json` (9) / `fourseasons.json` (13) / `stilldre.json` (E3) | The other authored EDM timelines, same 10-track structure, section times measured per §6.x. **Four Seasons** cycles the full season-colour gamut: dawn → SPRING green/blossom (21 s) → SUMMER amber/blazing hot (106.5) → AUTUMN russet (137) → WINTER ice blue/white (196.5, THE 211.2 hit). **Still D.R.E.** is Lakers **purple & gold** (a combo no other piece uses), slow heavy rocking, zero strobe |
 | `Timelines/fantaisie.json` / `prelude.json` / `rollingthunder.json` / `fightforfreedom.json` / `colorsofthesoul.json` / `dreamsofaviolin.json` (10) / `gallop.json` (11) / `beethovenvirus.json` (12) / `sunflowers.json` (E1) / `bumblebee.json` (E2) | Self-driven looping timelines for live (non-audio) pieces — `template: "auto"` runs them on the renderer's own wall clock, seamless loop (t=0 state == t=end state). Briefs: Dreams of a Violin = dreamy magenta+lavender/soft-blue/teal slow rotation; Gallop = earthy blue/green canter (2–3 pan cycles/loop); Beethoven Virus = fiery red/purple/green colliding on phase-offset stacks; Sunflowers = peaceful breathing gold; Bumblebee = will-o'-the-wisp ghost-green/teal narrow darting beams in the dark. None strobe |
@@ -216,6 +216,32 @@ rule) are in `LIGHTING_README.md` §11.
 **Arming model:** Dalis + FrontWash emit immediately. Spiiders + T1s are `isProvisional`
 and stay DARK until the operator confirms the patched modes match the plot and taps
 **ARM MOVERS** in the Lighting window. PROOF OF LIFE targets Dalis 4.
+
+### 5.1 The `stage` piano anchor — point the whole mover rig at the piano in ONE edit
+
+This is a piano show, so the mover rig (8 Spiiders + 2 T1s) is **parametrised on where the piano
+sits** rather than re-aimed by hand in every timeline. One block in `lighting.json`:
+
+```jsonc
+"stage": { "pianoPan": 0.46, "pianoTilt": 0.40, "stretch": 1.0 }
+```
+
+- **`pianoPan` / `pianoTilt`** (0…1, 0.5 = stage centre) — the **root**: where the piano is. Plot
+  puts it centre, slightly left → `pianoPan` just under 0.5. **Piano moves → change these two, done.**
+- **`stretch`** — single gain on each mover's deviation from the root:
+  `finalAim = root + (authoredAim − root) × stretch`, clamped 0…1.
+  `1.0` = **identity / authored looks unchanged** (the default) · `< 1` pulls the rig **in toward the
+  piano** (`0` = every beam on the piano) · `> 1` fans wider than authored.
+- **Scope:** pan/tilt only (all movers); colour, intensity, zoom and FrontWash/Dalis are untouched.
+
+**Last-minute adjustment = a config edit, NOT a code change.** Edit the three numbers, relaunch (or
+preview headless: `--lighting-preview out.png 6 50.9`, Torrent drop 1 — a wide-fan moment so the
+change is obvious). The live rig and the preview focal point share the transform and both follow.
+
+**Don't rewrite the logic** — it already exists and is verified: transform in
+`Rig.applyStageAnchor(_:)` (called from `Renderer.tick()` after `computeFrame`, and from
+`LightingPreview`), config in `LightingConfig.StageAnchor`. Full how-to: `LIGHTING_README.md` §10
+"The piano anchor". For a show-day tweak, **touch only `lighting.json` → `stage`.**
 
 ---
 
