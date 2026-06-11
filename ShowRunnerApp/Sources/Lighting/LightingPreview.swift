@@ -10,7 +10,7 @@ public enum LightingPreview {
         let cfg = LightingConfigLoader.load(showRoot: showRoot)
         let rig = Rig(config: cfg, registry: .standard())
 
-        let map = look(for: pieceOrder, at: seconds, cfg: cfg, rig: rig, showRoot: showRoot)
+        let map = rig.applyStageAnchor(look(for: pieceOrder, at: seconds, cfg: cfg, rig: rig, showRoot: showRoot))
 
         // Show the full intended design (emitting: true) so colour + scale read clearly.
         let visuals = rig.fixtures.map { f in

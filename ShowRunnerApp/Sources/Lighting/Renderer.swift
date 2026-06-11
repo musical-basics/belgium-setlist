@@ -254,7 +254,10 @@ public final class Renderer {
     // MARK: Frame
 
     private func tick() {
-        let map = computeFrame()
+        // Re-aim the movers around the piano root just before output. Done HERE (not in
+        // computeFrame) so `liveMap` / cue tracking stay in authored space and the transform never
+        // compounds across frames; both DMX and the preview snapshot below get the same final map.
+        let map = rig.applyStageAnchor(computeFrame())
         rig.render(map)
         for u in rig.universeFrames() {
             sender.send(universe: u.number, slots: u.slots)

@@ -21,7 +21,12 @@ public final class Rig {
     /// the venue's mode is confirmed and the profile is filled in from the official chart.
     public var armProvisional: Bool = false
 
+    /// The piano "root" + stretch gain this rig is designed around (see `LightingConfig.StageAnchor`).
+    /// Applied to mover aim at output time via `applyStageAnchor(_:)`.
+    public var stage: LightingConfig.StageAnchor
+
     public init(config: LightingConfig, registry: ProfileRegistry, onWarn: (String) -> Void = { _ in }) {
+        self.stage = config.stage
         var fx: [Fixture] = []
         var uniSet: [Int] = []
         for fc in config.fixtures {
@@ -103,6 +108,29 @@ public final class Rig {
         for token in assignments.keys.sorted(by: { specificity($0) < specificity($1) }) {
             guard let state = assignments[token] else { continue }
             for f in expand(token) { out[f.name] = state }
+        }
+        return out
+    }
+
+    /// Re-aim every mover around the piano "root" before output: for each Spiider/T1,
+    /// `finalAim = root + (authoredAim − root) × stretch`, clamped to 0…1 (pan about `pianoPan`,
+    /// tilt about `pianoTilt`). This is the ONE place the design is parameterised on the piano's
+    /// position — both the live renderer and the headless preview pass their per-frame map through
+    /// it. `stretch = 1` is the identity (authored looks unchanged); smaller pulls the whole rig
+    /// toward the piano (0 = every beam on the piano), larger exaggerates the spread. Colour,
+    /// intensity, zoom and the non-mover fixtures (FrontWash, Dalis) are left untouched.
+    public func applyStageAnchor(_ states: [String: FixtureState]) -> [String: FixtureState] {
+        let s = stage
+        if s.stretch == 1.0 { return states }   // identity — skip the work on the default rig
+        func anchored(_ v: Double, about root: Double) -> Double {
+            min(1, max(0, root + (v - root) * s.stretch))
+        }
+        var out = states
+        for f in fixtures where f.profile.id == "spiider_mode3" || f.profile.id == "t1_mode3" {
+            guard var st = out[f.name] else { continue }
+            st.pan = anchored(st.pan, about: s.pianoPan)
+            st.tilt = anchored(st.tilt, about: s.pianoTilt)
+            out[f.name] = st
         }
         return out
     }

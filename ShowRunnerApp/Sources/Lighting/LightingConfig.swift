@@ -171,13 +171,19 @@ public enum LightingConfigLoader {
             }
         }
 
+        let stage = LightingConfig.StageAnchor(
+            pianoPan: f.stage?.pianoPan ?? d.stage.pianoPan,
+            pianoTilt: f.stage?.pianoTilt ?? d.stage.pianoTilt,
+            stretch: f.stage?.stretch ?? d.stage.stretch)
+
         return LightingConfig(
             enabled: f.enabled ?? d.enabled,
             frameRateHz: f.frameRateHz ?? d.frameRateHz,
             network: network,
             universes: f.universes ?? d.universes,
             fixtures: fixtures,
-            pieces: pieces)
+            pieces: pieces,
+            stage: stage)
     }
 
     /// Parse a UUID string into 16 bytes; nil if invalid.
@@ -267,12 +273,17 @@ public enum LightingConfigLoader {
             "E3": edm("Timelines/stilldre.json"),
         ]
 
+        // The piano sits centre, slightly left (plot stage page), beam landing downstage on the
+        // instrument. stretch = 1 → authored looks unchanged; dial down to pull the rig onto the piano.
+        let stage = LightingConfig.StageAnchor(pianoPan: 0.46, pianoTilt: 0.40, stretch: 1.0)
+
         return LightingConfig(
             enabled: true,
             frameRateHz: 40,
             network: network,
             universes: universes,
             fixtures: fixtures,
-            pieces: pieces)
+            pieces: pieces,
+            stage: stage)
     }
 }
