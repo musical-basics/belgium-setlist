@@ -247,6 +247,24 @@ Method (reusable for the other 4 EDM pieces): read the WAV with numpy, 0.25 s ho
 window, normalised band envelopes; drops = the instant the high band opens after a build;
 cuts = full-band collapse to ≈0 within one frame.
 
+### 6.1 Für Elise Nightmare (piece 7) — measured (192.00 s)
+Romantic→nightmare arc. Music in ≈18 s · romantic swell peak ≈35 · cut 37 · groove enters
+57.5 · first full section ≈60 · pull-back 65–75 · rebuild 90–105 · cut 107 · purple
+transition 110–135 · nightmare riser 135–140 · **NIGHTMARE DROP 140.75** · sustained climax
+140–160 (dense bass kicks) · collapse 163 · soft romantic reprise 165–188 · out by 190.
+
+### 6.2 Canon in Dream (piece 8) — measured (291.38 s)
+EDM throughout (no reg/nightmare split). Regal groove in from 0 · accent ≈40 · **DROP 1 at
+67** · heroic section 67–92 · **long quiet "dream" interlude ≈95–170** (backing drops near the
+noise floor — soft ambient, NOT black) · rebuild 170–175 · big heroic build 175–225 ·
+**DROP 2 at 227.5** · climactic drop cluster 235/245/254/262/270/275 · cut 280 · tail 285 · out 291.
+
+### 6.3 Moonlight Sonata Nightmare (piece 9) — measured (180.83 s)
+Reg moonlight→nightmare. Music in 3.25 s · moonlight develops 20–60 · reg climax ≈60–70 ·
+**break (near-silence) ≈75** · purple tension rebuild 80–100 · **NIGHTMARE DROP 101.25**
+(electric) · electric peak ≈115 (high band 0.89) · bass hits 125/135/140 · re-drops **145.25 ·
+155.25 · 164.25** · wind-down 168–176 · out by 180.
+
 ---
 
 ## 7. What a future session still has to do
