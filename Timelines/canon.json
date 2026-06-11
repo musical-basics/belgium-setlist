@@ -1,5 +1,5 @@
 {
-  "_note": "Canon in Dream (piece 8) \u2014 audio-clock EDM, EDM throughout. Regal/orchestral/heroic ORANGE with PURPLE tints (side beams carry the purple via alt colour). Section times from band-split analysis of ShowAudio/Canon in Dream/Backing.wav (291.38 s): groove in 0 \u00b7 accent 40 \u00b7 DROP 1 at 67 \u00b7 heroic 67-92 \u00b7 QUIET DREAM interlude 95-170 (soft purple/orange ambient, not black) \u00b7 rebuild 170-175 \u00b7 big build 175-225 \u00b7 DROP 2 at 227.5 \u00b7 climactic cluster 235/245/254/262/270/275 \u00b7 cut 280 \u00b7 tail 285 \u00b7 out 291. Regal feel = modest strobe, majestic swells, white only on the biggest hits. Mirrored pairs: right pan = 1 - left.",
+  "_note": "Canon in Dream (piece 8) \u2014 audio-clock EDM, EDM throughout. Regal/orchestral/heroic ORANGE with PURPLE tints (purple side beams via alt colour). Times from band-split analysis of ShowAudio/Canon in Dream/Backing.wav (291.38 s): groove 0 \u00b7 accent 40 \u00b7 DROP 1 at 67 \u00b7 heroic 67-92 \u00b7 QUIET DREAM interlude 95-170 (soft purple/orange ambient, not black) \u00b7 rebuild 170-175 \u00b7 build 175-225 \u00b7 DROP 2 at 227.5 \u00b7 climactic cluster 235/245/254/262/270/275 (now strobing cyc+T1+movers) \u00b7 cut 280 \u00b7 out 291. Regal feel kept (modest strobe vs the nightmares). Mirrored pairs: right pan = 1 - left.",
   "piece": "8",
   "template": "edm",
   "durationSeconds": 291.38,
@@ -360,7 +360,8 @@
             "green": 0.4,
             "blue": 0.0,
             "white": 0.15,
-            "intensity": 1.0
+            "intensity": 1.0,
+            "strobe": 0.4
           }
         },
         {
@@ -523,7 +524,8 @@
             "green": 0.66,
             "blue": 0.16,
             "white": 0.2,
-            "intensity": 0.9
+            "intensity": 0.9,
+            "strobe": 0.25
           }
         },
         {
@@ -534,7 +536,8 @@
             "green": 0.4,
             "blue": 0.0,
             "white": 0.2,
-            "intensity": 1.0
+            "intensity": 1.0,
+            "strobe": 0.5
           }
         },
         {
@@ -544,7 +547,8 @@
             "red": 1.0,
             "green": 0.55,
             "blue": 0.1,
-            "intensity": 1.0
+            "intensity": 1.0,
+            "strobe": 0.45
           }
         },
         {
@@ -554,7 +558,8 @@
             "red": 0.97,
             "green": 0.66,
             "blue": 0.16,
-            "intensity": 1.0
+            "intensity": 1.0,
+            "strobe": 0.45
           }
         },
         {
@@ -574,7 +579,8 @@
             "red": 1.0,
             "green": 0.4,
             "blue": 0.0,
-            "intensity": 1.0
+            "intensity": 1.0,
+            "strobe": 0.5
           }
         },
         {
@@ -585,7 +591,8 @@
             "green": 0.66,
             "blue": 0.16,
             "white": 0.15,
-            "intensity": 1.0
+            "intensity": 1.0,
+            "strobe": 0.5
           }
         },
         {
@@ -595,7 +602,8 @@
             "red": 1.0,
             "green": 0.55,
             "blue": 0.1,
-            "intensity": 1.0
+            "intensity": 1.0,
+            "strobe": 0.5
           }
         },
         {
@@ -606,7 +614,8 @@
             "green": 0.66,
             "blue": 0.16,
             "white": 0.35,
-            "intensity": 1.0
+            "intensity": 1.0,
+            "strobe": 0.6
           }
         },
         {
@@ -761,7 +770,8 @@
             "white": 0.15,
             "intensity": 1.0,
             "tilt": 0.35,
-            "zoom": 0.525
+            "zoom": 0.525,
+            "strobe": 0.4
           }
         },
         {
@@ -956,7 +966,8 @@
             "white": 0.2,
             "intensity": 0.9,
             "tilt": 0.35,
-            "zoom": 0.438
+            "zoom": 0.438,
+            "strobe": 0.25
           }
         },
         {
@@ -969,7 +980,8 @@
             "white": 0.2,
             "intensity": 1.0,
             "tilt": 0.35,
-            "zoom": 0.525
+            "zoom": 0.525,
+            "strobe": 0.5
           }
         },
         {
@@ -981,7 +993,8 @@
             "blue": 0.1,
             "intensity": 0.95,
             "tilt": 0.35,
-            "zoom": 0.512
+            "zoom": 0.512,
+            "strobe": 0.45
           }
         },
         {
@@ -993,7 +1006,8 @@
             "blue": 0.16,
             "intensity": 0.95,
             "tilt": 0.35,
-            "zoom": 0.512
+            "zoom": 0.512,
+            "strobe": 0.45
           }
         },
         {
@@ -1017,7 +1031,8 @@
             "blue": 0.0,
             "intensity": 0.95,
             "tilt": 0.35,
-            "zoom": 0.512
+            "zoom": 0.512,
+            "strobe": 0.5
           }
         },
         {
@@ -1030,7 +1045,8 @@
             "white": 0.15,
             "intensity": 1.0,
             "tilt": 0.35,
-            "zoom": 0.52
+            "zoom": 0.52,
+            "strobe": 0.5
           }
         },
         {
@@ -1042,7 +1058,8 @@
             "blue": 0.1,
             "intensity": 0.95,
             "tilt": 0.35,
-            "zoom": 0.512
+            "zoom": 0.512,
+            "strobe": 0.5
           }
         },
         {
@@ -1055,7 +1072,8 @@
             "white": 0.35,
             "intensity": 1.0,
             "tilt": 0.35,
-            "zoom": 0.525
+            "zoom": 0.525,
+            "strobe": 0.6
           }
         },
         {
@@ -1135,23 +1153,8 @@
             "intensity": 1.0,
             "tilt": 0.35,
             "zoom": 0.22,
-            "pan": 0.2,
-            "strobe": 0.35
-          }
-        },
-        {
-          "t": 1.0,
-          "ease": "smooth",
-          "state": {
-            "red": 1.0,
-            "green": 0.4,
-            "blue": 0.0,
-            "white": 0.15,
-            "intensity": 1.0,
-            "tilt": 0.35,
-            "zoom": 0.35,
-            "pan": 0.2,
-            "strobe": 0.0
+            "strobe": 0.4,
+            "pan": 0.2
           }
         },
         {
@@ -1165,23 +1168,8 @@
             "intensity": 1.0,
             "tilt": 0.35,
             "zoom": 0.22,
-            "pan": 0.18,
-            "strobe": 0.45
-          }
-        },
-        {
-          "t": 1.0,
-          "ease": "smooth",
-          "state": {
-            "red": 1.0,
-            "green": 0.4,
-            "blue": 0.0,
-            "white": 0.2,
-            "intensity": 1.0,
-            "tilt": 0.35,
-            "zoom": 0.35,
-            "pan": 0.18,
-            "strobe": 0.0
+            "strobe": 0.5,
+            "pan": 0.18
           }
         },
         {
@@ -1194,22 +1182,8 @@
             "intensity": 1.0,
             "tilt": 0.4,
             "zoom": 0.22,
-            "pan": 0.22,
-            "strobe": 0.4
-          }
-        },
-        {
-          "t": 1.0,
-          "ease": "smooth",
-          "state": {
-            "red": 1.0,
-            "green": 0.55,
-            "blue": 0.1,
-            "intensity": 1.0,
-            "tilt": 0.4,
-            "zoom": 0.35,
-            "pan": 0.22,
-            "strobe": 0.0
+            "strobe": 0.45,
+            "pan": 0.22
           }
         },
         {
@@ -1222,22 +1196,8 @@
             "intensity": 1.0,
             "tilt": 0.38,
             "zoom": 0.22,
-            "pan": 0.2,
-            "strobe": 0.4
-          }
-        },
-        {
-          "t": 1.0,
-          "ease": "smooth",
-          "state": {
-            "red": 0.97,
-            "green": 0.66,
-            "blue": 0.16,
-            "intensity": 1.0,
-            "tilt": 0.38,
-            "zoom": 0.35,
-            "pan": 0.2,
-            "strobe": 0.0
+            "strobe": 0.45,
+            "pan": 0.2
           }
         },
         {
@@ -1250,22 +1210,8 @@
             "intensity": 1.0,
             "tilt": 0.4,
             "zoom": 0.22,
-            "pan": 0.2,
-            "strobe": 0.45
-          }
-        },
-        {
-          "t": 1.0,
-          "ease": "smooth",
-          "state": {
-            "red": 1.0,
-            "green": 0.4,
-            "blue": 0.0,
-            "intensity": 1.0,
-            "tilt": 0.4,
-            "zoom": 0.35,
-            "pan": 0.2,
-            "strobe": 0.0
+            "strobe": 0.5,
+            "pan": 0.2
           }
         },
         {
@@ -1279,23 +1225,8 @@
             "intensity": 1.0,
             "tilt": 0.36,
             "zoom": 0.22,
-            "pan": 0.19,
-            "strobe": 0.45
-          }
-        },
-        {
-          "t": 1.0,
-          "ease": "smooth",
-          "state": {
-            "red": 0.97,
-            "green": 0.66,
-            "blue": 0.16,
-            "white": 0.15,
-            "intensity": 1.0,
-            "tilt": 0.36,
-            "zoom": 0.35,
-            "pan": 0.19,
-            "strobe": 0.0
+            "strobe": 0.5,
+            "pan": 0.19
           }
         },
         {
@@ -1308,22 +1239,8 @@
             "intensity": 1.0,
             "tilt": 0.4,
             "zoom": 0.22,
-            "pan": 0.21,
-            "strobe": 0.45
-          }
-        },
-        {
-          "t": 1.0,
-          "ease": "smooth",
-          "state": {
-            "red": 1.0,
-            "green": 0.55,
-            "blue": 0.1,
-            "intensity": 1.0,
-            "tilt": 0.4,
-            "zoom": 0.35,
-            "pan": 0.21,
-            "strobe": 0.0
+            "strobe": 0.5,
+            "pan": 0.21
           }
         },
         {
@@ -1337,23 +1254,8 @@
             "intensity": 1.0,
             "tilt": 0.34,
             "zoom": 0.22,
-            "pan": 0.18,
-            "strobe": 0.55
-          }
-        },
-        {
-          "t": 1.0,
-          "ease": "smooth",
-          "state": {
-            "red": 0.97,
-            "green": 0.66,
-            "blue": 0.16,
-            "white": 0.35,
-            "intensity": 1.0,
-            "tilt": 0.34,
-            "zoom": 0.35,
-            "pan": 0.18,
-            "strobe": 0.0
+            "strobe": 0.6,
+            "pan": 0.18
           }
         },
         {
@@ -1459,8 +1361,8 @@
             "intensity": 1.0,
             "tilt": 0.35,
             "zoom": 0.9,
-            "pan": 0.2,
-            "strobe": 0.35
+            "strobe": 0.4,
+            "pan": 0.2
           }
         },
         {
@@ -1671,8 +1573,8 @@
             "intensity": 0.9,
             "tilt": 0.78,
             "zoom": 0.55,
-            "pan": 0.21,
-            "strobe": 0.2
+            "strobe": 0.25,
+            "pan": 0.21
           }
         },
         {
@@ -1686,8 +1588,8 @@
             "intensity": 1.0,
             "tilt": 0.35,
             "zoom": 0.9,
-            "pan": 0.18,
-            "strobe": 0.45
+            "strobe": 0.5,
+            "pan": 0.18
           }
         },
         {
@@ -1700,8 +1602,8 @@
             "intensity": 1.0,
             "tilt": 0.4,
             "zoom": 0.85,
-            "pan": 0.22,
-            "strobe": 0.4
+            "strobe": 0.45,
+            "pan": 0.22
           }
         },
         {
@@ -1714,8 +1616,8 @@
             "intensity": 1.0,
             "tilt": 0.38,
             "zoom": 0.85,
-            "pan": 0.2,
-            "strobe": 0.4
+            "strobe": 0.45,
+            "pan": 0.2
           }
         },
         {
@@ -1741,8 +1643,8 @@
             "intensity": 1.0,
             "tilt": 0.4,
             "zoom": 0.85,
-            "pan": 0.2,
-            "strobe": 0.45
+            "strobe": 0.5,
+            "pan": 0.2
           }
         },
         {
@@ -1756,8 +1658,8 @@
             "intensity": 1.0,
             "tilt": 0.36,
             "zoom": 0.88,
-            "pan": 0.19,
-            "strobe": 0.45
+            "strobe": 0.5,
+            "pan": 0.19
           }
         },
         {
@@ -1770,8 +1672,8 @@
             "intensity": 1.0,
             "tilt": 0.4,
             "zoom": 0.85,
-            "pan": 0.21,
-            "strobe": 0.45
+            "strobe": 0.5,
+            "pan": 0.21
           }
         },
         {
@@ -1785,8 +1687,8 @@
             "intensity": 1.0,
             "tilt": 0.34,
             "zoom": 0.9,
-            "pan": 0.18,
-            "strobe": 0.55
+            "strobe": 0.6,
+            "pan": 0.18
           }
         },
         {
@@ -1870,23 +1772,8 @@
             "intensity": 1.0,
             "tilt": 0.35,
             "zoom": 0.22,
-            "pan": 0.8,
-            "strobe": 0.35
-          }
-        },
-        {
-          "t": 1.0,
-          "ease": "smooth",
-          "state": {
-            "red": 1.0,
-            "green": 0.4,
-            "blue": 0.0,
-            "white": 0.15,
-            "intensity": 1.0,
-            "tilt": 0.35,
-            "zoom": 0.35,
-            "pan": 0.8,
-            "strobe": 0.0
+            "strobe": 0.4,
+            "pan": 0.8
           }
         },
         {
@@ -1900,23 +1787,8 @@
             "intensity": 1.0,
             "tilt": 0.35,
             "zoom": 0.22,
-            "pan": 0.82,
-            "strobe": 0.45
-          }
-        },
-        {
-          "t": 1.0,
-          "ease": "smooth",
-          "state": {
-            "red": 1.0,
-            "green": 0.4,
-            "blue": 0.0,
-            "white": 0.2,
-            "intensity": 1.0,
-            "tilt": 0.35,
-            "zoom": 0.35,
-            "pan": 0.82,
-            "strobe": 0.0
+            "strobe": 0.5,
+            "pan": 0.82
           }
         },
         {
@@ -1929,22 +1801,8 @@
             "intensity": 1.0,
             "tilt": 0.4,
             "zoom": 0.22,
-            "pan": 0.78,
-            "strobe": 0.4
-          }
-        },
-        {
-          "t": 1.0,
-          "ease": "smooth",
-          "state": {
-            "red": 1.0,
-            "green": 0.55,
-            "blue": 0.1,
-            "intensity": 1.0,
-            "tilt": 0.4,
-            "zoom": 0.35,
-            "pan": 0.78,
-            "strobe": 0.0
+            "strobe": 0.45,
+            "pan": 0.78
           }
         },
         {
@@ -1957,22 +1815,8 @@
             "intensity": 1.0,
             "tilt": 0.38,
             "zoom": 0.22,
-            "pan": 0.8,
-            "strobe": 0.4
-          }
-        },
-        {
-          "t": 1.0,
-          "ease": "smooth",
-          "state": {
-            "red": 0.97,
-            "green": 0.66,
-            "blue": 0.16,
-            "intensity": 1.0,
-            "tilt": 0.38,
-            "zoom": 0.35,
-            "pan": 0.8,
-            "strobe": 0.0
+            "strobe": 0.45,
+            "pan": 0.8
           }
         },
         {
@@ -1985,22 +1829,8 @@
             "intensity": 1.0,
             "tilt": 0.4,
             "zoom": 0.22,
-            "pan": 0.8,
-            "strobe": 0.45
-          }
-        },
-        {
-          "t": 1.0,
-          "ease": "smooth",
-          "state": {
-            "red": 1.0,
-            "green": 0.4,
-            "blue": 0.0,
-            "intensity": 1.0,
-            "tilt": 0.4,
-            "zoom": 0.35,
-            "pan": 0.8,
-            "strobe": 0.0
+            "strobe": 0.5,
+            "pan": 0.8
           }
         },
         {
@@ -2014,23 +1844,8 @@
             "intensity": 1.0,
             "tilt": 0.36,
             "zoom": 0.22,
-            "pan": 0.81,
-            "strobe": 0.45
-          }
-        },
-        {
-          "t": 1.0,
-          "ease": "smooth",
-          "state": {
-            "red": 0.97,
-            "green": 0.66,
-            "blue": 0.16,
-            "white": 0.15,
-            "intensity": 1.0,
-            "tilt": 0.36,
-            "zoom": 0.35,
-            "pan": 0.81,
-            "strobe": 0.0
+            "strobe": 0.5,
+            "pan": 0.81
           }
         },
         {
@@ -2043,22 +1858,8 @@
             "intensity": 1.0,
             "tilt": 0.4,
             "zoom": 0.22,
-            "pan": 0.79,
-            "strobe": 0.45
-          }
-        },
-        {
-          "t": 1.0,
-          "ease": "smooth",
-          "state": {
-            "red": 1.0,
-            "green": 0.55,
-            "blue": 0.1,
-            "intensity": 1.0,
-            "tilt": 0.4,
-            "zoom": 0.35,
-            "pan": 0.79,
-            "strobe": 0.0
+            "strobe": 0.5,
+            "pan": 0.79
           }
         },
         {
@@ -2072,23 +1873,8 @@
             "intensity": 1.0,
             "tilt": 0.34,
             "zoom": 0.22,
-            "pan": 0.82,
-            "strobe": 0.55
-          }
-        },
-        {
-          "t": 1.0,
-          "ease": "smooth",
-          "state": {
-            "red": 0.97,
-            "green": 0.66,
-            "blue": 0.16,
-            "white": 0.35,
-            "intensity": 1.0,
-            "tilt": 0.34,
-            "zoom": 0.35,
-            "pan": 0.82,
-            "strobe": 0.0
+            "strobe": 0.6,
+            "pan": 0.82
           }
         },
         {
@@ -2194,8 +1980,8 @@
             "intensity": 1.0,
             "tilt": 0.35,
             "zoom": 0.9,
-            "pan": 0.8,
-            "strobe": 0.35
+            "strobe": 0.4,
+            "pan": 0.8
           }
         },
         {
@@ -2406,8 +2192,8 @@
             "intensity": 0.9,
             "tilt": 0.78,
             "zoom": 0.55,
-            "pan": 0.79,
-            "strobe": 0.2
+            "strobe": 0.25,
+            "pan": 0.79
           }
         },
         {
@@ -2421,8 +2207,8 @@
             "intensity": 1.0,
             "tilt": 0.35,
             "zoom": 0.9,
-            "pan": 0.82,
-            "strobe": 0.45
+            "strobe": 0.5,
+            "pan": 0.82
           }
         },
         {
@@ -2435,8 +2221,8 @@
             "intensity": 1.0,
             "tilt": 0.4,
             "zoom": 0.85,
-            "pan": 0.78,
-            "strobe": 0.4
+            "strobe": 0.45,
+            "pan": 0.78
           }
         },
         {
@@ -2449,8 +2235,8 @@
             "intensity": 1.0,
             "tilt": 0.38,
             "zoom": 0.85,
-            "pan": 0.8,
-            "strobe": 0.4
+            "strobe": 0.45,
+            "pan": 0.8
           }
         },
         {
@@ -2476,8 +2262,8 @@
             "intensity": 1.0,
             "tilt": 0.4,
             "zoom": 0.85,
-            "pan": 0.8,
-            "strobe": 0.45
+            "strobe": 0.5,
+            "pan": 0.8
           }
         },
         {
@@ -2491,8 +2277,8 @@
             "intensity": 1.0,
             "tilt": 0.36,
             "zoom": 0.88,
-            "pan": 0.81,
-            "strobe": 0.45
+            "strobe": 0.5,
+            "pan": 0.81
           }
         },
         {
@@ -2505,8 +2291,8 @@
             "intensity": 1.0,
             "tilt": 0.4,
             "zoom": 0.85,
-            "pan": 0.79,
-            "strobe": 0.45
+            "strobe": 0.5,
+            "pan": 0.79
           }
         },
         {
@@ -2520,8 +2306,8 @@
             "intensity": 1.0,
             "tilt": 0.34,
             "zoom": 0.9,
-            "pan": 0.82,
-            "strobe": 0.55
+            "strobe": 0.6,
+            "pan": 0.82
           }
         },
         {
@@ -2605,23 +2391,8 @@
             "intensity": 1.0,
             "tilt": 0.4,
             "zoom": 0.22,
-            "pan": 0.095,
-            "strobe": 0.35
-          }
-        },
-        {
-          "t": 1.0,
-          "ease": "smooth",
-          "state": {
-            "red": 0.45,
-            "green": 0.05,
-            "blue": 0.66,
-            "white": 0.15,
-            "intensity": 1.0,
-            "tilt": 0.4,
-            "zoom": 0.35,
-            "pan": 0.095,
-            "strobe": 0.0
+            "strobe": 0.4,
+            "pan": 0.095
           }
         },
         {
@@ -2635,23 +2406,8 @@
             "intensity": 1.0,
             "tilt": 0.4,
             "zoom": 0.22,
-            "pan": 0.08,
-            "strobe": 0.45
-          }
-        },
-        {
-          "t": 1.0,
-          "ease": "smooth",
-          "state": {
-            "red": 0.45,
-            "green": 0.05,
-            "blue": 0.66,
-            "white": 0.2,
-            "intensity": 1.0,
-            "tilt": 0.4,
-            "zoom": 0.35,
-            "pan": 0.08,
-            "strobe": 0.0
+            "strobe": 0.5,
+            "pan": 0.08
           }
         },
         {
@@ -2664,22 +2420,8 @@
             "intensity": 1.0,
             "tilt": 0.45,
             "zoom": 0.22,
-            "pan": 0.122,
-            "strobe": 0.4
-          }
-        },
-        {
-          "t": 1.0,
-          "ease": "smooth",
-          "state": {
-            "red": 0.6,
-            "green": 0.18,
-            "blue": 0.5,
-            "intensity": 1.0,
-            "tilt": 0.45,
-            "zoom": 0.35,
-            "pan": 0.122,
-            "strobe": 0.0
+            "strobe": 0.45,
+            "pan": 0.122
           }
         },
         {
@@ -2692,22 +2434,8 @@
             "intensity": 1.0,
             "tilt": 0.43,
             "zoom": 0.22,
-            "pan": 0.095,
-            "strobe": 0.4
-          }
-        },
-        {
-          "t": 1.0,
-          "ease": "smooth",
-          "state": {
-            "red": 0.45,
-            "green": 0.05,
-            "blue": 0.66,
-            "intensity": 1.0,
-            "tilt": 0.43,
-            "zoom": 0.35,
-            "pan": 0.095,
-            "strobe": 0.0
+            "strobe": 0.45,
+            "pan": 0.095
           }
         },
         {
@@ -2720,22 +2448,8 @@
             "intensity": 1.0,
             "tilt": 0.45,
             "zoom": 0.22,
-            "pan": 0.095,
-            "strobe": 0.45
-          }
-        },
-        {
-          "t": 1.0,
-          "ease": "smooth",
-          "state": {
-            "red": 0.45,
-            "green": 0.05,
-            "blue": 0.66,
-            "intensity": 1.0,
-            "tilt": 0.45,
-            "zoom": 0.35,
-            "pan": 0.095,
-            "strobe": 0.0
+            "strobe": 0.5,
+            "pan": 0.095
           }
         },
         {
@@ -2749,23 +2463,8 @@
             "intensity": 1.0,
             "tilt": 0.41,
             "zoom": 0.22,
-            "pan": 0.081,
-            "strobe": 0.45
-          }
-        },
-        {
-          "t": 1.0,
-          "ease": "smooth",
-          "state": {
-            "red": 0.6,
-            "green": 0.18,
-            "blue": 0.5,
-            "white": 0.15,
-            "intensity": 1.0,
-            "tilt": 0.41,
-            "zoom": 0.35,
-            "pan": 0.081,
-            "strobe": 0.0
+            "strobe": 0.5,
+            "pan": 0.081
           }
         },
         {
@@ -2778,22 +2477,8 @@
             "intensity": 1.0,
             "tilt": 0.45,
             "zoom": 0.22,
-            "pan": 0.108,
-            "strobe": 0.45
-          }
-        },
-        {
-          "t": 1.0,
-          "ease": "smooth",
-          "state": {
-            "red": 0.45,
-            "green": 0.05,
-            "blue": 0.66,
-            "intensity": 1.0,
-            "tilt": 0.45,
-            "zoom": 0.35,
-            "pan": 0.108,
-            "strobe": 0.0
+            "strobe": 0.5,
+            "pan": 0.108
           }
         },
         {
@@ -2807,23 +2492,8 @@
             "intensity": 1.0,
             "tilt": 0.39,
             "zoom": 0.22,
-            "pan": 0.08,
-            "strobe": 0.55
-          }
-        },
-        {
-          "t": 1.0,
-          "ease": "smooth",
-          "state": {
-            "red": 0.6,
-            "green": 0.18,
-            "blue": 0.5,
-            "white": 0.35,
-            "intensity": 1.0,
-            "tilt": 0.39,
-            "zoom": 0.35,
-            "pan": 0.08,
-            "strobe": 0.0
+            "strobe": 0.6,
+            "pan": 0.08
           }
         },
         {
@@ -2929,8 +2599,8 @@
             "intensity": 1.0,
             "tilt": 0.4,
             "zoom": 0.9,
-            "pan": 0.095,
-            "strobe": 0.35
+            "strobe": 0.4,
+            "pan": 0.095
           }
         },
         {
@@ -3141,8 +2811,8 @@
             "intensity": 0.9,
             "tilt": 0.83,
             "zoom": 0.55,
-            "pan": 0.108,
-            "strobe": 0.2
+            "strobe": 0.25,
+            "pan": 0.108
           }
         },
         {
@@ -3156,8 +2826,8 @@
             "intensity": 1.0,
             "tilt": 0.4,
             "zoom": 0.9,
-            "pan": 0.08,
-            "strobe": 0.45
+            "strobe": 0.5,
+            "pan": 0.08
           }
         },
         {
@@ -3170,8 +2840,8 @@
             "intensity": 1.0,
             "tilt": 0.45,
             "zoom": 0.85,
-            "pan": 0.122,
-            "strobe": 0.4
+            "strobe": 0.45,
+            "pan": 0.122
           }
         },
         {
@@ -3184,8 +2854,8 @@
             "intensity": 1.0,
             "tilt": 0.43,
             "zoom": 0.85,
-            "pan": 0.095,
-            "strobe": 0.4
+            "strobe": 0.45,
+            "pan": 0.095
           }
         },
         {
@@ -3211,8 +2881,8 @@
             "intensity": 1.0,
             "tilt": 0.45,
             "zoom": 0.85,
-            "pan": 0.095,
-            "strobe": 0.45
+            "strobe": 0.5,
+            "pan": 0.095
           }
         },
         {
@@ -3226,8 +2896,8 @@
             "intensity": 1.0,
             "tilt": 0.41,
             "zoom": 0.88,
-            "pan": 0.081,
-            "strobe": 0.45
+            "strobe": 0.5,
+            "pan": 0.081
           }
         },
         {
@@ -3240,8 +2910,8 @@
             "intensity": 1.0,
             "tilt": 0.45,
             "zoom": 0.85,
-            "pan": 0.108,
-            "strobe": 0.45
+            "strobe": 0.5,
+            "pan": 0.108
           }
         },
         {
@@ -3255,8 +2925,8 @@
             "intensity": 1.0,
             "tilt": 0.39,
             "zoom": 0.9,
-            "pan": 0.08,
-            "strobe": 0.55
+            "strobe": 0.6,
+            "pan": 0.08
           }
         },
         {
@@ -3340,23 +3010,8 @@
             "intensity": 1.0,
             "tilt": 0.4,
             "zoom": 0.22,
-            "pan": 0.905,
-            "strobe": 0.35
-          }
-        },
-        {
-          "t": 1.0,
-          "ease": "smooth",
-          "state": {
-            "red": 0.45,
-            "green": 0.05,
-            "blue": 0.66,
-            "white": 0.15,
-            "intensity": 1.0,
-            "tilt": 0.4,
-            "zoom": 0.35,
-            "pan": 0.905,
-            "strobe": 0.0
+            "strobe": 0.4,
+            "pan": 0.905
           }
         },
         {
@@ -3370,23 +3025,8 @@
             "intensity": 1.0,
             "tilt": 0.4,
             "zoom": 0.22,
-            "pan": 0.92,
-            "strobe": 0.45
-          }
-        },
-        {
-          "t": 1.0,
-          "ease": "smooth",
-          "state": {
-            "red": 0.45,
-            "green": 0.05,
-            "blue": 0.66,
-            "white": 0.2,
-            "intensity": 1.0,
-            "tilt": 0.4,
-            "zoom": 0.35,
-            "pan": 0.92,
-            "strobe": 0.0
+            "strobe": 0.5,
+            "pan": 0.92
           }
         },
         {
@@ -3399,22 +3039,8 @@
             "intensity": 1.0,
             "tilt": 0.45,
             "zoom": 0.22,
-            "pan": 0.878,
-            "strobe": 0.4
-          }
-        },
-        {
-          "t": 1.0,
-          "ease": "smooth",
-          "state": {
-            "red": 0.6,
-            "green": 0.18,
-            "blue": 0.5,
-            "intensity": 1.0,
-            "tilt": 0.45,
-            "zoom": 0.35,
-            "pan": 0.878,
-            "strobe": 0.0
+            "strobe": 0.45,
+            "pan": 0.878
           }
         },
         {
@@ -3427,22 +3053,8 @@
             "intensity": 1.0,
             "tilt": 0.43,
             "zoom": 0.22,
-            "pan": 0.905,
-            "strobe": 0.4
-          }
-        },
-        {
-          "t": 1.0,
-          "ease": "smooth",
-          "state": {
-            "red": 0.45,
-            "green": 0.05,
-            "blue": 0.66,
-            "intensity": 1.0,
-            "tilt": 0.43,
-            "zoom": 0.35,
-            "pan": 0.905,
-            "strobe": 0.0
+            "strobe": 0.45,
+            "pan": 0.905
           }
         },
         {
@@ -3455,22 +3067,8 @@
             "intensity": 1.0,
             "tilt": 0.45,
             "zoom": 0.22,
-            "pan": 0.905,
-            "strobe": 0.45
-          }
-        },
-        {
-          "t": 1.0,
-          "ease": "smooth",
-          "state": {
-            "red": 0.45,
-            "green": 0.05,
-            "blue": 0.66,
-            "intensity": 1.0,
-            "tilt": 0.45,
-            "zoom": 0.35,
-            "pan": 0.905,
-            "strobe": 0.0
+            "strobe": 0.5,
+            "pan": 0.905
           }
         },
         {
@@ -3484,23 +3082,8 @@
             "intensity": 1.0,
             "tilt": 0.41,
             "zoom": 0.22,
-            "pan": 0.919,
-            "strobe": 0.45
-          }
-        },
-        {
-          "t": 1.0,
-          "ease": "smooth",
-          "state": {
-            "red": 0.6,
-            "green": 0.18,
-            "blue": 0.5,
-            "white": 0.15,
-            "intensity": 1.0,
-            "tilt": 0.41,
-            "zoom": 0.35,
-            "pan": 0.919,
-            "strobe": 0.0
+            "strobe": 0.5,
+            "pan": 0.919
           }
         },
         {
@@ -3513,22 +3096,8 @@
             "intensity": 1.0,
             "tilt": 0.45,
             "zoom": 0.22,
-            "pan": 0.891,
-            "strobe": 0.45
-          }
-        },
-        {
-          "t": 1.0,
-          "ease": "smooth",
-          "state": {
-            "red": 0.45,
-            "green": 0.05,
-            "blue": 0.66,
-            "intensity": 1.0,
-            "tilt": 0.45,
-            "zoom": 0.35,
-            "pan": 0.891,
-            "strobe": 0.0
+            "strobe": 0.5,
+            "pan": 0.891
           }
         },
         {
@@ -3542,23 +3111,8 @@
             "intensity": 1.0,
             "tilt": 0.39,
             "zoom": 0.22,
-            "pan": 0.92,
-            "strobe": 0.55
-          }
-        },
-        {
-          "t": 1.0,
-          "ease": "smooth",
-          "state": {
-            "red": 0.6,
-            "green": 0.18,
-            "blue": 0.5,
-            "white": 0.35,
-            "intensity": 1.0,
-            "tilt": 0.39,
-            "zoom": 0.35,
-            "pan": 0.92,
-            "strobe": 0.0
+            "strobe": 0.6,
+            "pan": 0.92
           }
         },
         {
@@ -3664,8 +3218,8 @@
             "intensity": 1.0,
             "tilt": 0.4,
             "zoom": 0.9,
-            "pan": 0.905,
-            "strobe": 0.35
+            "strobe": 0.4,
+            "pan": 0.905
           }
         },
         {
@@ -3876,8 +3430,8 @@
             "intensity": 0.9,
             "tilt": 0.83,
             "zoom": 0.55,
-            "pan": 0.891,
-            "strobe": 0.2
+            "strobe": 0.25,
+            "pan": 0.891
           }
         },
         {
@@ -3891,8 +3445,8 @@
             "intensity": 1.0,
             "tilt": 0.4,
             "zoom": 0.9,
-            "pan": 0.92,
-            "strobe": 0.45
+            "strobe": 0.5,
+            "pan": 0.92
           }
         },
         {
@@ -3905,8 +3459,8 @@
             "intensity": 1.0,
             "tilt": 0.45,
             "zoom": 0.85,
-            "pan": 0.878,
-            "strobe": 0.4
+            "strobe": 0.45,
+            "pan": 0.878
           }
         },
         {
@@ -3919,8 +3473,8 @@
             "intensity": 1.0,
             "tilt": 0.43,
             "zoom": 0.85,
-            "pan": 0.905,
-            "strobe": 0.4
+            "strobe": 0.45,
+            "pan": 0.905
           }
         },
         {
@@ -3946,8 +3500,8 @@
             "intensity": 1.0,
             "tilt": 0.45,
             "zoom": 0.85,
-            "pan": 0.905,
-            "strobe": 0.45
+            "strobe": 0.5,
+            "pan": 0.905
           }
         },
         {
@@ -3961,8 +3515,8 @@
             "intensity": 1.0,
             "tilt": 0.41,
             "zoom": 0.88,
-            "pan": 0.919,
-            "strobe": 0.45
+            "strobe": 0.5,
+            "pan": 0.919
           }
         },
         {
@@ -3975,8 +3529,8 @@
             "intensity": 1.0,
             "tilt": 0.45,
             "zoom": 0.85,
-            "pan": 0.891,
-            "strobe": 0.45
+            "strobe": 0.5,
+            "pan": 0.891
           }
         },
         {
@@ -3990,8 +3544,8 @@
             "intensity": 1.0,
             "tilt": 0.39,
             "zoom": 0.9,
-            "pan": 0.92,
-            "strobe": 0.55
+            "strobe": 0.6,
+            "pan": 0.92
           }
         },
         {
@@ -4075,23 +3629,8 @@
             "intensity": 1.0,
             "tilt": 0.45,
             "zoom": 0.22,
-            "pan": 0.29,
-            "strobe": 0.35
-          }
-        },
-        {
-          "t": 1.0,
-          "ease": "smooth",
-          "state": {
-            "red": 0.45,
-            "green": 0.05,
-            "blue": 0.66,
-            "white": 0.15,
-            "intensity": 1.0,
-            "tilt": 0.45,
-            "zoom": 0.35,
-            "pan": 0.29,
-            "strobe": 0.0
+            "strobe": 0.4,
+            "pan": 0.29
           }
         },
         {
@@ -4105,23 +3644,8 @@
             "intensity": 1.0,
             "tilt": 0.45,
             "zoom": 0.22,
-            "pan": 0.276,
-            "strobe": 0.45
-          }
-        },
-        {
-          "t": 1.0,
-          "ease": "smooth",
-          "state": {
-            "red": 0.45,
-            "green": 0.05,
-            "blue": 0.66,
-            "white": 0.2,
-            "intensity": 1.0,
-            "tilt": 0.45,
-            "zoom": 0.35,
-            "pan": 0.276,
-            "strobe": 0.0
+            "strobe": 0.5,
+            "pan": 0.276
           }
         },
         {
@@ -4134,22 +3658,8 @@
             "intensity": 1.0,
             "tilt": 0.5,
             "zoom": 0.22,
-            "pan": 0.304,
-            "strobe": 0.4
-          }
-        },
-        {
-          "t": 1.0,
-          "ease": "smooth",
-          "state": {
-            "red": 0.6,
-            "green": 0.18,
-            "blue": 0.5,
-            "intensity": 1.0,
-            "tilt": 0.5,
-            "zoom": 0.35,
-            "pan": 0.304,
-            "strobe": 0.0
+            "strobe": 0.45,
+            "pan": 0.304
           }
         },
         {
@@ -4162,22 +3672,8 @@
             "intensity": 1.0,
             "tilt": 0.48,
             "zoom": 0.22,
-            "pan": 0.29,
-            "strobe": 0.4
-          }
-        },
-        {
-          "t": 1.0,
-          "ease": "smooth",
-          "state": {
-            "red": 0.45,
-            "green": 0.05,
-            "blue": 0.66,
-            "intensity": 1.0,
-            "tilt": 0.48,
-            "zoom": 0.35,
-            "pan": 0.29,
-            "strobe": 0.0
+            "strobe": 0.45,
+            "pan": 0.29
           }
         },
         {
@@ -4190,22 +3686,8 @@
             "intensity": 1.0,
             "tilt": 0.5,
             "zoom": 0.22,
-            "pan": 0.29,
-            "strobe": 0.45
-          }
-        },
-        {
-          "t": 1.0,
-          "ease": "smooth",
-          "state": {
-            "red": 0.45,
-            "green": 0.05,
-            "blue": 0.66,
-            "intensity": 1.0,
-            "tilt": 0.5,
-            "zoom": 0.35,
-            "pan": 0.29,
-            "strobe": 0.0
+            "strobe": 0.5,
+            "pan": 0.29
           }
         },
         {
@@ -4219,23 +3701,8 @@
             "intensity": 1.0,
             "tilt": 0.46,
             "zoom": 0.22,
-            "pan": 0.283,
-            "strobe": 0.45
-          }
-        },
-        {
-          "t": 1.0,
-          "ease": "smooth",
-          "state": {
-            "red": 0.6,
-            "green": 0.18,
-            "blue": 0.5,
-            "white": 0.15,
-            "intensity": 1.0,
-            "tilt": 0.46,
-            "zoom": 0.35,
-            "pan": 0.283,
-            "strobe": 0.0
+            "strobe": 0.5,
+            "pan": 0.283
           }
         },
         {
@@ -4248,22 +3715,8 @@
             "intensity": 1.0,
             "tilt": 0.5,
             "zoom": 0.22,
-            "pan": 0.297,
-            "strobe": 0.45
-          }
-        },
-        {
-          "t": 1.0,
-          "ease": "smooth",
-          "state": {
-            "red": 0.45,
-            "green": 0.05,
-            "blue": 0.66,
-            "intensity": 1.0,
-            "tilt": 0.5,
-            "zoom": 0.35,
-            "pan": 0.297,
-            "strobe": 0.0
+            "strobe": 0.5,
+            "pan": 0.297
           }
         },
         {
@@ -4277,23 +3730,8 @@
             "intensity": 1.0,
             "tilt": 0.44,
             "zoom": 0.22,
-            "pan": 0.276,
-            "strobe": 0.55
-          }
-        },
-        {
-          "t": 1.0,
-          "ease": "smooth",
-          "state": {
-            "red": 0.6,
-            "green": 0.18,
-            "blue": 0.5,
-            "white": 0.35,
-            "intensity": 1.0,
-            "tilt": 0.44,
-            "zoom": 0.35,
-            "pan": 0.276,
-            "strobe": 0.0
+            "strobe": 0.6,
+            "pan": 0.276
           }
         },
         {
@@ -4399,8 +3837,8 @@
             "intensity": 1.0,
             "tilt": 0.45,
             "zoom": 0.9,
-            "pan": 0.29,
-            "strobe": 0.35
+            "strobe": 0.4,
+            "pan": 0.29
           }
         },
         {
@@ -4611,8 +4049,8 @@
             "intensity": 0.9,
             "tilt": 0.88,
             "zoom": 0.55,
-            "pan": 0.297,
-            "strobe": 0.2
+            "strobe": 0.25,
+            "pan": 0.297
           }
         },
         {
@@ -4626,8 +4064,8 @@
             "intensity": 1.0,
             "tilt": 0.45,
             "zoom": 0.9,
-            "pan": 0.276,
-            "strobe": 0.45
+            "strobe": 0.5,
+            "pan": 0.276
           }
         },
         {
@@ -4640,8 +4078,8 @@
             "intensity": 1.0,
             "tilt": 0.5,
             "zoom": 0.85,
-            "pan": 0.304,
-            "strobe": 0.4
+            "strobe": 0.45,
+            "pan": 0.304
           }
         },
         {
@@ -4654,8 +4092,8 @@
             "intensity": 1.0,
             "tilt": 0.48,
             "zoom": 0.85,
-            "pan": 0.29,
-            "strobe": 0.4
+            "strobe": 0.45,
+            "pan": 0.29
           }
         },
         {
@@ -4681,8 +4119,8 @@
             "intensity": 1.0,
             "tilt": 0.5,
             "zoom": 0.85,
-            "pan": 0.29,
-            "strobe": 0.45
+            "strobe": 0.5,
+            "pan": 0.29
           }
         },
         {
@@ -4696,8 +4134,8 @@
             "intensity": 1.0,
             "tilt": 0.46,
             "zoom": 0.88,
-            "pan": 0.283,
-            "strobe": 0.45
+            "strobe": 0.5,
+            "pan": 0.283
           }
         },
         {
@@ -4710,8 +4148,8 @@
             "intensity": 1.0,
             "tilt": 0.5,
             "zoom": 0.85,
-            "pan": 0.297,
-            "strobe": 0.45
+            "strobe": 0.5,
+            "pan": 0.297
           }
         },
         {
@@ -4725,8 +4163,8 @@
             "intensity": 1.0,
             "tilt": 0.44,
             "zoom": 0.9,
-            "pan": 0.276,
-            "strobe": 0.55
+            "strobe": 0.6,
+            "pan": 0.276
           }
         },
         {
@@ -4810,23 +4248,8 @@
             "intensity": 1.0,
             "tilt": 0.45,
             "zoom": 0.22,
-            "pan": 0.71,
-            "strobe": 0.35
-          }
-        },
-        {
-          "t": 1.0,
-          "ease": "smooth",
-          "state": {
-            "red": 0.45,
-            "green": 0.05,
-            "blue": 0.66,
-            "white": 0.15,
-            "intensity": 1.0,
-            "tilt": 0.45,
-            "zoom": 0.35,
-            "pan": 0.71,
-            "strobe": 0.0
+            "strobe": 0.4,
+            "pan": 0.71
           }
         },
         {
@@ -4840,23 +4263,8 @@
             "intensity": 1.0,
             "tilt": 0.45,
             "zoom": 0.22,
-            "pan": 0.724,
-            "strobe": 0.45
-          }
-        },
-        {
-          "t": 1.0,
-          "ease": "smooth",
-          "state": {
-            "red": 0.45,
-            "green": 0.05,
-            "blue": 0.66,
-            "white": 0.2,
-            "intensity": 1.0,
-            "tilt": 0.45,
-            "zoom": 0.35,
-            "pan": 0.724,
-            "strobe": 0.0
+            "strobe": 0.5,
+            "pan": 0.724
           }
         },
         {
@@ -4869,22 +4277,8 @@
             "intensity": 1.0,
             "tilt": 0.5,
             "zoom": 0.22,
-            "pan": 0.696,
-            "strobe": 0.4
-          }
-        },
-        {
-          "t": 1.0,
-          "ease": "smooth",
-          "state": {
-            "red": 0.6,
-            "green": 0.18,
-            "blue": 0.5,
-            "intensity": 1.0,
-            "tilt": 0.5,
-            "zoom": 0.35,
-            "pan": 0.696,
-            "strobe": 0.0
+            "strobe": 0.45,
+            "pan": 0.696
           }
         },
         {
@@ -4897,22 +4291,8 @@
             "intensity": 1.0,
             "tilt": 0.48,
             "zoom": 0.22,
-            "pan": 0.71,
-            "strobe": 0.4
-          }
-        },
-        {
-          "t": 1.0,
-          "ease": "smooth",
-          "state": {
-            "red": 0.45,
-            "green": 0.05,
-            "blue": 0.66,
-            "intensity": 1.0,
-            "tilt": 0.48,
-            "zoom": 0.35,
-            "pan": 0.71,
-            "strobe": 0.0
+            "strobe": 0.45,
+            "pan": 0.71
           }
         },
         {
@@ -4925,22 +4305,8 @@
             "intensity": 1.0,
             "tilt": 0.5,
             "zoom": 0.22,
-            "pan": 0.71,
-            "strobe": 0.45
-          }
-        },
-        {
-          "t": 1.0,
-          "ease": "smooth",
-          "state": {
-            "red": 0.45,
-            "green": 0.05,
-            "blue": 0.66,
-            "intensity": 1.0,
-            "tilt": 0.5,
-            "zoom": 0.35,
-            "pan": 0.71,
-            "strobe": 0.0
+            "strobe": 0.5,
+            "pan": 0.71
           }
         },
         {
@@ -4954,23 +4320,8 @@
             "intensity": 1.0,
             "tilt": 0.46,
             "zoom": 0.22,
-            "pan": 0.717,
-            "strobe": 0.45
-          }
-        },
-        {
-          "t": 1.0,
-          "ease": "smooth",
-          "state": {
-            "red": 0.6,
-            "green": 0.18,
-            "blue": 0.5,
-            "white": 0.15,
-            "intensity": 1.0,
-            "tilt": 0.46,
-            "zoom": 0.35,
-            "pan": 0.717,
-            "strobe": 0.0
+            "strobe": 0.5,
+            "pan": 0.717
           }
         },
         {
@@ -4983,22 +4334,8 @@
             "intensity": 1.0,
             "tilt": 0.5,
             "zoom": 0.22,
-            "pan": 0.703,
-            "strobe": 0.45
-          }
-        },
-        {
-          "t": 1.0,
-          "ease": "smooth",
-          "state": {
-            "red": 0.45,
-            "green": 0.05,
-            "blue": 0.66,
-            "intensity": 1.0,
-            "tilt": 0.5,
-            "zoom": 0.35,
-            "pan": 0.703,
-            "strobe": 0.0
+            "strobe": 0.5,
+            "pan": 0.703
           }
         },
         {
@@ -5012,23 +4349,8 @@
             "intensity": 1.0,
             "tilt": 0.44,
             "zoom": 0.22,
-            "pan": 0.724,
-            "strobe": 0.55
-          }
-        },
-        {
-          "t": 1.0,
-          "ease": "smooth",
-          "state": {
-            "red": 0.6,
-            "green": 0.18,
-            "blue": 0.5,
-            "white": 0.35,
-            "intensity": 1.0,
-            "tilt": 0.44,
-            "zoom": 0.35,
-            "pan": 0.724,
-            "strobe": 0.0
+            "strobe": 0.6,
+            "pan": 0.724
           }
         },
         {
@@ -5134,8 +4456,8 @@
             "intensity": 1.0,
             "tilt": 0.45,
             "zoom": 0.9,
-            "pan": 0.71,
-            "strobe": 0.35
+            "strobe": 0.4,
+            "pan": 0.71
           }
         },
         {
@@ -5346,8 +4668,8 @@
             "intensity": 0.9,
             "tilt": 0.88,
             "zoom": 0.55,
-            "pan": 0.703,
-            "strobe": 0.2
+            "strobe": 0.25,
+            "pan": 0.703
           }
         },
         {
@@ -5361,8 +4683,8 @@
             "intensity": 1.0,
             "tilt": 0.45,
             "zoom": 0.9,
-            "pan": 0.724,
-            "strobe": 0.45
+            "strobe": 0.5,
+            "pan": 0.724
           }
         },
         {
@@ -5375,8 +4697,8 @@
             "intensity": 1.0,
             "tilt": 0.5,
             "zoom": 0.85,
-            "pan": 0.696,
-            "strobe": 0.4
+            "strobe": 0.45,
+            "pan": 0.696
           }
         },
         {
@@ -5389,8 +4711,8 @@
             "intensity": 1.0,
             "tilt": 0.48,
             "zoom": 0.85,
-            "pan": 0.71,
-            "strobe": 0.4
+            "strobe": 0.45,
+            "pan": 0.71
           }
         },
         {
@@ -5416,8 +4738,8 @@
             "intensity": 1.0,
             "tilt": 0.5,
             "zoom": 0.85,
-            "pan": 0.71,
-            "strobe": 0.45
+            "strobe": 0.5,
+            "pan": 0.71
           }
         },
         {
@@ -5431,8 +4753,8 @@
             "intensity": 1.0,
             "tilt": 0.46,
             "zoom": 0.88,
-            "pan": 0.717,
-            "strobe": 0.45
+            "strobe": 0.5,
+            "pan": 0.717
           }
         },
         {
@@ -5445,8 +4767,8 @@
             "intensity": 1.0,
             "tilt": 0.5,
             "zoom": 0.85,
-            "pan": 0.703,
-            "strobe": 0.45
+            "strobe": 0.5,
+            "pan": 0.703
           }
         },
         {
@@ -5460,8 +4782,8 @@
             "intensity": 1.0,
             "tilt": 0.44,
             "zoom": 0.9,
-            "pan": 0.724,
-            "strobe": 0.55
+            "strobe": 0.6,
+            "pan": 0.724
           }
         },
         {
