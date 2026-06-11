@@ -157,6 +157,7 @@ final class AppController: NSObject, OperatorWindowDelegate {
         lighting = LightingBridge(engine: audioEngine, showRoot: root)
         lighting?.start()
         operatorController.setLightingWindowsAvailable(lighting?.isActive ?? false)
+        refreshArmButton()
         // ---------------------------------------------------------------------------------------
 
         // Phone web remote (separate, fail-safe): serves a control page the operator's phone
@@ -633,6 +634,7 @@ final class AppController: NSObject, OperatorWindowDelegate {
         if remoteInfoTick >= 50 {   // every ~5s: cheap, and tracks network hops
             remoteInfoTick = 0
             refreshRemoteInfo()
+            refreshArmButton()   // keep in sync if armed/disarmed from the Lighting window or phone
         }
         guard let pi = playingIndex, pi < pieces.count, let pre = pieces[pi].premix else { return }
         let rate = pre.sampleRate > 0 ? pre.sampleRate : audioEngine.sampleRate
@@ -757,6 +759,9 @@ final class AppController: NSObject, OperatorWindowDelegate {
         if wasPlaying { stop() }
         let rate = config.engineSampleRate ?? 48000
         audioEngine.configure(device: dev, requestedRate: rate)
+        // Remember the chosen interface so it's reselected automatically next launch.
+        config.audioDeviceName = dev.name
+        scheduleSave()
         applyRoutingFromConfig()
         reloadAudio()
         refreshChannelPopups()
@@ -780,6 +785,17 @@ final class AppController: NSObject, OperatorWindowDelegate {
         audioEngine.setRouting(backing: audioEngine.backingChannels, click: pairs[index])
         config.clickChannels = [pairs[index].0 + 1, pairs[index].1 + 1]
         updateStatus()
+    }
+
+    func operatorDidToggleArmMovers() {
+        lighting?.toggleArmMovers()
+        refreshArmButton()
+    }
+
+    /// Push the lighting module's arm state onto the dashboard ARM MOVERS button.
+    private func refreshArmButton() {
+        operatorController.setArmMovers(available: lighting?.moversArmable ?? false,
+                                        armed: lighting?.moversArmed ?? false)
     }
 
     func operatorDidChangeDisplay(index: Int) {

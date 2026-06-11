@@ -223,6 +223,7 @@ protocol OperatorWindowDelegate: AnyObject {
     func operatorDidSetPieceBacking(db: Double)
     func operatorDidSetPieceClick(db: Double)
     func operatorDidSeek(toFraction fraction: Double)
+    func operatorDidToggleArmMovers()
 }
 
 /// The operator's control window: running order, GO/STOP, device + display pickers, elapsed time.
@@ -247,6 +248,7 @@ final class OperatorWindowController {
     private let statusLabel = NSTextField(labelWithString: "")
     private let listStack = NSStackView()
     private let scrollView = NSScrollView()
+    private let armMoversButton = NSButton(title: "ARM MOVERS", target: nil, action: nil)
     private let goButton = NSButton(title: "GO  (on-deck)", target: nil, action: nil)
     private let playPauseButton = NSButton(title: "▶  PLAY  (Space)", target: nil, action: nil)
     private let stopButton = NSButton(title: "STOP / PANIC  (Esc)", target: nil, action: nil)
@@ -336,6 +338,7 @@ final class OperatorWindowController {
         configureButton(goButton, color: .systemGreen, action: #selector(goPressed))
         configureButton(playPauseButton, color: .systemGreen, action: #selector(playPausePressed))
         configureButton(stopButton, color: .systemRed, action: #selector(stopPressed))
+        configureArmButton()
         configureCloseButton()
         configureShowButton(showAudienceButton, action: #selector(showAudiencePressed))
         configureShowButton(showLightingButton, action: #selector(showLightingPressed))
@@ -366,6 +369,23 @@ final class OperatorWindowController {
         b.action = action
         b.translatesAutoresizingMaskIntoConstraints = false
         b.heightAnchor.constraint(equalToConstant: 28).isActive = true
+    }
+
+    /// ARM MOVERS toggle on the main dashboard — mirrors the Lighting window / phone-remote button.
+    /// Hidden until lighting reports armable provisional movers; orange + filled dot when armed.
+    private func configureArmButton() {
+        armMoversButton.bezelStyle = .regularSquare
+        armMoversButton.font = .systemFont(ofSize: 16, weight: .bold)
+        armMoversButton.target = self
+        armMoversButton.action = #selector(armMoversPressed)
+        armMoversButton.wantsLayer = true
+        armMoversButton.contentTintColor = .white
+        armMoversButton.layer?.cornerRadius = 8
+        armMoversButton.translatesAutoresizingMaskIntoConstraints = false
+        armMoversButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
+        armMoversButton.toolTip = "Arm the provisional movers (Spiiders + T1s). Confirm each fixture's patched mode matches the plot first."
+        armMoversButton.isHidden = true
+        updateArmButtonAppearance(armed: false)
     }
 
     private func configureCloseButton() {
@@ -512,7 +532,7 @@ final class OperatorWindowController {
             d.widthAnchor.constraint(greaterThanOrEqualToConstant: 58).isActive = true
         }
 
-        let footer = NSStackView(views: [onDeckRow, nowPlayingLabel, timeRow, scrubSlider, mixer, transport])
+        let footer = NSStackView(views: [onDeckRow, nowPlayingLabel, timeRow, scrubSlider, mixer, armMoversButton, transport])
         footer.orientation = .vertical
         footer.alignment = .leading
         footer.spacing = 10
@@ -552,6 +572,8 @@ final class OperatorWindowController {
             scrubSlider.trailingAnchor.constraint(equalTo: footer.trailingAnchor),
             mixer.leadingAnchor.constraint(equalTo: footer.leadingAnchor),
             mixer.trailingAnchor.constraint(equalTo: footer.trailingAnchor),
+            armMoversButton.leadingAnchor.constraint(equalTo: footer.leadingAnchor),
+            armMoversButton.trailingAnchor.constraint(equalTo: footer.trailingAnchor),
         ])
     }
 
@@ -659,6 +681,19 @@ final class OperatorWindowController {
         showPreviewButton.isEnabled = available
     }
 
+    /// Reflect the lighting module's ARM MOVERS state on the dashboard button (mirrors the phone
+    /// remote): hidden when there are no armable provisional movers, orange/filled when armed.
+    func setArmMovers(available: Bool, armed: Bool) {
+        armMoversButton.isHidden = !available
+        updateArmButtonAppearance(armed: armed)
+    }
+
+    private func updateArmButtonAppearance(armed: Bool) {
+        armMoversButton.title = armed ? "●  MOVERS ARMED" : "ARM MOVERS"
+        armMoversButton.layer?.backgroundColor =
+            (armed ? NSColor.systemOrange : NSColor.systemGray.withAlphaComponent(0.55)).cgColor
+    }
+
     // Read-backs so the phone remote mirrors EXACTLY what the operator window shows.
     var onDeckText: String { onDeckLabel.stringValue }
     var nowPlayingText: String { nowPlayingLabel.stringValue }
@@ -700,6 +735,7 @@ final class OperatorWindowController {
     @objc private func goPressed() { delegate?.operatorDidPressGo() }
     @objc private func playPausePressed() { delegate?.operatorDidPressPlayPause() }
     @objc private func stopPressed() { delegate?.operatorDidPressStop() }
+    @objc private func armMoversPressed() { delegate?.operatorDidToggleArmMovers() }
     @objc private func closeApplicationPressed() { delegate?.operatorDidPressCloseApplication() }
     @objc private func toggleSetupTapped() {
         setupStack.isHidden.toggle()
