@@ -20,6 +20,15 @@ click to outs 3·4 per piece, and shows a full-screen title card on the projecto
   subfolder too — they must match the `folder` value exactly or audio won't load.
 - Human-facing schedule docs: `Concert Schedule.md` and `Lighting & Video Cues.md`.
 
+## Lighting
+- **Read `VENUE_LIGHTING_REFERENCE.md` before touching lighting.** It has the venue's full
+  fixture inventory, the FINAL patch (from `Lighting_Plot/`), every DMX channel map already
+  verified against the official manufacturer charts (with the gotchas: Robe shutter open=32,
+  inverted zoom, T1 CTO park=110…), the config-file map, and the measured Torrent section
+  times. Don't re-research any of it.
+- Engine architecture/controls/commands: `LIGHTING_README.md`. Patch + per-piece config:
+  `lighting.json`. EDM timelines: `Timelines/*.json` (only `torrent.json` authored so far).
+
 ## Before risky edits
 - Back up files you rewrite into `backup/` first.
 - Legacy/unused: the QLab AppleScripts in `_Show Assets/` and the `Belgium Concert Setlist
