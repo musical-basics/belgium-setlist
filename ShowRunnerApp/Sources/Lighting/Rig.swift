@@ -121,7 +121,7 @@ public final class Rig {
     /// intensity, zoom and the non-mover fixtures (FrontWash, Dalis) are left untouched.
     public func applyStageAnchor(_ states: [String: FixtureState]) -> [String: FixtureState] {
         let s = stage
-        if s.stretch == 1.0 { return states }   // identity — skip the work on the default rig
+        if s.stretch == 1.0 && !s.invertTilt { return states }   // identity — skip the work on the default rig
         func anchored(_ v: Double, about root: Double) -> Double {
             min(1, max(0, root + (v - root) * s.stretch))
         }
@@ -129,7 +129,9 @@ public final class Rig {
         for f in fixtures where f.profile.id == "spiider_mode3" || f.profile.id == "t1_mode3" {
             guard var st = out[f.name] else { continue }
             st.pan = anchored(st.pan, about: s.pianoPan)
-            st.tilt = anchored(st.tilt, about: s.pianoTilt)
+            var tilt = anchored(st.tilt, about: s.pianoTilt)
+            if s.invertTilt { tilt = 1 - tilt }   // rig hangs inverted: flip beam from upstage to the piano up front
+            st.tilt = tilt
             out[f.name] = st
         }
         return out

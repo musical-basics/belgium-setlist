@@ -27,6 +27,9 @@ public struct LightingConfig {
         public var pianoPan: Double    // 0…1 across the stage (0.5 = centre); plot: centre, slightly left
         public var pianoTilt: Double   // 0…1; the tilt that lands a mover beam on the piano
         public var stretch: Double     // gain on every mover's deviation-from-root (1 = authored, 0 = all on piano)
+        public var invertTilt: Bool    // flip every mover's tilt about mechanical centre (tilt → 1−tilt) when the
+                                       // rig hangs inverted vs the authored convention (high = toward cyc). Brings
+                                       // beams that pointed upstage down onto the piano at the front. Applied AFTER stretch.
     }
 
     public struct ResolvedNetwork {
@@ -84,6 +87,7 @@ private struct LightingConfigFile: Codable {
         var pianoPan: Double?
         var pianoTilt: Double?
         var stretch: Double?
+        var invertTilt: Bool?
     }
     struct NetworkFile: Codable {
         var mode: String?
@@ -174,7 +178,8 @@ public enum LightingConfigLoader {
         let stage = LightingConfig.StageAnchor(
             pianoPan: f.stage?.pianoPan ?? d.stage.pianoPan,
             pianoTilt: f.stage?.pianoTilt ?? d.stage.pianoTilt,
-            stretch: f.stage?.stretch ?? d.stage.stretch)
+            stretch: f.stage?.stretch ?? d.stage.stretch,
+            invertTilt: f.stage?.invertTilt ?? d.stage.invertTilt)
 
         return LightingConfig(
             enabled: f.enabled ?? d.enabled,
@@ -276,7 +281,7 @@ public enum LightingConfigLoader {
 
         // The piano sits centre, slightly left (plot stage page), beam landing downstage on the
         // instrument. stretch = 1 → authored looks unchanged; dial down to pull the rig onto the piano.
-        let stage = LightingConfig.StageAnchor(pianoPan: 0.46, pianoTilt: 0.40, stretch: 1.0)
+        let stage = LightingConfig.StageAnchor(pianoPan: 0.46, pianoTilt: 0.40, stretch: 1.0, invertTilt: true)
 
         return LightingConfig(
             enabled: true,
