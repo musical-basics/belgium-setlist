@@ -58,13 +58,13 @@
     "9A": { "template": "auto", "timeline": "Timelines/moonlight_solo.json", "cycColor": [0.08, 0.14, 0.55], "intensity": 0.85 },
     "9B": { "template": "edm",  "timeline": "Timelines/moonlight.json" },
     "S3": { "template": "solo", "cycColor": [0.45, 0.30, 0.12], "intensity": 0.75 },
-    "10": { "template": "trio", "cycColor": [0.25, 0.10, 0.40], "intensity": 0.90 },
-    "11": { "template": "trio", "cycColor": [0.55, 0.30, 0.08], "intensity": 0.90 },
-    "12": { "template": "trio", "cycColor": [0.50, 0.10, 0.10], "intensity": 0.90 },
+    "10": { "template": "auto", "timeline": "Timelines/dreamsofaviolin.json", "cycColor": [0.25, 0.10, 0.40], "intensity": 0.90 },
+    "11": { "template": "auto", "timeline": "Timelines/gallop.json", "cycColor": [0.15, 0.45, 0.30], "intensity": 0.90 },
+    "12": { "template": "auto", "timeline": "Timelines/beethovenvirus.json", "cycColor": [0.50, 0.10, 0.10], "intensity": 0.90 },
     "S4": { "template": "solo", "cycColor": [0.45, 0.30, 0.12], "intensity": 0.75 },
     "13": { "template": "edm",  "timeline": "Timelines/fourseasons.json" },
-    "E1": { "template": "solo", "cycColor": [0.55, 0.40, 0.05], "intensity": 0.85 },
-    "E2": { "template": "solo", "cycColor": [0.35, 0.45, 0.08], "intensity": 0.90 },
+    "E1": { "template": "auto", "timeline": "Timelines/sunflowers.json", "cycColor": [0.55, 0.40, 0.05], "intensity": 0.85 },
+    "E2": { "template": "auto", "timeline": "Timelines/bumblebee.json", "cycColor": [0.20, 0.55, 0.40], "intensity": 0.90 },
     "E3": { "template": "edm",  "timeline": "Timelines/stilldre.json" }
   }
 }

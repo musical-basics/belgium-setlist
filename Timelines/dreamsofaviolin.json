@@ -1,0 +1,1231 @@
+{
+  "_note": "Dreams of a Violin (piece 10) \u2014 SELF-DRIVEN looping 'auto' timeline (live duet; seamless loop t=0/100). Brief: DREAMY, BEAUTIFUL, MESMERIZING \u2014 MAGENTA plus companions (lavender, soft blue, dream teal, rose). Slow hypnotic rotating sweeps (one full pan cycle per loop, stacks phase-offset so colours interleave and the stage slowly 'turns'), gentle breathing intensity, soft wide zooms, warm front so both players read. No strobe. Spiiders/T1s emit only after ARM MOVERS. Mirrored pairs: right pan = 1 - left.",
+  "piece": "10",
+  "template": "auto",
+  "loop": true,
+  "durationSeconds": 100.0,
+  "tracks": [
+    {
+      "fixture": "Front",
+      "keyframes": [
+        {
+          "t": 0,
+          "ease": "smooth",
+          "state": {
+            "intensity": 0.45
+          }
+        },
+        {
+          "t": 10,
+          "ease": "smooth",
+          "state": {
+            "intensity": 0.479
+          }
+        },
+        {
+          "t": 20,
+          "ease": "smooth",
+          "state": {
+            "intensity": 0.498
+          }
+        },
+        {
+          "t": 30,
+          "ease": "smooth",
+          "state": {
+            "intensity": 0.498
+          }
+        },
+        {
+          "t": 40,
+          "ease": "smooth",
+          "state": {
+            "intensity": 0.479
+          }
+        },
+        {
+          "t": 50,
+          "ease": "smooth",
+          "state": {
+            "intensity": 0.45
+          }
+        },
+        {
+          "t": 60,
+          "ease": "smooth",
+          "state": {
+            "intensity": 0.421
+          }
+        },
+        {
+          "t": 70,
+          "ease": "smooth",
+          "state": {
+            "intensity": 0.402
+          }
+        },
+        {
+          "t": 80,
+          "ease": "smooth",
+          "state": {
+            "intensity": 0.402
+          }
+        },
+        {
+          "t": 90,
+          "ease": "smooth",
+          "state": {
+            "intensity": 0.421
+          }
+        },
+        {
+          "t": 100,
+          "ease": "smooth",
+          "state": {
+            "intensity": 0.45
+          }
+        }
+      ]
+    },
+    {
+      "fixture": "Dalis",
+      "keyframes": [
+        {
+          "t": 0,
+          "ease": "smooth",
+          "state": {
+            "red": 0.95,
+            "green": 0.1,
+            "blue": 0.55,
+            "intensity": 0.597
+          }
+        },
+        {
+          "t": 10,
+          "ease": "smooth",
+          "state": {
+            "red": 0.65,
+            "green": 0.35,
+            "blue": 0.85,
+            "intensity": 0.646
+          }
+        },
+        {
+          "t": 20,
+          "ease": "smooth",
+          "state": {
+            "red": 0.3,
+            "green": 0.4,
+            "blue": 0.9,
+            "intensity": 0.639
+          }
+        },
+        {
+          "t": 30,
+          "ease": "smooth",
+          "state": {
+            "red": 0.2,
+            "green": 0.65,
+            "blue": 0.7,
+            "intensity": 0.579
+          }
+        },
+        {
+          "t": 40,
+          "ease": "smooth",
+          "state": {
+            "red": 0.9,
+            "green": 0.3,
+            "blue": 0.6,
+            "intensity": 0.489
+          }
+        },
+        {
+          "t": 50,
+          "ease": "smooth",
+          "state": {
+            "red": 0.75,
+            "green": 0.2,
+            "blue": 0.8,
+            "intensity": 0.403
+          }
+        },
+        {
+          "t": 60,
+          "ease": "smooth",
+          "state": {
+            "red": 0.85,
+            "green": 0.12,
+            "blue": 0.5,
+            "intensity": 0.354
+          }
+        },
+        {
+          "t": 70,
+          "ease": "smooth",
+          "state": {
+            "red": 0.45,
+            "green": 0.3,
+            "blue": 0.9,
+            "intensity": 0.361
+          }
+        },
+        {
+          "t": 80,
+          "ease": "smooth",
+          "state": {
+            "red": 0.95,
+            "green": 0.1,
+            "blue": 0.55,
+            "intensity": 0.421
+          }
+        },
+        {
+          "t": 90,
+          "ease": "smooth",
+          "state": {
+            "red": 0.65,
+            "green": 0.35,
+            "blue": 0.85,
+            "intensity": 0.511
+          }
+        },
+        {
+          "t": 100,
+          "ease": "smooth",
+          "state": {
+            "red": 0.95,
+            "green": 0.1,
+            "blue": 0.55,
+            "intensity": 0.597
+          }
+        }
+      ]
+    },
+    {
+      "fixture": "T1s",
+      "keyframes": [
+        {
+          "t": 0,
+          "ease": "smooth",
+          "state": {
+            "red": 0.95,
+            "green": 0.1,
+            "blue": 0.55,
+            "intensity": 0.668,
+            "tilt": 0.35,
+            "zoom": 0.415
+          }
+        },
+        {
+          "t": 10,
+          "ease": "smooth",
+          "state": {
+            "red": 0.65,
+            "green": 0.35,
+            "blue": 0.85,
+            "intensity": 0.658,
+            "tilt": 0.35,
+            "zoom": 0.44
+          }
+        },
+        {
+          "t": 20,
+          "ease": "smooth",
+          "state": {
+            "red": 0.3,
+            "green": 0.4,
+            "blue": 0.9,
+            "intensity": 0.606,
+            "tilt": 0.35,
+            "zoom": 0.45
+          }
+        },
+        {
+          "t": 30,
+          "ease": "smooth",
+          "state": {
+            "red": 0.2,
+            "green": 0.65,
+            "blue": 0.7,
+            "intensity": 0.533,
+            "tilt": 0.35,
+            "zoom": 0.441
+          }
+        },
+        {
+          "t": 40,
+          "ease": "smooth",
+          "state": {
+            "red": 0.9,
+            "green": 0.3,
+            "blue": 0.6,
+            "intensity": 0.466,
+            "tilt": 0.35,
+            "zoom": 0.416
+          }
+        },
+        {
+          "t": 50,
+          "ease": "smooth",
+          "state": {
+            "red": 0.75,
+            "green": 0.2,
+            "blue": 0.8,
+            "intensity": 0.432,
+            "tilt": 0.35,
+            "zoom": 0.385
+          }
+        },
+        {
+          "t": 60,
+          "ease": "smooth",
+          "state": {
+            "red": 0.85,
+            "green": 0.12,
+            "blue": 0.5,
+            "intensity": 0.442,
+            "tilt": 0.35,
+            "zoom": 0.36
+          }
+        },
+        {
+          "t": 70,
+          "ease": "smooth",
+          "state": {
+            "red": 0.45,
+            "green": 0.3,
+            "blue": 0.9,
+            "intensity": 0.494,
+            "tilt": 0.35,
+            "zoom": 0.35
+          }
+        },
+        {
+          "t": 80,
+          "ease": "smooth",
+          "state": {
+            "red": 0.95,
+            "green": 0.1,
+            "blue": 0.55,
+            "intensity": 0.567,
+            "tilt": 0.35,
+            "zoom": 0.359
+          }
+        },
+        {
+          "t": 90,
+          "ease": "smooth",
+          "state": {
+            "red": 0.65,
+            "green": 0.35,
+            "blue": 0.85,
+            "intensity": 0.634,
+            "tilt": 0.35,
+            "zoom": 0.384
+          }
+        },
+        {
+          "t": 100,
+          "ease": "smooth",
+          "state": {
+            "red": 0.95,
+            "green": 0.1,
+            "blue": 0.55,
+            "intensity": 0.668,
+            "tilt": 0.35,
+            "zoom": 0.415
+          }
+        }
+      ]
+    },
+    {
+      "fixture": "Spiider1",
+      "keyframes": [
+        {
+          "t": 0,
+          "ease": "smooth",
+          "state": {
+            "red": 0.65,
+            "green": 0.35,
+            "blue": 0.85,
+            "intensity": 0.684,
+            "pan": 0.45,
+            "tilt": 0.689,
+            "zoom": 0.618
+          }
+        },
+        {
+          "t": 10,
+          "ease": "smooth",
+          "state": {
+            "red": 0.3,
+            "green": 0.4,
+            "blue": 0.9,
+            "intensity": 0.698,
+            "pan": 0.509,
+            "tilt": 0.625,
+            "zoom": 0.663
+          }
+        },
+        {
+          "t": 20,
+          "ease": "smooth",
+          "state": {
+            "red": 0.2,
+            "green": 0.65,
+            "blue": 0.7,
+            "intensity": 0.656,
+            "pan": 0.545,
+            "tilt": 0.552,
+            "zoom": 0.665
+          }
+        },
+        {
+          "t": 30,
+          "ease": "smooth",
+          "state": {
+            "red": 0.9,
+            "green": 0.3,
+            "blue": 0.6,
+            "intensity": 0.573,
+            "pan": 0.545,
+            "tilt": 0.496,
+            "zoom": 0.623
+          }
+        },
+        {
+          "t": 40,
+          "ease": "smooth",
+          "state": {
+            "red": 0.75,
+            "green": 0.2,
+            "blue": 0.8,
+            "intensity": 0.482,
+            "pan": 0.509,
+            "tilt": 0.481,
+            "zoom": 0.553
+          }
+        },
+        {
+          "t": 50,
+          "ease": "smooth",
+          "state": {
+            "red": 0.85,
+            "green": 0.12,
+            "blue": 0.5,
+            "intensity": 0.416,
+            "pan": 0.45,
+            "tilt": 0.511,
+            "zoom": 0.482
+          }
+        },
+        {
+          "t": 60,
+          "ease": "smooth",
+          "state": {
+            "red": 0.45,
+            "green": 0.3,
+            "blue": 0.9,
+            "intensity": 0.402,
+            "pan": 0.391,
+            "tilt": 0.575,
+            "zoom": 0.437
+          }
+        },
+        {
+          "t": 70,
+          "ease": "smooth",
+          "state": {
+            "red": 0.95,
+            "green": 0.1,
+            "blue": 0.55,
+            "intensity": 0.444,
+            "pan": 0.355,
+            "tilt": 0.648,
+            "zoom": 0.435
+          }
+        },
+        {
+          "t": 80,
+          "ease": "smooth",
+          "state": {
+            "red": 0.65,
+            "green": 0.35,
+            "blue": 0.85,
+            "intensity": 0.527,
+            "pan": 0.355,
+            "tilt": 0.704,
+            "zoom": 0.477
+          }
+        },
+        {
+          "t": 90,
+          "ease": "smooth",
+          "state": {
+            "red": 0.3,
+            "green": 0.4,
+            "blue": 0.9,
+            "intensity": 0.618,
+            "pan": 0.391,
+            "tilt": 0.719,
+            "zoom": 0.547
+          }
+        },
+        {
+          "t": 100,
+          "ease": "smooth",
+          "state": {
+            "red": 0.65,
+            "green": 0.35,
+            "blue": 0.85,
+            "intensity": 0.684,
+            "pan": 0.45,
+            "tilt": 0.689,
+            "zoom": 0.618
+          }
+        }
+      ]
+    },
+    {
+      "fixture": "Spiider2",
+      "keyframes": [
+        {
+          "t": 0,
+          "ease": "smooth",
+          "state": {
+            "red": 0.65,
+            "green": 0.35,
+            "blue": 0.85,
+            "intensity": 0.684,
+            "pan": 0.55,
+            "tilt": 0.689,
+            "zoom": 0.618
+          }
+        },
+        {
+          "t": 10,
+          "ease": "smooth",
+          "state": {
+            "red": 0.3,
+            "green": 0.4,
+            "blue": 0.9,
+            "intensity": 0.698,
+            "pan": 0.491,
+            "tilt": 0.625,
+            "zoom": 0.663
+          }
+        },
+        {
+          "t": 20,
+          "ease": "smooth",
+          "state": {
+            "red": 0.2,
+            "green": 0.65,
+            "blue": 0.7,
+            "intensity": 0.656,
+            "pan": 0.455,
+            "tilt": 0.552,
+            "zoom": 0.665
+          }
+        },
+        {
+          "t": 30,
+          "ease": "smooth",
+          "state": {
+            "red": 0.9,
+            "green": 0.3,
+            "blue": 0.6,
+            "intensity": 0.573,
+            "pan": 0.455,
+            "tilt": 0.496,
+            "zoom": 0.623
+          }
+        },
+        {
+          "t": 40,
+          "ease": "smooth",
+          "state": {
+            "red": 0.75,
+            "green": 0.2,
+            "blue": 0.8,
+            "intensity": 0.482,
+            "pan": 0.491,
+            "tilt": 0.481,
+            "zoom": 0.553
+          }
+        },
+        {
+          "t": 50,
+          "ease": "smooth",
+          "state": {
+            "red": 0.85,
+            "green": 0.12,
+            "blue": 0.5,
+            "intensity": 0.416,
+            "pan": 0.55,
+            "tilt": 0.511,
+            "zoom": 0.482
+          }
+        },
+        {
+          "t": 60,
+          "ease": "smooth",
+          "state": {
+            "red": 0.45,
+            "green": 0.3,
+            "blue": 0.9,
+            "intensity": 0.402,
+            "pan": 0.609,
+            "tilt": 0.575,
+            "zoom": 0.437
+          }
+        },
+        {
+          "t": 70,
+          "ease": "smooth",
+          "state": {
+            "red": 0.95,
+            "green": 0.1,
+            "blue": 0.55,
+            "intensity": 0.444,
+            "pan": 0.645,
+            "tilt": 0.648,
+            "zoom": 0.435
+          }
+        },
+        {
+          "t": 80,
+          "ease": "smooth",
+          "state": {
+            "red": 0.65,
+            "green": 0.35,
+            "blue": 0.85,
+            "intensity": 0.527,
+            "pan": 0.645,
+            "tilt": 0.704,
+            "zoom": 0.477
+          }
+        },
+        {
+          "t": 90,
+          "ease": "smooth",
+          "state": {
+            "red": 0.3,
+            "green": 0.4,
+            "blue": 0.9,
+            "intensity": 0.618,
+            "pan": 0.609,
+            "tilt": 0.719,
+            "zoom": 0.547
+          }
+        },
+        {
+          "t": 100,
+          "ease": "smooth",
+          "state": {
+            "red": 0.65,
+            "green": 0.35,
+            "blue": 0.85,
+            "intensity": 0.684,
+            "pan": 0.55,
+            "tilt": 0.689,
+            "zoom": 0.618
+          }
+        }
+      ]
+    },
+    {
+      "fixture": "Spiider3+Spiider5",
+      "keyframes": [
+        {
+          "t": 0,
+          "ease": "smooth",
+          "state": {
+            "red": 0.2,
+            "green": 0.65,
+            "blue": 0.7,
+            "intensity": 0.442,
+            "pan": 0.678,
+            "tilt": 0.525,
+            "zoom": 0.643
+          }
+        },
+        {
+          "t": 10,
+          "ease": "smooth",
+          "state": {
+            "red": 0.9,
+            "green": 0.3,
+            "blue": 0.6,
+            "intensity": 0.361,
+            "pan": 0.636,
+            "tilt": 0.525,
+            "zoom": 0.581
+          }
+        },
+        {
+          "t": 20,
+          "ease": "smooth",
+          "state": {
+            "red": 0.75,
+            "green": 0.2,
+            "blue": 0.8,
+            "intensity": 0.315,
+            "pan": 0.581,
+            "tilt": 0.561,
+            "zoom": 0.527
+          }
+        },
+        {
+          "t": 30,
+          "ease": "smooth",
+          "state": {
+            "red": 0.85,
+            "green": 0.12,
+            "blue": 0.5,
+            "intensity": 0.32,
+            "pan": 0.533,
+            "tilt": 0.62,
+            "zoom": 0.501
+          }
+        },
+        {
+          "t": 40,
+          "ease": "smooth",
+          "state": {
+            "red": 0.45,
+            "green": 0.3,
+            "blue": 0.9,
+            "intensity": 0.374,
+            "pan": 0.51,
+            "tilt": 0.679,
+            "zoom": 0.512
+          }
+        },
+        {
+          "t": 50,
+          "ease": "smooth",
+          "state": {
+            "red": 0.95,
+            "green": 0.1,
+            "blue": 0.55,
+            "intensity": 0.458,
+            "pan": 0.522,
+            "tilt": 0.715,
+            "zoom": 0.557
+          }
+        },
+        {
+          "t": 60,
+          "ease": "smooth",
+          "state": {
+            "red": 0.65,
+            "green": 0.35,
+            "blue": 0.85,
+            "intensity": 0.539,
+            "pan": 0.564,
+            "tilt": 0.715,
+            "zoom": 0.619
+          }
+        },
+        {
+          "t": 70,
+          "ease": "smooth",
+          "state": {
+            "red": 0.3,
+            "green": 0.4,
+            "blue": 0.9,
+            "intensity": 0.585,
+            "pan": 0.619,
+            "tilt": 0.679,
+            "zoom": 0.673
+          }
+        },
+        {
+          "t": 80,
+          "ease": "smooth",
+          "state": {
+            "red": 0.2,
+            "green": 0.65,
+            "blue": 0.7,
+            "intensity": 0.58,
+            "pan": 0.667,
+            "tilt": 0.62,
+            "zoom": 0.699
+          }
+        },
+        {
+          "t": 90,
+          "ease": "smooth",
+          "state": {
+            "red": 0.9,
+            "green": 0.3,
+            "blue": 0.6,
+            "intensity": 0.526,
+            "pan": 0.69,
+            "tilt": 0.561,
+            "zoom": 0.688
+          }
+        },
+        {
+          "t": 100,
+          "ease": "smooth",
+          "state": {
+            "red": 0.2,
+            "green": 0.65,
+            "blue": 0.7,
+            "intensity": 0.442,
+            "pan": 0.678,
+            "tilt": 0.525,
+            "zoom": 0.643
+          }
+        }
+      ]
+    },
+    {
+      "fixture": "Spiider4+Spiider6",
+      "keyframes": [
+        {
+          "t": 0,
+          "ease": "smooth",
+          "state": {
+            "red": 0.2,
+            "green": 0.65,
+            "blue": 0.7,
+            "intensity": 0.442,
+            "pan": 0.322,
+            "tilt": 0.525,
+            "zoom": 0.643
+          }
+        },
+        {
+          "t": 10,
+          "ease": "smooth",
+          "state": {
+            "red": 0.9,
+            "green": 0.3,
+            "blue": 0.6,
+            "intensity": 0.361,
+            "pan": 0.364,
+            "tilt": 0.525,
+            "zoom": 0.581
+          }
+        },
+        {
+          "t": 20,
+          "ease": "smooth",
+          "state": {
+            "red": 0.75,
+            "green": 0.2,
+            "blue": 0.8,
+            "intensity": 0.315,
+            "pan": 0.419,
+            "tilt": 0.561,
+            "zoom": 0.527
+          }
+        },
+        {
+          "t": 30,
+          "ease": "smooth",
+          "state": {
+            "red": 0.85,
+            "green": 0.12,
+            "blue": 0.5,
+            "intensity": 0.32,
+            "pan": 0.467,
+            "tilt": 0.62,
+            "zoom": 0.501
+          }
+        },
+        {
+          "t": 40,
+          "ease": "smooth",
+          "state": {
+            "red": 0.45,
+            "green": 0.3,
+            "blue": 0.9,
+            "intensity": 0.374,
+            "pan": 0.49,
+            "tilt": 0.679,
+            "zoom": 0.512
+          }
+        },
+        {
+          "t": 50,
+          "ease": "smooth",
+          "state": {
+            "red": 0.95,
+            "green": 0.1,
+            "blue": 0.55,
+            "intensity": 0.458,
+            "pan": 0.478,
+            "tilt": 0.715,
+            "zoom": 0.557
+          }
+        },
+        {
+          "t": 60,
+          "ease": "smooth",
+          "state": {
+            "red": 0.65,
+            "green": 0.35,
+            "blue": 0.85,
+            "intensity": 0.539,
+            "pan": 0.436,
+            "tilt": 0.715,
+            "zoom": 0.619
+          }
+        },
+        {
+          "t": 70,
+          "ease": "smooth",
+          "state": {
+            "red": 0.3,
+            "green": 0.4,
+            "blue": 0.9,
+            "intensity": 0.585,
+            "pan": 0.381,
+            "tilt": 0.679,
+            "zoom": 0.673
+          }
+        },
+        {
+          "t": 80,
+          "ease": "smooth",
+          "state": {
+            "red": 0.2,
+            "green": 0.65,
+            "blue": 0.7,
+            "intensity": 0.58,
+            "pan": 0.333,
+            "tilt": 0.62,
+            "zoom": 0.699
+          }
+        },
+        {
+          "t": 90,
+          "ease": "smooth",
+          "state": {
+            "red": 0.9,
+            "green": 0.3,
+            "blue": 0.6,
+            "intensity": 0.526,
+            "pan": 0.31,
+            "tilt": 0.561,
+            "zoom": 0.688
+          }
+        },
+        {
+          "t": 100,
+          "ease": "smooth",
+          "state": {
+            "red": 0.2,
+            "green": 0.65,
+            "blue": 0.7,
+            "intensity": 0.442,
+            "pan": 0.322,
+            "tilt": 0.525,
+            "zoom": 0.643
+          }
+        }
+      ]
+    },
+    {
+      "fixture": "Spiider7",
+      "keyframes": [
+        {
+          "t": 0,
+          "ease": "smooth",
+          "state": {
+            "red": 0.75,
+            "green": 0.2,
+            "blue": 0.8,
+            "intensity": 0.292,
+            "pan": 0.4,
+            "tilt": 0.802,
+            "zoom": 0.4
+          }
+        },
+        {
+          "t": 10,
+          "ease": "smooth",
+          "state": {
+            "red": 0.85,
+            "green": 0.12,
+            "blue": 0.5,
+            "intensity": 0.355,
+            "pan": 0.391,
+            "tilt": 0.855,
+            "zoom": 0.425
+          }
+        },
+        {
+          "t": 20,
+          "ease": "smooth",
+          "state": {
+            "red": 0.45,
+            "green": 0.3,
+            "blue": 0.9,
+            "intensity": 0.435,
+            "pan": 0.411,
+            "tilt": 0.88,
+            "zoom": 0.478
+          }
+        },
+        {
+          "t": 30,
+          "ease": "smooth",
+          "state": {
+            "red": 0.95,
+            "green": 0.1,
+            "blue": 0.55,
+            "intensity": 0.502,
+            "pan": 0.454,
+            "tilt": 0.866,
+            "zoom": 0.539
+          }
+        },
+        {
+          "t": 40,
+          "ease": "smooth",
+          "state": {
+            "red": 0.65,
+            "green": 0.35,
+            "blue": 0.85,
+            "intensity": 0.53,
+            "pan": 0.503,
+            "tilt": 0.82,
+            "zoom": 0.586
+          }
+        },
+        {
+          "t": 50,
+          "ease": "smooth",
+          "state": {
+            "red": 0.3,
+            "green": 0.4,
+            "blue": 0.9,
+            "intensity": 0.508,
+            "pan": 0.54,
+            "tilt": 0.758,
+            "zoom": 0.6
+          }
+        },
+        {
+          "t": 60,
+          "ease": "smooth",
+          "state": {
+            "red": 0.2,
+            "green": 0.65,
+            "blue": 0.7,
+            "intensity": 0.445,
+            "pan": 0.549,
+            "tilt": 0.705,
+            "zoom": 0.575
+          }
+        },
+        {
+          "t": 70,
+          "ease": "smooth",
+          "state": {
+            "red": 0.9,
+            "green": 0.3,
+            "blue": 0.6,
+            "intensity": 0.365,
+            "pan": 0.529,
+            "tilt": 0.68,
+            "zoom": 0.522
+          }
+        },
+        {
+          "t": 80,
+          "ease": "smooth",
+          "state": {
+            "red": 0.75,
+            "green": 0.2,
+            "blue": 0.8,
+            "intensity": 0.298,
+            "pan": 0.486,
+            "tilt": 0.694,
+            "zoom": 0.461
+          }
+        },
+        {
+          "t": 90,
+          "ease": "smooth",
+          "state": {
+            "red": 0.85,
+            "green": 0.12,
+            "blue": 0.5,
+            "intensity": 0.27,
+            "pan": 0.437,
+            "tilt": 0.74,
+            "zoom": 0.414
+          }
+        },
+        {
+          "t": 100,
+          "ease": "smooth",
+          "state": {
+            "red": 0.75,
+            "green": 0.2,
+            "blue": 0.8,
+            "intensity": 0.292,
+            "pan": 0.4,
+            "tilt": 0.802,
+            "zoom": 0.4
+          }
+        }
+      ]
+    },
+    {
+      "fixture": "Spiider8",
+      "keyframes": [
+        {
+          "t": 0,
+          "ease": "smooth",
+          "state": {
+            "red": 0.75,
+            "green": 0.2,
+            "blue": 0.8,
+            "intensity": 0.292,
+            "pan": 0.6,
+            "tilt": 0.802,
+            "zoom": 0.4
+          }
+        },
+        {
+          "t": 10,
+          "ease": "smooth",
+          "state": {
+            "red": 0.85,
+            "green": 0.12,
+            "blue": 0.5,
+            "intensity": 0.355,
+            "pan": 0.609,
+            "tilt": 0.855,
+            "zoom": 0.425
+          }
+        },
+        {
+          "t": 20,
+          "ease": "smooth",
+          "state": {
+            "red": 0.45,
+            "green": 0.3,
+            "blue": 0.9,
+            "intensity": 0.435,
+            "pan": 0.589,
+            "tilt": 0.88,
+            "zoom": 0.478
+          }
+        },
+        {
+          "t": 30,
+          "ease": "smooth",
+          "state": {
+            "red": 0.95,
+            "green": 0.1,
+            "blue": 0.55,
+            "intensity": 0.502,
+            "pan": 0.546,
+            "tilt": 0.866,
+            "zoom": 0.539
+          }
+        },
+        {
+          "t": 40,
+          "ease": "smooth",
+          "state": {
+            "red": 0.65,
+            "green": 0.35,
+            "blue": 0.85,
+            "intensity": 0.53,
+            "pan": 0.497,
+            "tilt": 0.82,
+            "zoom": 0.586
+          }
+        },
+        {
+          "t": 50,
+          "ease": "smooth",
+          "state": {
+            "red": 0.3,
+            "green": 0.4,
+            "blue": 0.9,
+            "intensity": 0.508,
+            "pan": 0.46,
+            "tilt": 0.758,
+            "zoom": 0.6
+          }
+        },
+        {
+          "t": 60,
+          "ease": "smooth",
+          "state": {
+            "red": 0.2,
+            "green": 0.65,
+            "blue": 0.7,
+            "intensity": 0.445,
+            "pan": 0.451,
+            "tilt": 0.705,
+            "zoom": 0.575
+          }
+        },
+        {
+          "t": 70,
+          "ease": "smooth",
+          "state": {
+            "red": 0.9,
+            "green": 0.3,
+            "blue": 0.6,
+            "intensity": 0.365,
+            "pan": 0.471,
+            "tilt": 0.68,
+            "zoom": 0.522
+          }
+        },
+        {
+          "t": 80,
+          "ease": "smooth",
+          "state": {
+            "red": 0.75,
+            "green": 0.2,
+            "blue": 0.8,
+            "intensity": 0.298,
+            "pan": 0.514,
+            "tilt": 0.694,
+            "zoom": 0.461
+          }
+        },
+        {
+          "t": 90,
+          "ease": "smooth",
+          "state": {
+            "red": 0.85,
+            "green": 0.12,
+            "blue": 0.5,
+            "intensity": 0.27,
+            "pan": 0.563,
+            "tilt": 0.74,
+            "zoom": 0.414
+          }
+        },
+        {
+          "t": 100,
+          "ease": "smooth",
+          "state": {
+            "red": 0.75,
+            "green": 0.2,
+            "blue": 0.8,
+            "intensity": 0.292,
+            "pan": 0.6,
+            "tilt": 0.802,
+            "zoom": 0.4
+          }
+        }
+      ]
+    }
+  ]
+}

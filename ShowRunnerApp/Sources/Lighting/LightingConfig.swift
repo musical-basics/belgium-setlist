@@ -236,13 +236,13 @@ public enum LightingConfigLoader {
             "9A": auto("Timelines/moonlight_solo.json", [0.08, 0.14, 0.55]), // Moonlight SOLO/REG — blue dark moonlight
             "9B": edm("Timelines/moonlight.json"),                           // Moonlight NIGHTMARE — dark blue/purple electric
             "S3": speech,
-            "10": trio([0.25, 0.10, 0.40]),   // Dreams of a Violin (duet) — violet
-            "11": trio([0.55, 0.30, 0.08]),   // Gallop (trio) — warm amber
-            "12": trio([0.50, 0.10, 0.10]),   // Beethoven Virus (trio) — red
+            "10": auto("Timelines/dreamsofaviolin.json", [0.25, 0.10, 0.40], 0.9), // Dreams of a Violin — dreamy magenta/lavender
+            "11": auto("Timelines/gallop.json", [0.15, 0.45, 0.30], 0.9),          // Gallop — earthy blue/green canter
+            "12": auto("Timelines/beethovenvirus.json", [0.50, 0.10, 0.10], 0.9),  // Beethoven Virus — fiery red/purple/green
             "S4": speech,
             "13": edm("Timelines/fourseasons.json"),
-            "E1": solo([0.55, 0.40, 0.05]),   // Sunflowers — gold
-            "E2": solo([0.35, 0.45, 0.08], 0.9), // Flight of the Bumblebee — yellow-green
+            "E1": auto("Timelines/sunflowers.json", [0.55, 0.40, 0.05]),           // Sunflowers — peaceful gold
+            "E2": auto("Timelines/bumblebee.json", [0.20, 0.55, 0.40], 0.9),       // Bumblebee — will-o'-the-wisp whispers
             "E3": edm("Timelines/stilldre.json"),
         ]
 
