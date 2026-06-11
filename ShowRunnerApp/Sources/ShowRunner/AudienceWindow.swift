@@ -81,13 +81,22 @@ final class AudienceWindow {
     /// (no competing content-transition), so there is no flicker.
     func showCard(_ image: NSImage?) {
         let cg = image?.cgImage(forProposedRect: nil, context: nil, hints: nil)
+        let layer = view.imageLayer
+        // 1. Swap the new card in while fully transparent, with NO animation, and cancel any
+        //    fade still running from the previous card. CATransaction.flush() pushes this
+        //    opacity-0 + new-contents state to the render server NOW. Without the flush, the
+        //    fade below would sample the *stale* on-screen opacity (still 1 from the previous
+        //    card) and animate 1→1 — so the new card popped/double-rendered instead of fading.
         CATransaction.begin()
         CATransaction.setDisableActions(true)
-        view.imageLayer.frame = view.bounds   // keep frame current (covers any pending resize)
-        view.imageLayer.opacity = 0           // start from black, no animation
-        view.imageLayer.contents = cg
+        layer.removeAnimation(forKey: "fade")
+        layer.frame = view.bounds             // keep frame current (covers any pending resize)
+        layer.contents = cg
+        layer.opacity = 0                     // start from black
         CATransaction.commit()
-        setOpacity(cg == nil ? 0 : 1)
+        CATransaction.flush()
+        // 2. Fade up from a known-0 baseline — one clean, coordinated animation.
+        fade(to: cg == nil ? 0 : 1, from: 0)
     }
 
     /// Fade the current card out to black.

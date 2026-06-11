@@ -13,6 +13,21 @@ public struct LightingConfig {
     public var fixtures: [FixtureConfig]
     /// Per-piece lighting, keyed by the piece `order` string used in showrunner.json.
     public var pieces: [String: PieceLightingConfig]
+    /// The piano "root" the whole mover rig is designed around, plus the single `stretch` gain.
+    public var stage: StageAnchor
+
+    /// Where the piano sits on stage (the design root) and how tightly the movers hug it. This is
+    /// a piano show: every mover's aim is expressed as a deviation from this root, scaled by one
+    /// `stretch` knob — `finalAim = root + (authoredAim − root) × stretch`, clamped to 0…1.
+    /// `stretch = 1` leaves the authored timelines/cues exactly as-is; `0` collapses the entire rig
+    /// onto the piano; `>1` exaggerates the spread. Aim (pan/tilt) only — colour/intensity/zoom and
+    /// the non-mover fixtures (FrontWash, Dalis) are never touched. Move the piano on stage → change
+    /// `pianoPan`/`pianoTilt` in ONE place and the preview focal point + the live rig follow.
+    public struct StageAnchor {
+        public var pianoPan: Double    // 0…1 across the stage (0.5 = centre); plot: centre, slightly left
+        public var pianoTilt: Double   // 0…1; the tilt that lands a mover beam on the piano
+        public var stretch: Double     // gain on every mover's deviation-from-root (1 = authored, 0 = all on piano)
+    }
 
     public struct ResolvedNetwork {
         public enum Mode: String { case multicast, unicast }
@@ -63,7 +78,13 @@ private struct LightingConfigFile: Codable {
     var universes: [String: Int]?
     var fixtures: [FixtureFile]?
     var pieces: [String: PieceFile]?
+    var stage: StageFile?
 
+    struct StageFile: Codable {
+        var pianoPan: Double?
+        var pianoTilt: Double?
+        var stretch: Double?
+    }
     struct NetworkFile: Codable {
         var mode: String?
         var unicastHost: String?

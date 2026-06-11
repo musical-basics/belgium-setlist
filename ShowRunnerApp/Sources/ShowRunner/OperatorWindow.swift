@@ -235,6 +235,11 @@ final class OperatorWindowController {
     private let showAudienceButton = NSButton(title: "Projector / Title Card", target: nil, action: nil)
     private let showLightingButton = NSButton(title: "Lighting", target: nil, action: nil)
     private let showPreviewButton = NSButton(title: "Stage Preview", target: nil, action: nil)
+    /// Collapsible groups so the running-order list can expand: header setup rows + the mixer.
+    private let setupStack = NSStackView()
+    private let mixerGrid = NSGridView()
+    private let setupToggle = NSButton(title: "Hide setup", target: nil, action: nil)
+    private let mixerToggle = NSButton(title: "Hide mixer", target: nil, action: nil)
     private let devicePopup = NSPopUpButton(frame: .zero, pullsDown: false)
     private let displayPopup = NSPopUpButton(frame: .zero, pullsDown: false)
     private let backingPopup = NSPopUpButton(frame: .zero, pullsDown: false)
@@ -335,6 +340,8 @@ final class OperatorWindowController {
         configureShowButton(showAudienceButton, action: #selector(showAudiencePressed))
         configureShowButton(showLightingButton, action: #selector(showLightingPressed))
         configureShowButton(showPreviewButton, action: #selector(showPreviewPressed))
+        configureShowButton(setupToggle, action: #selector(toggleSetupTapped))
+        configureShowButton(mixerToggle, action: #selector(toggleMixerTapped))
 
         buildLayout()
     }
@@ -377,7 +384,7 @@ final class OperatorWindowController {
         window.contentView = content
 
         // Header
-        let titleRow = NSStackView(views: [titleLabel, NSView(), closeApplicationButton])
+        let titleRow = NSStackView(views: [titleLabel, NSView(), mixerToggle, setupToggle, closeApplicationButton])
         titleRow.orientation = .horizontal
         titleRow.alignment = .centerY
         titleRow.spacing = 12
@@ -407,7 +414,14 @@ final class OperatorWindowController {
         windowsRow.alignment = .centerY
         windowsRow.spacing = 8
 
-        let header = NSStackView(views: [titleRow, pickerRow, routeRow, windowsRow, statusLabel, remoteLabel])
+        // Everything below the title is collapsible (the "Hide setup" toggle) so the list can grow.
+        setupStack.orientation = .vertical
+        setupStack.alignment = .leading
+        setupStack.spacing = 8
+        setupStack.translatesAutoresizingMaskIntoConstraints = false
+        for v in [pickerRow, routeRow, windowsRow, statusLabel, remoteLabel] { setupStack.addArrangedSubview(v) }
+
+        let header = NSStackView(views: [titleRow, setupStack])
         header.orientation = .vertical
         header.alignment = .leading
         header.spacing = 8
@@ -474,7 +488,7 @@ final class OperatorWindowController {
             l.textColor = .secondaryLabelColor
             return l
         }
-        let mixer = NSGridView()
+        let mixer = mixerGrid
         mixer.translatesAutoresizingMaskIntoConstraints = false
         mixer.rowSpacing = 5
         mixer.columnSpacing = 10
@@ -686,6 +700,14 @@ final class OperatorWindowController {
     @objc private func playPausePressed() { delegate?.operatorDidPressPlayPause() }
     @objc private func stopPressed() { delegate?.operatorDidPressStop() }
     @objc private func closeApplicationPressed() { delegate?.operatorDidPressCloseApplication() }
+    @objc private func toggleSetupTapped() {
+        setupStack.isHidden.toggle()
+        setupToggle.title = setupStack.isHidden ? "Show setup" : "Hide setup"
+    }
+    @objc private func toggleMixerTapped() {
+        mixerGrid.isHidden.toggle()
+        mixerToggle.title = mixerGrid.isHidden ? "Show mixer" : "Hide mixer"
+    }
     @objc private func showAudiencePressed() { delegate?.operatorDidRequestShowWindow(.audience) }
     @objc private func showLightingPressed() { delegate?.operatorDidRequestShowWindow(.lighting) }
     @objc private func showPreviewPressed() { delegate?.operatorDidRequestShowWindow(.lightingPreview) }
