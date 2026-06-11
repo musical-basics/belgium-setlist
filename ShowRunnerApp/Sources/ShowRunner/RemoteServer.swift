@@ -60,6 +60,9 @@ final class RemoteServer {
     var onEditNotes: ((Int, String) -> Void)?
     /// ARM MOVERS toggle from the phone — toggles the lighting module's provisional movers.
     var onArmMovers: (() -> Void)?
+    /// QUIT from the phone — terminates the whole app. The escape hatch when the projector
+    /// is full-screen and the Mac's keyboard (Esc/Cmd-Q) can't reach it.
+    var onQuit: (() -> Void)?
     var stateProvider: (() -> RemoteState)?
 
     private var listener: NWListener?
@@ -193,6 +196,10 @@ final class RemoteServer {
         case "/arm":
             DispatchQueue.main.async { [weak self] in self?.onArmMovers?() }
             respondWithState(conn)
+        case "/quit":
+            // Reply first, THEN terminate, so the phone gets a clean 200 before we die.
+            send(conn, status: "200 OK", contentType: "text/plain", body: Data("quitting".utf8))
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in self?.onQuit?() }
         case "/select":
             if let i = Self.indexParam(query) {
                 DispatchQueue.main.async { [weak self] in self?.onSelect?(i) }
@@ -314,6 +321,8 @@ button { border:none; border-radius:12px; font-weight:800; color:#fff; font-fami
 #arm.on { background:#c87f0a; }
 #stop { grid-column:1/-1; background:#8c1d1d; font-size:15px; padding:12px 0; }
 #stop.armed { background:#e53935; font-size:18px; }
+#quit { grid-column:1/-1; background:#2c2c34; color:#9a9aa5; font-size:13px; padding:10px 0; }
+#quit.armed { background:#e53935; color:#fff; font-size:16px; }
 button:active { filter:brightness(1.25); }
 </style>
 </head>
@@ -333,9 +342,10 @@ button:active { filter:brightness(1.25); }
   <button id="go">GO</button>
   <button id="arm" style="display:none">ARM MOVERS</button>
   <button id="stop">STOP / PANIC</button>
+  <button id="quit">QUIT APP</button>
 </footer>
 <script>
-var rows = [], noteEls = [], lastSelected = -1, stopTimer = null, editing = -1;
+var rows = [], noteEls = [], lastSelected = -1, stopTimer = null, quitTimer = null, editing = -1;
 function $(id){ return document.getElementById(id); }
 function handle(p){ return p.then(function(r){ if(!r.ok) throw 0; return r.json(); })
                      .then(function(s){ render(s); online(true); })
@@ -460,6 +470,21 @@ $('stop').onclick = function(){
     b.classList.add('armed'); b.textContent = 'TAP AGAIN TO STOP';
     stopTimer = setTimeout(function(){
       b.classList.remove('armed'); b.textContent = 'STOP / PANIC';
+    }, 2500);
+  }
+};
+$('quit').onclick = function(){
+  var b = $('quit');
+  if (b.classList.contains('armed')) {
+    clearTimeout(quitTimer);
+    b.classList.remove('armed'); b.textContent = 'QUIT APP';
+    fetch('/quit', {method:'POST', cache:'no-store'}).catch(function(){});
+    online(false);
+    $('offline').textContent = 'APP QUIT';
+  } else {
+    b.classList.add('armed'); b.textContent = 'TAP AGAIN TO QUIT APP';
+    quitTimer = setTimeout(function(){
+      b.classList.remove('armed'); b.textContent = 'QUIT APP';
     }, 2500);
   }
 };

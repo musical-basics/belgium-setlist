@@ -22,6 +22,10 @@ Mac's keyboard remains a full backup at all times.
    timecode (elapsed / total, with remaining on the right) appears as soon as playback
    begins. **STOP / PANIC** needs **two taps** (tap once to arm, tap again within 2.5 s)
    so a pocket-tap can't kill a piece.
+5. **QUIT APP** (bottom, grey) **quits ShowRunner entirely** — the escape hatch when the
+   projector is full-screen and the Mac's keyboard can't reach it (Esc/Cmd-Q swallowed).
+   Like STOP it needs **two taps** (tap to arm, tap again within 2.5 s). After it fires the
+   page shows "APP QUIT" and goes offline — that's expected, the app is gone.
 4. Tip: add it to the Home Screen (Share → Add to Home Screen) for a full-screen,
    app-like remote. The page asks iOS to keep the screen awake while it's open.
 
@@ -81,5 +85,6 @@ Tailscale URL keeps working over the hotspot; the Mac's hotspot address (usually
 - `POST /next` `/prev` `/go` `/stop` — same actions as the keyboard
 - `POST /toggle` — play/pause: GO when stopped, pause when playing, resume when paused
 - `POST /select?i=N` — select piece at index N (0-based)
+- `POST /quit` — terminates the app (replies 200 first, then quits ~0.1 s later)
 
 `curl -s localhost:8088/state | python3 -m json.tool` is a quick health check.

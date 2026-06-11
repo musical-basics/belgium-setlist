@@ -551,6 +551,10 @@ final class AppController: NSObject, OperatorWindowDelegate {
         }
         server.onSelect = { [weak self] i in self?.selectIndex(i) }
         server.onArmMovers = { [weak self] in self?.lighting?.toggleArmMovers() }
+        server.onQuit = {
+            Logger.shared.info("QUIT requested from phone remote — terminating app")
+            NSApp.terminate(nil)
+        }
         server.onEditNotes = { [weak self] i, text in
             guard let self = self, self.config.pieces.indices.contains(i),
                   self.config.pieces[i].isSpeaking else { return }
