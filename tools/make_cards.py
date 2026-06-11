@@ -220,7 +220,7 @@ def add_featuring(card_path, text, italic_font_path, color=GOLD):
 
 FEATURED = [
     ("Dreams of a Violin/TitleCard.png",
-     "featuring Alicia De Pooter, violin", F_ITALIC, GOLD),
+     "featuring Alicia De Poorter, violin", F_ITALIC, GOLD),
     ("Beethoven Virus/TitleCard.png",
      "featuring Gudrun Vercampt, violin   ·   Anthony Gröger, cello", F_ITALIC, GOLD),
     ("Gallop/TitleCard.png",

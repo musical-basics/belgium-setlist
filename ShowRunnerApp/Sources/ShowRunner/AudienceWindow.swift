@@ -99,21 +99,23 @@ final class AudienceWindow {
         fade(to: cg == nil ? 0 : 1, from: 0)
     }
 
-    /// Fade the current card out to black.
+    /// Fade the current card out to black, starting from whatever is currently on screen.
     func clear() {
-        setOpacity(0)
+        let current = view.imageLayer.presentation()?.opacity ?? view.imageLayer.opacity
+        fade(to: 0, from: current)
     }
 
-    private func setOpacity(_ target: Float) {
+    /// Animate the card layer's opacity with an explicit from→to, so the fade never samples a
+    /// stale presentation value mid-swap (which made a new card pop instead of fade).
+    private func fade(to target: Float, from: Float) {
         let layer = view.imageLayer
-        let from = layer.presentation()?.opacity ?? layer.opacity
         let anim = CABasicAnimation(keyPath: "opacity")
         anim.fromValue = from
         anim.toValue = target
         anim.duration = fadeSeconds
         anim.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
         anim.isRemovedOnCompletion = true
-        layer.add(anim, forKey: "fade")
         layer.opacity = target
+        layer.add(anim, forKey: "fade")
     }
 }
