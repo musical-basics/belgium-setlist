@@ -223,11 +223,11 @@ public enum LightingConfigLoader {
         let speech = solo([0.45, 0.30, 0.12], 0.75)   // warm amber, calm
         let pieces: [String: LightingConfig.PieceLightingConfig] = [
             "1":  auto("Timelines/fantaisie.json", [0.10, 0.10, 0.45]),  // Fantaisie-Impromptu — dark moody purple/blue netherworld
-            "2":  solo([0.08, 0.20, 0.45]),   // Prelude in G minor — cold blue
-            "3":  solo([0.15, 0.15, 0.50], 0.9), // Rolling Thunder — storm blue
+            "2":  auto("Timelines/prelude.json", [0.60, 0.05, 0.05]),    // Prelude in G minor — red, warfare, epic
+            "3":  auto("Timelines/rollingthunder.json", [0.10, 0.18, 0.55], 0.9), // Rolling Thunder — storm blue/white + flashes
             "S1": speech,
-            "4":  solo([0.20, 0.35, 0.15]),   // Fight for Freedom — green
-            "5":  solo([0.35, 0.05, 0.30]),   // Colors of the Soul — magenta
+            "4":  auto("Timelines/fightforfreedom.json", [0.90, 0.25, 0.0]), // Fight for Freedom — orange/red, heroic flames
+            "5":  auto("Timelines/colorsofthesoul.json", [0.40, 0.70, 0.0]), // Colors of the Soul — kaleidoscope yellow/green
             "6":  edm("Timelines/torrent.json"),  // Torrent Etude (EDM) — REFERENCE piece
             "S2": speech,
             "7":  edm("Timelines/furelise.json"),
