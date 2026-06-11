@@ -27,7 +27,8 @@ click to outs 3·4 per piece, and shows a full-screen title card on the projecto
   inverted zoom, T1 CTO park=110…), the config-file map, and the measured Torrent section
   times. Don't re-research any of it.
 - Engine architecture/controls/commands: `LIGHTING_README.md`. Patch + per-piece config:
-  `lighting.json`. EDM timelines: `Timelines/*.json` (only `torrent.json` authored so far).
+  `lighting.json`. Timelines: `Timelines/*.json` — all authored (6 EDM + 5 auto-loop);
+  `torrent.json` is the structural reference.
 
 ## Before risky edits
 - Back up files you rewrite into `backup/` first.

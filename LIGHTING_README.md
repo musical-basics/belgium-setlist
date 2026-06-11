@@ -144,7 +144,7 @@ It is a pure reader on the main thread — it never touches the engine or audio.
 | 3 | **PROOF OF LIFE** — one fixture to white, then fade | ✅ Lighting window button (targets Dalis 4) |
 | 4 | Master clock + per-frame renderer (40 fps) | ✅ `Renderer.swift` |
 | 5 | One EDM piece end-to-end (reference) | ✅ `Timelines/torrent.json` — re-authored for the final rig with section times from band-split energy analysis of the actual backing track |
-| 6 | Clone to the other 4 EDM pieces | ⬜ **staged** — needs per-track audio analysis |
+| 6 | Clone to the other EDM pieces | ✅ furelise (7), canon (8), moonlight (9), fourseasons (13), stilldre (E3) — all from per-track audio analysis |
 | 7 | SOLO/TRIO templates instantiated per piece | ✅ `Templates.swift` + `lighting.json` |
 | 8 | Global blackout + manual override | ✅ Lighting window |
 | — | Abstract stage preview (extra) | ✅ `LightingVisualizerWindow.swift` |
@@ -370,8 +370,10 @@ Host glue lives in `Sources/ShowRunner/LightingBridge.swift` (+ a few additive l
 <a name="whats-next"></a>
 ## 15. What's staged next
 
-Authoring the other four EDM timelines (`canon`, `moonlight`, `furelise`, `stilldre`) from per-track
-audio analysis. They currently fall back to a neutral wash. Clone `Timelines/torrent.json` (the
-reference for the final rig: 10 tracks — Front, Dalis, T1s, the mirrored Spiider pairs), measure
-each track's section times the same way (band-split energy analysis of `ShowAudio/<piece>/
-Backing.wav`), and preview with `--lighting-preview <piece> <seconds>`.
+All show timelines are authored: the six EDM pieces (torrent 6, furelise 7, canon 8,
+moonlight 9, fourseasons 13, stilldre E3 — each from per-track audio analysis, all sharing
+torrent.json's 10-track structure) plus self-driven looping `auto` timelines for the live
+piano pieces. Remaining work is on the rig itself: the §8 on-the-day checklist, then taste
+passes (retime/recolour the JSON — no recompiling) once the looks are visible on real
+fixtures. For any new piece: clone the torrent.json track structure, measure the audio
+(see `VENUE_LIGHTING_REFERENCE.md` §6), preview with `--lighting-preview <piece> <seconds>`.

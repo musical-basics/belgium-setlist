@@ -200,7 +200,8 @@ as ONE submaster level. Their focus is the venue's — ask for an even piano-cen
 |---|---|
 | `lighting.json` | **The patch + per-piece lighting config.** Fixtures (names → profiles → universe roles → addresses), sACN network mode, piece templates. Read at launch; never affects audio. Universe roles: `front`=1, `movers`=2, `dalis`=3 |
 | `Timelines/torrent.json` | Piece 6 (Torrent Etude) EDM timeline — **the reference**. 10 tracks: `Front`, `Dalis`, `T1s`, `Spiider1`, `Spiider2`, `Spiider3+Spiider5`, `Spiider4+Spiider6`, `Spiider7`, `Spiider8`. Section times measured from the backing track (see §6) |
-| `Timelines/canon.json` / `moonlight.json` / `furelise.json` / `stilldre.json` | **Not yet authored** — those EDM pieces fall back to a neutral wash |
+| `Timelines/furelise.json` (7) / `canon.json` (8) / `moonlight.json` (9) / `fourseasons.json` (13) / `stilldre.json` (E3) | The other authored EDM timelines, same 10-track structure, section times measured per §6.x. **Four Seasons** cycles the full season-colour gamut: dawn → SPRING green/blossom (21 s) → SUMMER amber/blazing hot (106.5) → AUTUMN russet (137) → WINTER ice blue/white (196.5, THE 211.2 hit). **Still D.R.E.** is Lakers **purple & gold** (a combo no other piece uses), slow heavy rocking, zero strobe |
+| `Timelines/fantaisie.json` / `prelude.json` / `rollingthunder.json` / `fightforfreedom.json` / `colorsofthesoul.json` | Self-driven looping timelines for live (non-audio) piano pieces — `template: "auto"` runs them on the renderer's own wall clock |
 | `showrunner.json` | The AUDIO show config (running order, audio routing, speech notes). Lighting only reads piece `order` strings from it indirectly |
 | `ShowRunnerApp/Sources/Lighting/Profiles/*.swift` | The four fixture profiles (channel maps live HERE, one file per mode) |
 | `ShowRunnerApp/Sources/Lighting/LightingConfig.swift` | `lighting.json` loader; its `defaults()` mirrors the final plot if the JSON is missing |
@@ -265,12 +266,29 @@ Reg moonlight→nightmare. Music in 3.25 s · moonlight develops 20–60 · reg 
 (electric) · electric peak ≈115 (high band 0.89) · bass hits 125/135/140 · re-drops **145.25 ·
 155.25 · 164.25** · wind-down 168–176 · out by 180.
 
+### 6.4 Four Seasons Nightmare (piece 13) — measured (278.24 s)
+Four blocks separated by quiet interludes → mapped to the season cycle. Dawn intro 4.5 ·
+SPRING 21–105 (first sparkle 21, full 24–47, airy bass-out string breaks 48/57.5/67, peaks
+80/91.5/100.5) · break 103 → SUMMER 106.5–136 (dark sultry start, build 115, storm peaks
+125–131) · AUTUMN interlude 137 (dance 153–174, peak 163, hush 175.5, rebuild 189) · drop
+196.5 → WINTER (rebuild 201, **THE HIT 211.2 — biggest of the piece, bass 0.94**, storm
+peaks 215/221/223.5, dip 246.5, final climax 249–273 with highs 0.8–0.9, collapse 273.5,
+out 277).
+
+### 6.5 Still D.R.E. (piece E3) — measured (146.43 s)
+Iconic piano riff alone 4.75–37 (phrase dip 26.5–29.8) · single hit 37.2 · dead silence
+39.5–41.6 · **BEAT DROPS 41.75** (bass-only groove) · hats 48 · chorus 57.5 with big bass
+accents every ~5 s (61.5/66/71/76) · verse 78.5 · **HARD CUT to silence 97.4** · piano
+re-enter 105 · **chorus 2 at 107.5** (peaks 117–123) · final hit 132.2 · echo pulses
+137.2/142 · out ~146.
+
 ---
 
 ## 7. What a future session still has to do
 
-1. Author `canon` / `moonlight` / `furelise` / `stilldre` timelines (clone torrent.json's
-   track structure; measure each `ShowAudio/<piece>/Backing.wav` with the §6 method).
+1. All show timelines are authored (EDM: 6/7/8/9/13/E3; auto-loops for the live piano
+   pieces). For any new piece: clone torrent.json's 10-track structure and measure the
+   audio with the §6 method.
 2. On the day: the 7-step checklist in `LIGHTING_README.md` §8 (proof of life → confirm
    modes → ARM MOVERS → colours → front wash → network → haze).
 3. If the venue revises the plot ("Lions v02"?), diff against §3 and update
