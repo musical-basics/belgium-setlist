@@ -191,7 +191,7 @@ as ONE submaster level. Their focus is the venue's — ask for an even piano-cen
 4. **Never write Robe Power/Special channels** (Spiider ch6, T1 ch6) — resets/parking live there.
 5. **Dalis response time** must be 251–255 to disable fixture-side smoothing.
 6. **Spiider flower effect ch21 must stay 0** or the beam turns into a spinning flower.
-7. **T1 tilt is INVERTED** (the two upstage-centre T1s are yoked opposite to the Spiider rig the timelines author against). `T1Mode3Profile` writes `1 − tilt` so the beam lands on the piano, not back up on the cyc/screen.
+7. **The whole mover rig hangs tilt-inverted** vs the authored convention. This is flipped in ONE place for every mover (Spiiders + T1s) by the `invertTilt` stage anchor (`stage.invertTilt: true` in `lighting.json`, applied in `Rig.applyStageAnchor`). Do NOT also flip tilt inside a mover profile — two flips cancel and that fixture's beam lands back on the cyc/screen (this bit the T1s once already).
 
 ---
 
