@@ -1,8 +1,8 @@
 {
   "fadeSeconds" : 1,
   "clickChannels" : [
-    3,
-    4
+    5,
+    6
   ],
   "audioDeviceName" : "Audient iD44",
   "masterBackingGainDb" : 0,
@@ -230,8 +230,8 @@
     }
   ],
   "backingChannels" : [
-    1,
-    2
+    3,
+    4
   ],
   "engineSampleRate" : 48000,
   "masterClickGainDb" : 0
