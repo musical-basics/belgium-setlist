@@ -1,8 +1,8 @@
 {
-  "_note": "Canon in Dream (piece 8, 238.42 s). [EDIT: 32 bars (52.96 s @145BPM) cut from the DREAM section; cues from the rebuild onward shifted -52.96 s. Old dream 95-170 -> kept 95-117 (silence+first pastel world+riser), removed 117-170; rebuild now ~117, DROP2 ~174.5, drop-cluster ~182-222, final cut ~227, out 238.42.] Canon in Dream (piece 8, 291.38 s) \u2014 REWORKED Four-Seasons style: distinct colour worlds per phase + measured hits. REGAL OPEN ivory/gold 2-38 (royal-blue accents) -> build 42-65 -> DROP 1 at 67 (white-gold blast, strobe) -> HEROIC 67-92 gold/crimson/royal rotating stacks -> THE DREAM 95-170: three pastel sub-worlds slowly turning (pink/lilac 95-119, baby-blue/mint 120-144, lilac/pink/baby 145-169) at low hypnotic intensity -> rebuild 170 -> three-step heroic escalation 176-226 (gold+royal, +crimson faster, all three saturated) -> DROP 2 at 227.5 (biggest, strobe) -> DROP CLUSTER: colour slams alternate per measured hit 235 gold / 245 royal / 254 crimson / 262 gold / 270 royal / 275 white-gold(strobe) -> cut 280 -> ivory tail -> out 291. Times from band-split analysis. Strobe only at 67/227.5/275. Mirrored pairs; right pan = 1 - left.",
+  "_note": "Canon in Dream (piece 8, 291.38 s) \u2014 REWORKED Four-Seasons style: distinct colour worlds per phase + measured hits. REGAL OPEN ivory/gold 2-38 (royal-blue accents) -> build 42-65 -> DROP 1 at 67 (white-gold blast, strobe) -> HEROIC 67-92 gold/crimson/royal rotating stacks -> THE DREAM 95-170: three pastel sub-worlds slowly turning (pink/lilac 95-119, baby-blue/mint 120-144, lilac/pink/baby 145-169) at low hypnotic intensity -> rebuild 170 -> three-step heroic escalation 176-226 (gold+royal, +crimson faster, all three saturated) -> DROP 2 at 227.5 (biggest, strobe) -> DROP CLUSTER: colour slams alternate per measured hit 235 gold / 245 royal / 254 crimson / 262 gold / 270 royal / 275 white-gold(strobe) -> cut 280 -> ivory tail -> out 291. Times from band-split analysis. Strobe only at 67/227.5/275. Mirrored pairs; right pan = 1 - left.",
   "piece": "8",
   "template": "edm",
-  "durationSeconds": 238.42,
+  "durationSeconds": 291.38,
   "tracks": [
     {
       "fixture": "Front",
@@ -36,28 +36,28 @@
           }
         },
         {
-          "t": 117.04,
+          "t": 170,
           "ease": "linear",
           "state": {
             "intensity": 0.3
           }
         },
         {
-          "t": 174.54,
+          "t": 227.5,
           "ease": "hold",
           "state": {
             "intensity": 0.12
           }
         },
         {
-          "t": 228.04,
+          "t": 281,
           "ease": "smooth",
           "state": {
             "intensity": 0.35
           }
         },
         {
-          "t": 238.04,
+          "t": 291,
           "ease": "smooth",
           "state": {
             "intensity": 0.0
@@ -212,7 +212,47 @@
           }
         },
         {
-          "t": 117.04,
+          "t": 120,
+          "ease": "smooth",
+          "state": {
+            "red": 0.5,
+            "green": 0.65,
+            "blue": 0.95,
+            "intensity": 0.4
+          }
+        },
+        {
+          "t": 132,
+          "ease": "smooth",
+          "state": {
+            "red": 0.55,
+            "green": 0.85,
+            "blue": 0.65,
+            "intensity": 0.45
+          }
+        },
+        {
+          "t": 145,
+          "ease": "smooth",
+          "state": {
+            "red": 0.7,
+            "green": 0.55,
+            "blue": 0.9,
+            "intensity": 0.4
+          }
+        },
+        {
+          "t": 157,
+          "ease": "smooth",
+          "state": {
+            "red": 0.9,
+            "green": 0.55,
+            "blue": 0.7,
+            "intensity": 0.45
+          }
+        },
+        {
+          "t": 170,
           "ease": "linear",
           "state": {
             "red": 1.0,
@@ -222,7 +262,7 @@
           }
         },
         {
-          "t": 139.04,
+          "t": 192,
           "ease": "linear",
           "state": {
             "red": 0.1,
@@ -232,7 +272,7 @@
           }
         },
         {
-          "t": 157.04,
+          "t": 210,
           "ease": "linear",
           "state": {
             "red": 0.85,
@@ -242,7 +282,7 @@
           }
         },
         {
-          "t": 173.04,
+          "t": 226,
           "ease": "linear",
           "state": {
             "red": 1.0,
@@ -252,7 +292,7 @@
           }
         },
         {
-          "t": 174.54,
+          "t": 227.5,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -263,7 +303,7 @@
           }
         },
         {
-          "t": 182.04,
+          "t": 235,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -273,7 +313,7 @@
           }
         },
         {
-          "t": 192.04,
+          "t": 245,
           "ease": "hold",
           "state": {
             "red": 0.1,
@@ -283,7 +323,7 @@
           }
         },
         {
-          "t": 201.04,
+          "t": 254,
           "ease": "hold",
           "state": {
             "red": 0.85,
@@ -293,7 +333,7 @@
           }
         },
         {
-          "t": 209.04,
+          "t": 262,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -303,7 +343,7 @@
           }
         },
         {
-          "t": 217.04,
+          "t": 270,
           "ease": "hold",
           "state": {
             "red": 0.1,
@@ -313,7 +353,7 @@
           }
         },
         {
-          "t": 222.04,
+          "t": 275,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -324,7 +364,7 @@
           }
         },
         {
-          "t": 227.04,
+          "t": 280,
           "ease": "hold",
           "state": {
             "red": 0.1,
@@ -334,7 +374,7 @@
           }
         },
         {
-          "t": 232.04,
+          "t": 285,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -345,7 +385,7 @@
           }
         },
         {
-          "t": 238.04,
+          "t": 291,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -444,7 +484,31 @@
           }
         },
         {
-          "t": 117.04,
+          "t": 120,
+          "ease": "smooth",
+          "state": {
+            "red": 0.5,
+            "green": 0.65,
+            "blue": 0.95,
+            "intensity": 0.45,
+            "tilt": 0.35,
+            "zoom": 0.4
+          }
+        },
+        {
+          "t": 145,
+          "ease": "smooth",
+          "state": {
+            "red": 0.7,
+            "green": 0.55,
+            "blue": 0.9,
+            "intensity": 0.4,
+            "tilt": 0.35,
+            "zoom": 0.4
+          }
+        },
+        {
+          "t": 170,
           "ease": "linear",
           "state": {
             "red": 1.0,
@@ -456,7 +520,7 @@
           }
         },
         {
-          "t": 173.04,
+          "t": 226,
           "ease": "linear",
           "state": {
             "red": 1.0,
@@ -468,7 +532,7 @@
           }
         },
         {
-          "t": 174.54,
+          "t": 227.5,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -481,7 +545,7 @@
           }
         },
         {
-          "t": 209.04,
+          "t": 262,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -493,7 +557,7 @@
           }
         },
         {
-          "t": 222.04,
+          "t": 275,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -506,7 +570,7 @@
           }
         },
         {
-          "t": 227.04,
+          "t": 280,
           "ease": "hold",
           "state": {
             "red": 0.1,
@@ -518,7 +582,7 @@
           }
         },
         {
-          "t": 232.04,
+          "t": 285,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -531,7 +595,7 @@
           }
         },
         {
-          "t": 238.04,
+          "t": 291,
           "ease": "smooth",
           "state": {
             "intensity": 0.0,
@@ -876,7 +940,124 @@
           }
         },
         {
-          "t": 117.04,
+          "t": 119,
+          "ease": "smooth",
+          "state": {
+            "red": 0.7,
+            "green": 0.55,
+            "blue": 0.9,
+            "intensity": 0.453,
+            "pan": 0.46,
+            "tilt": 0.68,
+            "zoom": 0.654
+          }
+        },
+        {
+          "t": 120,
+          "ease": "smooth",
+          "state": {
+            "red": 0.5,
+            "green": 0.65,
+            "blue": 0.95,
+            "intensity": 0.403,
+            "pan": 0.5,
+            "tilt": 0.647,
+            "zoom": 0.654
+          }
+        },
+        {
+          "t": 128,
+          "ease": "smooth",
+          "state": {
+            "red": 0.55,
+            "green": 0.85,
+            "blue": 0.65,
+            "intensity": 0.333,
+            "pan": 0.578,
+            "tilt": 0.495,
+            "zoom": 0.646
+          }
+        },
+        {
+          "t": 136,
+          "ease": "smooth",
+          "state": {
+            "red": 0.5,
+            "green": 0.65,
+            "blue": 0.95,
+            "intensity": 0.413,
+            "pan": 0.422,
+            "tilt": 0.598,
+            "zoom": 0.56
+          }
+        },
+        {
+          "t": 144,
+          "ease": "smooth",
+          "state": {
+            "red": 0.55,
+            "green": 0.85,
+            "blue": 0.65,
+            "intensity": 0.503,
+            "pan": 0.5,
+            "tilt": 0.647,
+            "zoom": 0.654
+          }
+        },
+        {
+          "t": 145,
+          "ease": "smooth",
+          "state": {
+            "red": 0.7,
+            "green": 0.55,
+            "blue": 0.9,
+            "intensity": 0.412,
+            "pan": 0.46,
+            "tilt": 0.68,
+            "zoom": 0.634
+          }
+        },
+        {
+          "t": 153,
+          "ease": "smooth",
+          "state": {
+            "red": 0.9,
+            "green": 0.55,
+            "blue": 0.7,
+            "intensity": 0.325,
+            "pan": 0.538,
+            "tilt": 0.544,
+            "zoom": 0.626
+          }
+        },
+        {
+          "t": 161,
+          "ease": "smooth",
+          "state": {
+            "red": 0.5,
+            "green": 0.65,
+            "blue": 0.95,
+            "intensity": 0.413,
+            "pan": 0.382,
+            "tilt": 0.636,
+            "zoom": 0.54
+          }
+        },
+        {
+          "t": 169,
+          "ease": "smooth",
+          "state": {
+            "red": 0.7,
+            "green": 0.55,
+            "blue": 0.9,
+            "intensity": 0.512,
+            "pan": 0.46,
+            "tilt": 0.68,
+            "zoom": 0.634
+          }
+        },
+        {
+          "t": 170.0,
           "ease": "linear",
           "state": {
             "red": 1.0,
@@ -889,7 +1070,7 @@
           }
         },
         {
-          "t": 119.54,
+          "t": 172.5,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -902,7 +1083,7 @@
           }
         },
         {
-          "t": 122.04,
+          "t": 175.0,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -915,7 +1096,7 @@
           }
         },
         {
-          "t": 123.04,
+          "t": 176,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -928,7 +1109,7 @@
           }
         },
         {
-          "t": 128.04,
+          "t": 181,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -941,7 +1122,7 @@
           }
         },
         {
-          "t": 133.04,
+          "t": 186,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -954,7 +1135,7 @@
           }
         },
         {
-          "t": 138.04,
+          "t": 191,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -967,7 +1148,7 @@
           }
         },
         {
-          "t": 139.04,
+          "t": 192.0,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -980,7 +1161,7 @@
           }
         },
         {
-          "t": 143.54,
+          "t": 196.5,
           "ease": "smooth",
           "state": {
             "red": 0.85,
@@ -993,7 +1174,7 @@
           }
         },
         {
-          "t": 148.04,
+          "t": 201.0,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -1006,7 +1187,7 @@
           }
         },
         {
-          "t": 152.54,
+          "t": 205.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -1019,7 +1200,7 @@
           }
         },
         {
-          "t": 155.04,
+          "t": 208,
           "ease": "smooth",
           "state": {
             "red": 0.85,
@@ -1032,7 +1213,7 @@
           }
         },
         {
-          "t": 159.04,
+          "t": 212,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -1045,7 +1226,7 @@
           }
         },
         {
-          "t": 163.04,
+          "t": 216,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -1058,7 +1239,7 @@
           }
         },
         {
-          "t": 167.04,
+          "t": 220,
           "ease": "smooth",
           "state": {
             "red": 0.85,
@@ -1071,7 +1252,7 @@
           }
         },
         {
-          "t": 171.04,
+          "t": 224,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -1084,7 +1265,7 @@
           }
         },
         {
-          "t": 174.54,
+          "t": 227.5,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -1099,7 +1280,7 @@
           }
         },
         {
-          "t": 176.14,
+          "t": 229.1,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -1114,7 +1295,7 @@
           }
         },
         {
-          "t": 177.54,
+          "t": 230.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -1128,7 +1309,7 @@
           }
         },
         {
-          "t": 180.54,
+          "t": 233.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -1142,7 +1323,7 @@
           }
         },
         {
-          "t": 182.04,
+          "t": 235,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -1155,7 +1336,7 @@
           }
         },
         {
-          "t": 183.14,
+          "t": 236.1,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -1169,7 +1350,7 @@
           }
         },
         {
-          "t": 184.54,
+          "t": 237.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -1182,7 +1363,7 @@
           }
         },
         {
-          "t": 187.54,
+          "t": 240.5,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -1195,7 +1376,7 @@
           }
         },
         {
-          "t": 190.54,
+          "t": 243.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -1208,7 +1389,7 @@
           }
         },
         {
-          "t": 192.04,
+          "t": 245,
           "ease": "hold",
           "state": {
             "red": 0.1,
@@ -1221,7 +1402,7 @@
           }
         },
         {
-          "t": 193.14,
+          "t": 246.1,
           "ease": "hold",
           "state": {
             "red": 0.1,
@@ -1235,7 +1416,7 @@
           }
         },
         {
-          "t": 194.54,
+          "t": 247.5,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -1248,7 +1429,7 @@
           }
         },
         {
-          "t": 197.04,
+          "t": 250.0,
           "ease": "smooth",
           "state": {
             "red": 0.85,
@@ -1261,7 +1442,7 @@
           }
         },
         {
-          "t": 199.54,
+          "t": 252.5,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -1274,7 +1455,7 @@
           }
         },
         {
-          "t": 201.04,
+          "t": 254,
           "ease": "hold",
           "state": {
             "red": 0.85,
@@ -1287,7 +1468,7 @@
           }
         },
         {
-          "t": 202.14,
+          "t": 255.1,
           "ease": "hold",
           "state": {
             "red": 0.85,
@@ -1301,7 +1482,7 @@
           }
         },
         {
-          "t": 203.54,
+          "t": 256.5,
           "ease": "smooth",
           "state": {
             "red": 0.85,
@@ -1314,7 +1495,7 @@
           }
         },
         {
-          "t": 205.54,
+          "t": 258.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -1327,7 +1508,7 @@
           }
         },
         {
-          "t": 207.54,
+          "t": 260.5,
           "ease": "smooth",
           "state": {
             "red": 0.85,
@@ -1340,7 +1521,7 @@
           }
         },
         {
-          "t": 209.04,
+          "t": 262,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -1353,7 +1534,7 @@
           }
         },
         {
-          "t": 210.14,
+          "t": 263.1,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -1367,7 +1548,7 @@
           }
         },
         {
-          "t": 211.54,
+          "t": 264.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -1380,7 +1561,7 @@
           }
         },
         {
-          "t": 213.54,
+          "t": 266.5,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -1393,7 +1574,7 @@
           }
         },
         {
-          "t": 215.54,
+          "t": 268.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -1406,7 +1587,7 @@
           }
         },
         {
-          "t": 217.04,
+          "t": 270,
           "ease": "hold",
           "state": {
             "red": 0.1,
@@ -1419,7 +1600,7 @@
           }
         },
         {
-          "t": 218.14,
+          "t": 271.1,
           "ease": "hold",
           "state": {
             "red": 0.1,
@@ -1433,7 +1614,7 @@
           }
         },
         {
-          "t": 222.04,
+          "t": 275,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -1448,7 +1629,7 @@
           }
         },
         {
-          "t": 223.34,
+          "t": 276.3,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -1463,7 +1644,7 @@
           }
         },
         {
-          "t": 224.54,
+          "t": 277.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -1477,7 +1658,7 @@
           }
         },
         {
-          "t": 226.54,
+          "t": 279.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -1491,7 +1672,7 @@
           }
         },
         {
-          "t": 228.04,
+          "t": 281.0,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -1505,7 +1686,7 @@
           }
         },
         {
-          "t": 231.54,
+          "t": 284.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -1519,7 +1700,7 @@
           }
         },
         {
-          "t": 235.04,
+          "t": 288.0,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -1533,7 +1714,7 @@
           }
         },
         {
-          "t": 238.42,
+          "t": 291.38,
           "ease": "smooth",
           "state": {
             "intensity": 0.0,
@@ -1879,7 +2060,124 @@
           }
         },
         {
-          "t": 117.04,
+          "t": 119,
+          "ease": "smooth",
+          "state": {
+            "red": 0.7,
+            "green": 0.55,
+            "blue": 0.9,
+            "intensity": 0.453,
+            "pan": 0.54,
+            "tilt": 0.68,
+            "zoom": 0.654
+          }
+        },
+        {
+          "t": 120,
+          "ease": "smooth",
+          "state": {
+            "red": 0.5,
+            "green": 0.65,
+            "blue": 0.95,
+            "intensity": 0.403,
+            "pan": 0.5,
+            "tilt": 0.647,
+            "zoom": 0.654
+          }
+        },
+        {
+          "t": 128,
+          "ease": "smooth",
+          "state": {
+            "red": 0.55,
+            "green": 0.85,
+            "blue": 0.65,
+            "intensity": 0.333,
+            "pan": 0.422,
+            "tilt": 0.495,
+            "zoom": 0.646
+          }
+        },
+        {
+          "t": 136,
+          "ease": "smooth",
+          "state": {
+            "red": 0.5,
+            "green": 0.65,
+            "blue": 0.95,
+            "intensity": 0.413,
+            "pan": 0.578,
+            "tilt": 0.598,
+            "zoom": 0.56
+          }
+        },
+        {
+          "t": 144,
+          "ease": "smooth",
+          "state": {
+            "red": 0.55,
+            "green": 0.85,
+            "blue": 0.65,
+            "intensity": 0.503,
+            "pan": 0.5,
+            "tilt": 0.647,
+            "zoom": 0.654
+          }
+        },
+        {
+          "t": 145,
+          "ease": "smooth",
+          "state": {
+            "red": 0.7,
+            "green": 0.55,
+            "blue": 0.9,
+            "intensity": 0.412,
+            "pan": 0.54,
+            "tilt": 0.68,
+            "zoom": 0.634
+          }
+        },
+        {
+          "t": 153,
+          "ease": "smooth",
+          "state": {
+            "red": 0.9,
+            "green": 0.55,
+            "blue": 0.7,
+            "intensity": 0.325,
+            "pan": 0.462,
+            "tilt": 0.544,
+            "zoom": 0.626
+          }
+        },
+        {
+          "t": 161,
+          "ease": "smooth",
+          "state": {
+            "red": 0.5,
+            "green": 0.65,
+            "blue": 0.95,
+            "intensity": 0.413,
+            "pan": 0.618,
+            "tilt": 0.636,
+            "zoom": 0.54
+          }
+        },
+        {
+          "t": 169,
+          "ease": "smooth",
+          "state": {
+            "red": 0.7,
+            "green": 0.55,
+            "blue": 0.9,
+            "intensity": 0.512,
+            "pan": 0.54,
+            "tilt": 0.68,
+            "zoom": 0.634
+          }
+        },
+        {
+          "t": 170.0,
           "ease": "linear",
           "state": {
             "red": 1.0,
@@ -1892,7 +2190,7 @@
           }
         },
         {
-          "t": 119.54,
+          "t": 172.5,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -1905,7 +2203,7 @@
           }
         },
         {
-          "t": 122.04,
+          "t": 175.0,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -1918,7 +2216,7 @@
           }
         },
         {
-          "t": 123.04,
+          "t": 176,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -1931,7 +2229,7 @@
           }
         },
         {
-          "t": 128.04,
+          "t": 181,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -1944,7 +2242,7 @@
           }
         },
         {
-          "t": 133.04,
+          "t": 186,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -1957,7 +2255,7 @@
           }
         },
         {
-          "t": 138.04,
+          "t": 191,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -1970,7 +2268,7 @@
           }
         },
         {
-          "t": 139.04,
+          "t": 192.0,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -1983,7 +2281,7 @@
           }
         },
         {
-          "t": 143.54,
+          "t": 196.5,
           "ease": "smooth",
           "state": {
             "red": 0.85,
@@ -1996,7 +2294,7 @@
           }
         },
         {
-          "t": 148.04,
+          "t": 201.0,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -2009,7 +2307,7 @@
           }
         },
         {
-          "t": 152.54,
+          "t": 205.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -2022,7 +2320,7 @@
           }
         },
         {
-          "t": 155.04,
+          "t": 208,
           "ease": "smooth",
           "state": {
             "red": 0.85,
@@ -2035,7 +2333,7 @@
           }
         },
         {
-          "t": 159.04,
+          "t": 212,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -2048,7 +2346,7 @@
           }
         },
         {
-          "t": 163.04,
+          "t": 216,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -2061,7 +2359,7 @@
           }
         },
         {
-          "t": 167.04,
+          "t": 220,
           "ease": "smooth",
           "state": {
             "red": 0.85,
@@ -2074,7 +2372,7 @@
           }
         },
         {
-          "t": 171.04,
+          "t": 224,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -2087,7 +2385,7 @@
           }
         },
         {
-          "t": 174.54,
+          "t": 227.5,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -2102,7 +2400,7 @@
           }
         },
         {
-          "t": 176.14,
+          "t": 229.1,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -2117,7 +2415,7 @@
           }
         },
         {
-          "t": 177.54,
+          "t": 230.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -2131,7 +2429,7 @@
           }
         },
         {
-          "t": 180.54,
+          "t": 233.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -2145,7 +2443,7 @@
           }
         },
         {
-          "t": 182.04,
+          "t": 235,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -2158,7 +2456,7 @@
           }
         },
         {
-          "t": 183.14,
+          "t": 236.1,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -2172,7 +2470,7 @@
           }
         },
         {
-          "t": 184.54,
+          "t": 237.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -2185,7 +2483,7 @@
           }
         },
         {
-          "t": 187.54,
+          "t": 240.5,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -2198,7 +2496,7 @@
           }
         },
         {
-          "t": 190.54,
+          "t": 243.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -2211,7 +2509,7 @@
           }
         },
         {
-          "t": 192.04,
+          "t": 245,
           "ease": "hold",
           "state": {
             "red": 0.1,
@@ -2224,7 +2522,7 @@
           }
         },
         {
-          "t": 193.14,
+          "t": 246.1,
           "ease": "hold",
           "state": {
             "red": 0.1,
@@ -2238,7 +2536,7 @@
           }
         },
         {
-          "t": 194.54,
+          "t": 247.5,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -2251,7 +2549,7 @@
           }
         },
         {
-          "t": 197.04,
+          "t": 250.0,
           "ease": "smooth",
           "state": {
             "red": 0.85,
@@ -2264,7 +2562,7 @@
           }
         },
         {
-          "t": 199.54,
+          "t": 252.5,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -2277,7 +2575,7 @@
           }
         },
         {
-          "t": 201.04,
+          "t": 254,
           "ease": "hold",
           "state": {
             "red": 0.85,
@@ -2290,7 +2588,7 @@
           }
         },
         {
-          "t": 202.14,
+          "t": 255.1,
           "ease": "hold",
           "state": {
             "red": 0.85,
@@ -2304,7 +2602,7 @@
           }
         },
         {
-          "t": 203.54,
+          "t": 256.5,
           "ease": "smooth",
           "state": {
             "red": 0.85,
@@ -2317,7 +2615,7 @@
           }
         },
         {
-          "t": 205.54,
+          "t": 258.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -2330,7 +2628,7 @@
           }
         },
         {
-          "t": 207.54,
+          "t": 260.5,
           "ease": "smooth",
           "state": {
             "red": 0.85,
@@ -2343,7 +2641,7 @@
           }
         },
         {
-          "t": 209.04,
+          "t": 262,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -2356,7 +2654,7 @@
           }
         },
         {
-          "t": 210.14,
+          "t": 263.1,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -2370,7 +2668,7 @@
           }
         },
         {
-          "t": 211.54,
+          "t": 264.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -2383,7 +2681,7 @@
           }
         },
         {
-          "t": 213.54,
+          "t": 266.5,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -2396,7 +2694,7 @@
           }
         },
         {
-          "t": 215.54,
+          "t": 268.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -2409,7 +2707,7 @@
           }
         },
         {
-          "t": 217.04,
+          "t": 270,
           "ease": "hold",
           "state": {
             "red": 0.1,
@@ -2422,7 +2720,7 @@
           }
         },
         {
-          "t": 218.14,
+          "t": 271.1,
           "ease": "hold",
           "state": {
             "red": 0.1,
@@ -2436,7 +2734,7 @@
           }
         },
         {
-          "t": 222.04,
+          "t": 275,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -2451,7 +2749,7 @@
           }
         },
         {
-          "t": 223.34,
+          "t": 276.3,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -2466,7 +2764,7 @@
           }
         },
         {
-          "t": 224.54,
+          "t": 277.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -2480,7 +2778,7 @@
           }
         },
         {
-          "t": 226.54,
+          "t": 279.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -2494,7 +2792,7 @@
           }
         },
         {
-          "t": 228.04,
+          "t": 281.0,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -2508,7 +2806,7 @@
           }
         },
         {
-          "t": 231.54,
+          "t": 284.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -2522,7 +2820,7 @@
           }
         },
         {
-          "t": 235.04,
+          "t": 288.0,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -2536,7 +2834,7 @@
           }
         },
         {
-          "t": 238.42,
+          "t": 291.38,
           "ease": "smooth",
           "state": {
             "intensity": 0.0,
@@ -2883,7 +3181,124 @@
           }
         },
         {
-          "t": 117.04,
+          "t": 119,
+          "ease": "smooth",
+          "state": {
+            "red": 0.9,
+            "green": 0.55,
+            "blue": 0.7,
+            "intensity": 0.396,
+            "pan": 0.529,
+            "tilt": 0.544,
+            "zoom": 0.646
+          }
+        },
+        {
+          "t": 120,
+          "ease": "smooth",
+          "state": {
+            "red": 0.55,
+            "green": 0.85,
+            "blue": 0.65,
+            "intensity": 0.346,
+            "pan": 0.578,
+            "tilt": 0.494,
+            "zoom": 0.646
+          }
+        },
+        {
+          "t": 128,
+          "ease": "smooth",
+          "state": {
+            "red": 0.5,
+            "green": 0.65,
+            "blue": 0.95,
+            "intensity": 0.437,
+            "pan": 0.422,
+            "tilt": 0.599,
+            "zoom": 0.56
+          }
+        },
+        {
+          "t": 136,
+          "ease": "smooth",
+          "state": {
+            "red": 0.55,
+            "green": 0.85,
+            "blue": 0.65,
+            "intensity": 0.367,
+            "pan": 0.501,
+            "tilt": 0.647,
+            "zoom": 0.654
+          }
+        },
+        {
+          "t": 144,
+          "ease": "smooth",
+          "state": {
+            "red": 0.5,
+            "green": 0.65,
+            "blue": 0.95,
+            "intensity": 0.446,
+            "pan": 0.578,
+            "tilt": 0.494,
+            "zoom": 0.646
+          }
+        },
+        {
+          "t": 145,
+          "ease": "smooth",
+          "state": {
+            "red": 0.9,
+            "green": 0.55,
+            "blue": 0.7,
+            "intensity": 0.346,
+            "pan": 0.538,
+            "tilt": 0.544,
+            "zoom": 0.626
+          }
+        },
+        {
+          "t": 153,
+          "ease": "smooth",
+          "state": {
+            "red": 0.5,
+            "green": 0.65,
+            "blue": 0.95,
+            "intensity": 0.446,
+            "pan": 0.382,
+            "tilt": 0.637,
+            "zoom": 0.54
+          }
+        },
+        {
+          "t": 161,
+          "ease": "smooth",
+          "state": {
+            "red": 0.7,
+            "green": 0.55,
+            "blue": 0.9,
+            "intensity": 0.358,
+            "pan": 0.461,
+            "tilt": 0.679,
+            "zoom": 0.634
+          }
+        },
+        {
+          "t": 169,
+          "ease": "smooth",
+          "state": {
+            "red": 0.9,
+            "green": 0.55,
+            "blue": 0.7,
+            "intensity": 0.446,
+            "pan": 0.538,
+            "tilt": 0.544,
+            "zoom": 0.626
+          }
+        },
+        {
+          "t": 170.0,
           "ease": "linear",
           "state": {
             "red": 0.1,
@@ -2896,7 +3311,7 @@
           }
         },
         {
-          "t": 119.54,
+          "t": 172.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -2909,7 +3324,7 @@
           }
         },
         {
-          "t": 122.04,
+          "t": 175.0,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -2922,7 +3337,7 @@
           }
         },
         {
-          "t": 123.04,
+          "t": 176,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -2935,7 +3350,7 @@
           }
         },
         {
-          "t": 128.04,
+          "t": 181,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -2948,7 +3363,7 @@
           }
         },
         {
-          "t": 133.04,
+          "t": 186,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -2961,7 +3376,7 @@
           }
         },
         {
-          "t": 138.04,
+          "t": 191,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -2974,7 +3389,7 @@
           }
         },
         {
-          "t": 139.04,
+          "t": 192.0,
           "ease": "smooth",
           "state": {
             "red": 0.85,
@@ -2987,7 +3402,7 @@
           }
         },
         {
-          "t": 143.54,
+          "t": 196.5,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -3000,7 +3415,7 @@
           }
         },
         {
-          "t": 148.04,
+          "t": 201.0,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -3013,7 +3428,7 @@
           }
         },
         {
-          "t": 152.54,
+          "t": 205.5,
           "ease": "smooth",
           "state": {
             "red": 0.85,
@@ -3026,7 +3441,7 @@
           }
         },
         {
-          "t": 155.04,
+          "t": 208,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -3039,7 +3454,7 @@
           }
         },
         {
-          "t": 159.04,
+          "t": 212,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -3052,7 +3467,7 @@
           }
         },
         {
-          "t": 163.04,
+          "t": 216,
           "ease": "smooth",
           "state": {
             "red": 0.85,
@@ -3065,7 +3480,7 @@
           }
         },
         {
-          "t": 167.04,
+          "t": 220,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -3078,7 +3493,7 @@
           }
         },
         {
-          "t": 171.04,
+          "t": 224,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -3091,7 +3506,7 @@
           }
         },
         {
-          "t": 174.54,
+          "t": 227.5,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -3106,7 +3521,7 @@
           }
         },
         {
-          "t": 176.14,
+          "t": 229.1,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -3121,7 +3536,7 @@
           }
         },
         {
-          "t": 177.54,
+          "t": 230.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -3135,7 +3550,7 @@
           }
         },
         {
-          "t": 180.54,
+          "t": 233.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -3149,7 +3564,7 @@
           }
         },
         {
-          "t": 182.04,
+          "t": 235,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -3162,7 +3577,7 @@
           }
         },
         {
-          "t": 183.14,
+          "t": 236.1,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -3176,7 +3591,7 @@
           }
         },
         {
-          "t": 184.54,
+          "t": 237.5,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -3189,7 +3604,7 @@
           }
         },
         {
-          "t": 187.54,
+          "t": 240.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -3202,7 +3617,7 @@
           }
         },
         {
-          "t": 190.54,
+          "t": 243.5,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -3215,7 +3630,7 @@
           }
         },
         {
-          "t": 192.04,
+          "t": 245,
           "ease": "hold",
           "state": {
             "red": 0.1,
@@ -3228,7 +3643,7 @@
           }
         },
         {
-          "t": 193.14,
+          "t": 246.1,
           "ease": "hold",
           "state": {
             "red": 0.1,
@@ -3242,7 +3657,7 @@
           }
         },
         {
-          "t": 194.54,
+          "t": 247.5,
           "ease": "smooth",
           "state": {
             "red": 0.85,
@@ -3255,7 +3670,7 @@
           }
         },
         {
-          "t": 197.04,
+          "t": 250.0,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -3268,7 +3683,7 @@
           }
         },
         {
-          "t": 199.54,
+          "t": 252.5,
           "ease": "smooth",
           "state": {
             "red": 0.85,
@@ -3281,7 +3696,7 @@
           }
         },
         {
-          "t": 201.04,
+          "t": 254,
           "ease": "hold",
           "state": {
             "red": 0.85,
@@ -3294,7 +3709,7 @@
           }
         },
         {
-          "t": 202.14,
+          "t": 255.1,
           "ease": "hold",
           "state": {
             "red": 0.85,
@@ -3308,7 +3723,7 @@
           }
         },
         {
-          "t": 203.54,
+          "t": 256.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -3321,7 +3736,7 @@
           }
         },
         {
-          "t": 205.54,
+          "t": 258.5,
           "ease": "smooth",
           "state": {
             "red": 0.85,
@@ -3334,7 +3749,7 @@
           }
         },
         {
-          "t": 207.54,
+          "t": 260.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -3347,7 +3762,7 @@
           }
         },
         {
-          "t": 209.04,
+          "t": 262,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -3360,7 +3775,7 @@
           }
         },
         {
-          "t": 210.14,
+          "t": 263.1,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -3374,7 +3789,7 @@
           }
         },
         {
-          "t": 211.54,
+          "t": 264.5,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -3387,7 +3802,7 @@
           }
         },
         {
-          "t": 213.54,
+          "t": 266.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -3400,7 +3815,7 @@
           }
         },
         {
-          "t": 215.54,
+          "t": 268.5,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -3413,7 +3828,7 @@
           }
         },
         {
-          "t": 217.04,
+          "t": 270,
           "ease": "hold",
           "state": {
             "red": 0.1,
@@ -3426,7 +3841,7 @@
           }
         },
         {
-          "t": 218.14,
+          "t": 271.1,
           "ease": "hold",
           "state": {
             "red": 0.1,
@@ -3440,7 +3855,7 @@
           }
         },
         {
-          "t": 222.04,
+          "t": 275,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -3455,7 +3870,7 @@
           }
         },
         {
-          "t": 223.34,
+          "t": 276.3,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -3470,7 +3885,7 @@
           }
         },
         {
-          "t": 224.54,
+          "t": 277.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -3484,7 +3899,7 @@
           }
         },
         {
-          "t": 226.54,
+          "t": 279.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -3498,7 +3913,7 @@
           }
         },
         {
-          "t": 228.04,
+          "t": 281.0,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -3512,7 +3927,7 @@
           }
         },
         {
-          "t": 231.54,
+          "t": 284.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -3526,7 +3941,7 @@
           }
         },
         {
-          "t": 235.04,
+          "t": 288.0,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -3540,7 +3955,7 @@
           }
         },
         {
-          "t": 238.42,
+          "t": 291.38,
           "ease": "smooth",
           "state": {
             "intensity": 0.0,
@@ -3887,7 +4302,124 @@
           }
         },
         {
-          "t": 117.04,
+          "t": 119,
+          "ease": "smooth",
+          "state": {
+            "red": 0.9,
+            "green": 0.55,
+            "blue": 0.7,
+            "intensity": 0.396,
+            "pan": 0.471,
+            "tilt": 0.544,
+            "zoom": 0.646
+          }
+        },
+        {
+          "t": 120,
+          "ease": "smooth",
+          "state": {
+            "red": 0.55,
+            "green": 0.85,
+            "blue": 0.65,
+            "intensity": 0.346,
+            "pan": 0.422,
+            "tilt": 0.494,
+            "zoom": 0.646
+          }
+        },
+        {
+          "t": 128,
+          "ease": "smooth",
+          "state": {
+            "red": 0.5,
+            "green": 0.65,
+            "blue": 0.95,
+            "intensity": 0.437,
+            "pan": 0.578,
+            "tilt": 0.599,
+            "zoom": 0.56
+          }
+        },
+        {
+          "t": 136,
+          "ease": "smooth",
+          "state": {
+            "red": 0.55,
+            "green": 0.85,
+            "blue": 0.65,
+            "intensity": 0.367,
+            "pan": 0.499,
+            "tilt": 0.647,
+            "zoom": 0.654
+          }
+        },
+        {
+          "t": 144,
+          "ease": "smooth",
+          "state": {
+            "red": 0.5,
+            "green": 0.65,
+            "blue": 0.95,
+            "intensity": 0.446,
+            "pan": 0.422,
+            "tilt": 0.494,
+            "zoom": 0.646
+          }
+        },
+        {
+          "t": 145,
+          "ease": "smooth",
+          "state": {
+            "red": 0.9,
+            "green": 0.55,
+            "blue": 0.7,
+            "intensity": 0.346,
+            "pan": 0.462,
+            "tilt": 0.544,
+            "zoom": 0.626
+          }
+        },
+        {
+          "t": 153,
+          "ease": "smooth",
+          "state": {
+            "red": 0.5,
+            "green": 0.65,
+            "blue": 0.95,
+            "intensity": 0.446,
+            "pan": 0.618,
+            "tilt": 0.637,
+            "zoom": 0.54
+          }
+        },
+        {
+          "t": 161,
+          "ease": "smooth",
+          "state": {
+            "red": 0.7,
+            "green": 0.55,
+            "blue": 0.9,
+            "intensity": 0.358,
+            "pan": 0.539,
+            "tilt": 0.679,
+            "zoom": 0.634
+          }
+        },
+        {
+          "t": 169,
+          "ease": "smooth",
+          "state": {
+            "red": 0.9,
+            "green": 0.55,
+            "blue": 0.7,
+            "intensity": 0.446,
+            "pan": 0.462,
+            "tilt": 0.544,
+            "zoom": 0.626
+          }
+        },
+        {
+          "t": 170.0,
           "ease": "linear",
           "state": {
             "red": 0.1,
@@ -3900,7 +4432,7 @@
           }
         },
         {
-          "t": 119.54,
+          "t": 172.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -3913,7 +4445,7 @@
           }
         },
         {
-          "t": 122.04,
+          "t": 175.0,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -3926,7 +4458,7 @@
           }
         },
         {
-          "t": 123.04,
+          "t": 176,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -3939,7 +4471,7 @@
           }
         },
         {
-          "t": 128.04,
+          "t": 181,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -3952,7 +4484,7 @@
           }
         },
         {
-          "t": 133.04,
+          "t": 186,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -3965,7 +4497,7 @@
           }
         },
         {
-          "t": 138.04,
+          "t": 191,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -3978,7 +4510,7 @@
           }
         },
         {
-          "t": 139.04,
+          "t": 192.0,
           "ease": "smooth",
           "state": {
             "red": 0.85,
@@ -3991,7 +4523,7 @@
           }
         },
         {
-          "t": 143.54,
+          "t": 196.5,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -4004,7 +4536,7 @@
           }
         },
         {
-          "t": 148.04,
+          "t": 201.0,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -4017,7 +4549,7 @@
           }
         },
         {
-          "t": 152.54,
+          "t": 205.5,
           "ease": "smooth",
           "state": {
             "red": 0.85,
@@ -4030,7 +4562,7 @@
           }
         },
         {
-          "t": 155.04,
+          "t": 208,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -4043,7 +4575,7 @@
           }
         },
         {
-          "t": 159.04,
+          "t": 212,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -4056,7 +4588,7 @@
           }
         },
         {
-          "t": 163.04,
+          "t": 216,
           "ease": "smooth",
           "state": {
             "red": 0.85,
@@ -4069,7 +4601,7 @@
           }
         },
         {
-          "t": 167.04,
+          "t": 220,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -4082,7 +4614,7 @@
           }
         },
         {
-          "t": 171.04,
+          "t": 224,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -4095,7 +4627,7 @@
           }
         },
         {
-          "t": 174.54,
+          "t": 227.5,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -4110,7 +4642,7 @@
           }
         },
         {
-          "t": 176.14,
+          "t": 229.1,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -4125,7 +4657,7 @@
           }
         },
         {
-          "t": 177.54,
+          "t": 230.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -4139,7 +4671,7 @@
           }
         },
         {
-          "t": 180.54,
+          "t": 233.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -4153,7 +4685,7 @@
           }
         },
         {
-          "t": 182.04,
+          "t": 235,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -4166,7 +4698,7 @@
           }
         },
         {
-          "t": 183.14,
+          "t": 236.1,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -4180,7 +4712,7 @@
           }
         },
         {
-          "t": 184.54,
+          "t": 237.5,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -4193,7 +4725,7 @@
           }
         },
         {
-          "t": 187.54,
+          "t": 240.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -4206,7 +4738,7 @@
           }
         },
         {
-          "t": 190.54,
+          "t": 243.5,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -4219,7 +4751,7 @@
           }
         },
         {
-          "t": 192.04,
+          "t": 245,
           "ease": "hold",
           "state": {
             "red": 0.1,
@@ -4232,7 +4764,7 @@
           }
         },
         {
-          "t": 193.14,
+          "t": 246.1,
           "ease": "hold",
           "state": {
             "red": 0.1,
@@ -4246,7 +4778,7 @@
           }
         },
         {
-          "t": 194.54,
+          "t": 247.5,
           "ease": "smooth",
           "state": {
             "red": 0.85,
@@ -4259,7 +4791,7 @@
           }
         },
         {
-          "t": 197.04,
+          "t": 250.0,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -4272,7 +4804,7 @@
           }
         },
         {
-          "t": 199.54,
+          "t": 252.5,
           "ease": "smooth",
           "state": {
             "red": 0.85,
@@ -4285,7 +4817,7 @@
           }
         },
         {
-          "t": 201.04,
+          "t": 254,
           "ease": "hold",
           "state": {
             "red": 0.85,
@@ -4298,7 +4830,7 @@
           }
         },
         {
-          "t": 202.14,
+          "t": 255.1,
           "ease": "hold",
           "state": {
             "red": 0.85,
@@ -4312,7 +4844,7 @@
           }
         },
         {
-          "t": 203.54,
+          "t": 256.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -4325,7 +4857,7 @@
           }
         },
         {
-          "t": 205.54,
+          "t": 258.5,
           "ease": "smooth",
           "state": {
             "red": 0.85,
@@ -4338,7 +4870,7 @@
           }
         },
         {
-          "t": 207.54,
+          "t": 260.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -4351,7 +4883,7 @@
           }
         },
         {
-          "t": 209.04,
+          "t": 262,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -4364,7 +4896,7 @@
           }
         },
         {
-          "t": 210.14,
+          "t": 263.1,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -4378,7 +4910,7 @@
           }
         },
         {
-          "t": 211.54,
+          "t": 264.5,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -4391,7 +4923,7 @@
           }
         },
         {
-          "t": 213.54,
+          "t": 266.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -4404,7 +4936,7 @@
           }
         },
         {
-          "t": 215.54,
+          "t": 268.5,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -4417,7 +4949,7 @@
           }
         },
         {
-          "t": 217.04,
+          "t": 270,
           "ease": "hold",
           "state": {
             "red": 0.1,
@@ -4430,7 +4962,7 @@
           }
         },
         {
-          "t": 218.14,
+          "t": 271.1,
           "ease": "hold",
           "state": {
             "red": 0.1,
@@ -4444,7 +4976,7 @@
           }
         },
         {
-          "t": 222.04,
+          "t": 275,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -4459,7 +4991,7 @@
           }
         },
         {
-          "t": 223.34,
+          "t": 276.3,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -4474,7 +5006,7 @@
           }
         },
         {
-          "t": 224.54,
+          "t": 277.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -4488,7 +5020,7 @@
           }
         },
         {
-          "t": 226.54,
+          "t": 279.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -4502,7 +5034,7 @@
           }
         },
         {
-          "t": 228.04,
+          "t": 281.0,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -4516,7 +5048,7 @@
           }
         },
         {
-          "t": 231.54,
+          "t": 284.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -4530,7 +5062,7 @@
           }
         },
         {
-          "t": 235.04,
+          "t": 288.0,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -4544,7 +5076,7 @@
           }
         },
         {
-          "t": 238.42,
+          "t": 291.38,
           "ease": "smooth",
           "state": {
             "intensity": 0.0,
@@ -4891,7 +5423,124 @@
           }
         },
         {
-          "t": 117.04,
+          "t": 119,
+          "ease": "smooth",
+          "state": {
+            "red": 0.7,
+            "green": 0.55,
+            "blue": 0.9,
+            "intensity": 0.35,
+            "pan": 0.39,
+            "tilt": 0.637,
+            "zoom": 0.56
+          }
+        },
+        {
+          "t": 120,
+          "ease": "smooth",
+          "state": {
+            "red": 0.5,
+            "green": 0.65,
+            "blue": 0.95,
+            "intensity": 0.3,
+            "pan": 0.422,
+            "tilt": 0.599,
+            "zoom": 0.56
+          }
+        },
+        {
+          "t": 128,
+          "ease": "smooth",
+          "state": {
+            "red": 0.55,
+            "green": 0.85,
+            "blue": 0.65,
+            "intensity": 0.379,
+            "pan": 0.501,
+            "tilt": 0.646,
+            "zoom": 0.654
+          }
+        },
+        {
+          "t": 136,
+          "ease": "smooth",
+          "state": {
+            "red": 0.5,
+            "green": 0.65,
+            "blue": 0.95,
+            "intensity": 0.47,
+            "pan": 0.577,
+            "tilt": 0.494,
+            "zoom": 0.645
+          }
+        },
+        {
+          "t": 144,
+          "ease": "smooth",
+          "state": {
+            "red": 0.55,
+            "green": 0.85,
+            "blue": 0.65,
+            "intensity": 0.4,
+            "pan": 0.422,
+            "tilt": 0.599,
+            "zoom": 0.56
+          }
+        },
+        {
+          "t": 145,
+          "ease": "smooth",
+          "state": {
+            "red": 0.5,
+            "green": 0.65,
+            "blue": 0.95,
+            "intensity": 0.292,
+            "pan": 0.382,
+            "tilt": 0.637,
+            "zoom": 0.54
+          }
+        },
+        {
+          "t": 153,
+          "ease": "smooth",
+          "state": {
+            "red": 0.7,
+            "green": 0.55,
+            "blue": 0.9,
+            "intensity": 0.379,
+            "pan": 0.461,
+            "tilt": 0.679,
+            "zoom": 0.634
+          }
+        },
+        {
+          "t": 161,
+          "ease": "smooth",
+          "state": {
+            "red": 0.9,
+            "green": 0.55,
+            "blue": 0.7,
+            "intensity": 0.479,
+            "pan": 0.537,
+            "tilt": 0.544,
+            "zoom": 0.625
+          }
+        },
+        {
+          "t": 169,
+          "ease": "smooth",
+          "state": {
+            "red": 0.5,
+            "green": 0.65,
+            "blue": 0.95,
+            "intensity": 0.392,
+            "pan": 0.382,
+            "tilt": 0.637,
+            "zoom": 0.54
+          }
+        },
+        {
+          "t": 170.0,
           "ease": "linear",
           "state": {
             "red": 1.0,
@@ -4904,7 +5553,7 @@
           }
         },
         {
-          "t": 119.54,
+          "t": 172.5,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -4917,7 +5566,7 @@
           }
         },
         {
-          "t": 122.04,
+          "t": 175.0,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -4930,7 +5579,7 @@
           }
         },
         {
-          "t": 123.04,
+          "t": 176,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -4943,7 +5592,7 @@
           }
         },
         {
-          "t": 128.04,
+          "t": 181,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -4956,7 +5605,7 @@
           }
         },
         {
-          "t": 133.04,
+          "t": 186,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -4969,7 +5618,7 @@
           }
         },
         {
-          "t": 138.04,
+          "t": 191,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -4982,7 +5631,7 @@
           }
         },
         {
-          "t": 139.04,
+          "t": 192.0,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -4995,7 +5644,7 @@
           }
         },
         {
-          "t": 143.54,
+          "t": 196.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -5008,7 +5657,7 @@
           }
         },
         {
-          "t": 148.04,
+          "t": 201.0,
           "ease": "smooth",
           "state": {
             "red": 0.85,
@@ -5021,7 +5670,7 @@
           }
         },
         {
-          "t": 152.54,
+          "t": 205.5,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -5034,7 +5683,7 @@
           }
         },
         {
-          "t": 155.04,
+          "t": 208,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -5047,7 +5696,7 @@
           }
         },
         {
-          "t": 159.04,
+          "t": 212,
           "ease": "smooth",
           "state": {
             "red": 0.85,
@@ -5060,7 +5709,7 @@
           }
         },
         {
-          "t": 163.04,
+          "t": 216,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -5073,7 +5722,7 @@
           }
         },
         {
-          "t": 167.04,
+          "t": 220,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -5086,7 +5735,7 @@
           }
         },
         {
-          "t": 171.04,
+          "t": 224,
           "ease": "smooth",
           "state": {
             "red": 0.85,
@@ -5099,7 +5748,7 @@
           }
         },
         {
-          "t": 174.54,
+          "t": 227.5,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -5114,7 +5763,7 @@
           }
         },
         {
-          "t": 176.14,
+          "t": 229.1,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -5129,7 +5778,7 @@
           }
         },
         {
-          "t": 177.54,
+          "t": 230.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -5143,7 +5792,7 @@
           }
         },
         {
-          "t": 180.54,
+          "t": 233.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -5157,7 +5806,7 @@
           }
         },
         {
-          "t": 182.04,
+          "t": 235,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -5170,7 +5819,7 @@
           }
         },
         {
-          "t": 183.14,
+          "t": 236.1,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -5184,7 +5833,7 @@
           }
         },
         {
-          "t": 184.54,
+          "t": 237.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -5197,7 +5846,7 @@
           }
         },
         {
-          "t": 187.54,
+          "t": 240.5,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -5210,7 +5859,7 @@
           }
         },
         {
-          "t": 190.54,
+          "t": 243.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -5223,7 +5872,7 @@
           }
         },
         {
-          "t": 192.04,
+          "t": 245,
           "ease": "hold",
           "state": {
             "red": 0.1,
@@ -5236,7 +5885,7 @@
           }
         },
         {
-          "t": 193.14,
+          "t": 246.1,
           "ease": "hold",
           "state": {
             "red": 0.1,
@@ -5250,7 +5899,7 @@
           }
         },
         {
-          "t": 194.54,
+          "t": 247.5,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -5263,7 +5912,7 @@
           }
         },
         {
-          "t": 197.04,
+          "t": 250.0,
           "ease": "smooth",
           "state": {
             "red": 0.85,
@@ -5276,7 +5925,7 @@
           }
         },
         {
-          "t": 199.54,
+          "t": 252.5,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -5289,7 +5938,7 @@
           }
         },
         {
-          "t": 201.04,
+          "t": 254,
           "ease": "hold",
           "state": {
             "red": 0.85,
@@ -5302,7 +5951,7 @@
           }
         },
         {
-          "t": 202.14,
+          "t": 255.1,
           "ease": "hold",
           "state": {
             "red": 0.85,
@@ -5316,7 +5965,7 @@
           }
         },
         {
-          "t": 203.54,
+          "t": 256.5,
           "ease": "smooth",
           "state": {
             "red": 0.85,
@@ -5329,7 +5978,7 @@
           }
         },
         {
-          "t": 205.54,
+          "t": 258.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -5342,7 +5991,7 @@
           }
         },
         {
-          "t": 207.54,
+          "t": 260.5,
           "ease": "smooth",
           "state": {
             "red": 0.85,
@@ -5355,7 +6004,7 @@
           }
         },
         {
-          "t": 209.04,
+          "t": 262,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -5368,7 +6017,7 @@
           }
         },
         {
-          "t": 210.14,
+          "t": 263.1,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -5382,7 +6031,7 @@
           }
         },
         {
-          "t": 211.54,
+          "t": 264.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -5395,7 +6044,7 @@
           }
         },
         {
-          "t": 213.54,
+          "t": 266.5,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -5408,7 +6057,7 @@
           }
         },
         {
-          "t": 215.54,
+          "t": 268.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -5421,7 +6070,7 @@
           }
         },
         {
-          "t": 217.04,
+          "t": 270,
           "ease": "hold",
           "state": {
             "red": 0.1,
@@ -5434,7 +6083,7 @@
           }
         },
         {
-          "t": 218.14,
+          "t": 271.1,
           "ease": "hold",
           "state": {
             "red": 0.1,
@@ -5448,7 +6097,7 @@
           }
         },
         {
-          "t": 222.04,
+          "t": 275,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -5463,7 +6112,7 @@
           }
         },
         {
-          "t": 223.34,
+          "t": 276.3,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -5478,7 +6127,7 @@
           }
         },
         {
-          "t": 224.54,
+          "t": 277.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -5492,7 +6141,7 @@
           }
         },
         {
-          "t": 226.54,
+          "t": 279.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -5506,7 +6155,7 @@
           }
         },
         {
-          "t": 228.04,
+          "t": 281.0,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -5520,7 +6169,7 @@
           }
         },
         {
-          "t": 231.54,
+          "t": 284.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -5534,7 +6183,7 @@
           }
         },
         {
-          "t": 235.04,
+          "t": 288.0,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -5548,7 +6197,7 @@
           }
         },
         {
-          "t": 238.42,
+          "t": 291.38,
           "ease": "smooth",
           "state": {
             "intensity": 0.0,
@@ -5895,7 +6544,124 @@
           }
         },
         {
-          "t": 117.04,
+          "t": 119,
+          "ease": "smooth",
+          "state": {
+            "red": 0.7,
+            "green": 0.55,
+            "blue": 0.9,
+            "intensity": 0.35,
+            "pan": 0.61,
+            "tilt": 0.637,
+            "zoom": 0.56
+          }
+        },
+        {
+          "t": 120,
+          "ease": "smooth",
+          "state": {
+            "red": 0.5,
+            "green": 0.65,
+            "blue": 0.95,
+            "intensity": 0.3,
+            "pan": 0.578,
+            "tilt": 0.599,
+            "zoom": 0.56
+          }
+        },
+        {
+          "t": 128,
+          "ease": "smooth",
+          "state": {
+            "red": 0.55,
+            "green": 0.85,
+            "blue": 0.65,
+            "intensity": 0.379,
+            "pan": 0.499,
+            "tilt": 0.646,
+            "zoom": 0.654
+          }
+        },
+        {
+          "t": 136,
+          "ease": "smooth",
+          "state": {
+            "red": 0.5,
+            "green": 0.65,
+            "blue": 0.95,
+            "intensity": 0.47,
+            "pan": 0.423,
+            "tilt": 0.494,
+            "zoom": 0.645
+          }
+        },
+        {
+          "t": 144,
+          "ease": "smooth",
+          "state": {
+            "red": 0.55,
+            "green": 0.85,
+            "blue": 0.65,
+            "intensity": 0.4,
+            "pan": 0.578,
+            "tilt": 0.599,
+            "zoom": 0.56
+          }
+        },
+        {
+          "t": 145,
+          "ease": "smooth",
+          "state": {
+            "red": 0.5,
+            "green": 0.65,
+            "blue": 0.95,
+            "intensity": 0.292,
+            "pan": 0.618,
+            "tilt": 0.637,
+            "zoom": 0.54
+          }
+        },
+        {
+          "t": 153,
+          "ease": "smooth",
+          "state": {
+            "red": 0.7,
+            "green": 0.55,
+            "blue": 0.9,
+            "intensity": 0.379,
+            "pan": 0.539,
+            "tilt": 0.679,
+            "zoom": 0.634
+          }
+        },
+        {
+          "t": 161,
+          "ease": "smooth",
+          "state": {
+            "red": 0.9,
+            "green": 0.55,
+            "blue": 0.7,
+            "intensity": 0.479,
+            "pan": 0.463,
+            "tilt": 0.544,
+            "zoom": 0.625
+          }
+        },
+        {
+          "t": 169,
+          "ease": "smooth",
+          "state": {
+            "red": 0.5,
+            "green": 0.65,
+            "blue": 0.95,
+            "intensity": 0.392,
+            "pan": 0.618,
+            "tilt": 0.637,
+            "zoom": 0.54
+          }
+        },
+        {
+          "t": 170.0,
           "ease": "linear",
           "state": {
             "red": 1.0,
@@ -5908,7 +6674,7 @@
           }
         },
         {
-          "t": 119.54,
+          "t": 172.5,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -5921,7 +6687,7 @@
           }
         },
         {
-          "t": 122.04,
+          "t": 175.0,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -5934,7 +6700,7 @@
           }
         },
         {
-          "t": 123.04,
+          "t": 176,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -5947,7 +6713,7 @@
           }
         },
         {
-          "t": 128.04,
+          "t": 181,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -5960,7 +6726,7 @@
           }
         },
         {
-          "t": 133.04,
+          "t": 186,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -5973,7 +6739,7 @@
           }
         },
         {
-          "t": 138.04,
+          "t": 191,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -5986,7 +6752,7 @@
           }
         },
         {
-          "t": 139.04,
+          "t": 192.0,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -5999,7 +6765,7 @@
           }
         },
         {
-          "t": 143.54,
+          "t": 196.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -6012,7 +6778,7 @@
           }
         },
         {
-          "t": 148.04,
+          "t": 201.0,
           "ease": "smooth",
           "state": {
             "red": 0.85,
@@ -6025,7 +6791,7 @@
           }
         },
         {
-          "t": 152.54,
+          "t": 205.5,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -6038,7 +6804,7 @@
           }
         },
         {
-          "t": 155.04,
+          "t": 208,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -6051,7 +6817,7 @@
           }
         },
         {
-          "t": 159.04,
+          "t": 212,
           "ease": "smooth",
           "state": {
             "red": 0.85,
@@ -6064,7 +6830,7 @@
           }
         },
         {
-          "t": 163.04,
+          "t": 216,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -6077,7 +6843,7 @@
           }
         },
         {
-          "t": 167.04,
+          "t": 220,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -6090,7 +6856,7 @@
           }
         },
         {
-          "t": 171.04,
+          "t": 224,
           "ease": "smooth",
           "state": {
             "red": 0.85,
@@ -6103,7 +6869,7 @@
           }
         },
         {
-          "t": 174.54,
+          "t": 227.5,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -6118,7 +6884,7 @@
           }
         },
         {
-          "t": 176.14,
+          "t": 229.1,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -6133,7 +6899,7 @@
           }
         },
         {
-          "t": 177.54,
+          "t": 230.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -6147,7 +6913,7 @@
           }
         },
         {
-          "t": 180.54,
+          "t": 233.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -6161,7 +6927,7 @@
           }
         },
         {
-          "t": 182.04,
+          "t": 235,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -6174,7 +6940,7 @@
           }
         },
         {
-          "t": 183.14,
+          "t": 236.1,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -6188,7 +6954,7 @@
           }
         },
         {
-          "t": 184.54,
+          "t": 237.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -6201,7 +6967,7 @@
           }
         },
         {
-          "t": 187.54,
+          "t": 240.5,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -6214,7 +6980,7 @@
           }
         },
         {
-          "t": 190.54,
+          "t": 243.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -6227,7 +6993,7 @@
           }
         },
         {
-          "t": 192.04,
+          "t": 245,
           "ease": "hold",
           "state": {
             "red": 0.1,
@@ -6240,7 +7006,7 @@
           }
         },
         {
-          "t": 193.14,
+          "t": 246.1,
           "ease": "hold",
           "state": {
             "red": 0.1,
@@ -6254,7 +7020,7 @@
           }
         },
         {
-          "t": 194.54,
+          "t": 247.5,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -6267,7 +7033,7 @@
           }
         },
         {
-          "t": 197.04,
+          "t": 250.0,
           "ease": "smooth",
           "state": {
             "red": 0.85,
@@ -6280,7 +7046,7 @@
           }
         },
         {
-          "t": 199.54,
+          "t": 252.5,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -6293,7 +7059,7 @@
           }
         },
         {
-          "t": 201.04,
+          "t": 254,
           "ease": "hold",
           "state": {
             "red": 0.85,
@@ -6306,7 +7072,7 @@
           }
         },
         {
-          "t": 202.14,
+          "t": 255.1,
           "ease": "hold",
           "state": {
             "red": 0.85,
@@ -6320,7 +7086,7 @@
           }
         },
         {
-          "t": 203.54,
+          "t": 256.5,
           "ease": "smooth",
           "state": {
             "red": 0.85,
@@ -6333,7 +7099,7 @@
           }
         },
         {
-          "t": 205.54,
+          "t": 258.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -6346,7 +7112,7 @@
           }
         },
         {
-          "t": 207.54,
+          "t": 260.5,
           "ease": "smooth",
           "state": {
             "red": 0.85,
@@ -6359,7 +7125,7 @@
           }
         },
         {
-          "t": 209.04,
+          "t": 262,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -6372,7 +7138,7 @@
           }
         },
         {
-          "t": 210.14,
+          "t": 263.1,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -6386,7 +7152,7 @@
           }
         },
         {
-          "t": 211.54,
+          "t": 264.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -6399,7 +7165,7 @@
           }
         },
         {
-          "t": 213.54,
+          "t": 266.5,
           "ease": "smooth",
           "state": {
             "red": 0.1,
@@ -6412,7 +7178,7 @@
           }
         },
         {
-          "t": 215.54,
+          "t": 268.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -6425,7 +7191,7 @@
           }
         },
         {
-          "t": 217.04,
+          "t": 270,
           "ease": "hold",
           "state": {
             "red": 0.1,
@@ -6438,7 +7204,7 @@
           }
         },
         {
-          "t": 218.14,
+          "t": 271.1,
           "ease": "hold",
           "state": {
             "red": 0.1,
@@ -6452,7 +7218,7 @@
           }
         },
         {
-          "t": 222.04,
+          "t": 275,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -6467,7 +7233,7 @@
           }
         },
         {
-          "t": 223.34,
+          "t": 276.3,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -6482,7 +7248,7 @@
           }
         },
         {
-          "t": 224.54,
+          "t": 277.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -6496,7 +7262,7 @@
           }
         },
         {
-          "t": 226.54,
+          "t": 279.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -6510,7 +7276,7 @@
           }
         },
         {
-          "t": 228.04,
+          "t": 281.0,
           "ease": "hold",
           "state": {
             "red": 1.0,
@@ -6524,7 +7290,7 @@
           }
         },
         {
-          "t": 231.54,
+          "t": 284.5,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -6538,7 +7304,7 @@
           }
         },
         {
-          "t": 235.04,
+          "t": 288.0,
           "ease": "smooth",
           "state": {
             "red": 1.0,
@@ -6552,7 +7318,7 @@
           }
         },
         {
-          "t": 238.42,
+          "t": 291.38,
           "ease": "smooth",
           "state": {
             "intensity": 0.0,
