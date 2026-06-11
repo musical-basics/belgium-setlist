@@ -255,7 +255,8 @@ public enum LightingConfigLoader {
             "S1": speech,
             "4":  auto("Timelines/fightforfreedom.json", [0.90, 0.25, 0.0]), // Fight for Freedom — orange/red, heroic flames
             "5":  auto("Timelines/colorsofthesoul.json", [0.40, 0.70, 0.0]), // Colors of the Soul — kaleidoscope yellow/green
-            "6":  edm("Timelines/torrent.json"),  // Torrent Etude (EDM) — REFERENCE piece
+            "6A": auto("Timelines/torrent_solo.json", [0.90, 0.90, 0.85]), // Torrent Etude SOLO/REG — calm white
+            "6B": edm("Timelines/torrent.json"),  // Torrent Etude NIGHTMARE (EDM) — REFERENCE piece
             "S2": speech,
             "7A": auto("Timelines/furelise_solo.json", [0.92, 0.18, 0.35]),  // Für Elise SOLO/REG — romantic pink/red (+teal)
             "7B": edm("Timelines/furelise.json"),                            // Für Elise NIGHTMARE — purple/red

@@ -44,7 +44,7 @@
     { "name": "Dalis9",    "profile": "dalis_mode2",   "universe": "dalis",  "address": 177 },
     { "name": "Dalis10",   "profile": "dalis_mode2",   "universe": "dalis",  "address": 199 }
   ],
-  "_PIECES_NOTE": "Keys MUST match the 'order' strings in showrunner.json (running order: P1-P3, 1-3, S1, 4-6, S2, 7A, 7B, 8, 9A, 9B, S3, 10-12, S4, 13, E1-E3). S1-S4 are Lionel's speaking cues — a warm, calm look. The nightmare pieces split into a live SOLO/REG half (7A Für Elise, 9A Moonlight — no audio, 'auto' self-driven look in the reg palette) then the NIGHTMARE backing half (7B, 9B — audio 'edm' timeline). Canon (8) is EDM throughout (no A/B). Torrent stays single (order 6). P1-P3 are the pre-show academy slides — intentionally NOT configured here: Lionel isn't at the board yet and the venue runs house lighting for the students, so ShowRunner holds the current look (pushes no DMX) when they fire.",
+  "_PIECES_NOTE": "Keys MUST match the 'order' strings in showrunner.json (running order: P1-P3, 1-5, S1... 4-5, 6A, 6B, S2, 7A, 7B, 8, 9A, 9B, S3, 10-12, S4, 13, E1-E3). S1-S4 are Lionel's speaking cues — a warm, calm look. The nightmare pieces split into a live SOLO/REG half (6A Torrent=calm white, 7A Für Elise=pink/red+teal, 9A Moonlight=blue moonlight — no audio, 'auto' self-driven look in the reg palette) then the NIGHTMARE backing half (6B, 7B, 9B — audio 'edm' timeline). Canon (8) is EDM throughout (no A/B). P1-P3 are the pre-show academy slides — intentionally NOT configured here: Lionel isn't at the board yet and the venue runs house lighting for the students, so ShowRunner holds the current look (pushes no DMX) when they fire.",
   "pieces": {
     "1":  { "template": "auto", "timeline": "Timelines/fantaisie.json", "cycColor": [0.10, 0.10, 0.45], "intensity": 0.85 },
     "2":  { "template": "auto", "timeline": "Timelines/prelude.json", "cycColor": [0.60, 0.05, 0.05], "intensity": 0.85 },
@@ -52,7 +52,8 @@
     "S1": { "template": "solo", "cycColor": [0.45, 0.30, 0.12], "intensity": 0.75 },
     "4":  { "template": "auto", "timeline": "Timelines/fightforfreedom.json", "cycColor": [0.90, 0.25, 0.0], "intensity": 0.85 },
     "5":  { "template": "auto", "timeline": "Timelines/colorsofthesoul.json", "cycColor": [0.40, 0.70, 0.0], "intensity": 0.85 },
-    "6":  { "template": "edm",  "timeline": "Timelines/torrent.json" },
+    "6A": { "template": "auto", "timeline": "Timelines/torrent_solo.json", "cycColor": [0.90, 0.90, 0.85], "intensity": 0.85 },
+    "6B": { "template": "edm",  "timeline": "Timelines/torrent.json" },
     "S2": { "template": "solo", "cycColor": [0.45, 0.30, 0.12], "intensity": 0.75 },
     "7A": { "template": "auto", "timeline": "Timelines/furelise_solo.json", "cycColor": [0.92, 0.18, 0.35], "intensity": 0.85 },
     "7B": { "template": "edm",  "timeline": "Timelines/furelise.json" },
