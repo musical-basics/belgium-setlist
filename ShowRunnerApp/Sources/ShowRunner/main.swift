@@ -58,6 +58,7 @@ if arguments.contains("--help") || arguments.contains("-h") {
       ShowRunner --help              Show this help
 
     Keys:  Space/Enter = GO    ↑/↓ = move selection    Esc = STOP / PANIC
+           Cmd-Q = quit    ⌃⌥⌘Q = PANIC QUIT (works even when the app isn't focused)
     Phone remote:  open the http://<mac-ip>:8088 URL shown in the operator window
     (see PHONE_REMOTE.md for the venue network plan)
     """)

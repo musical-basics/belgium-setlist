@@ -1,5 +1,25 @@
 # Phone Remote — control ShowRunner from your iPhone
 
+## ⛔ HOW TO KILL THE APP (read this first)
+
+The app runs full-screen on the projector. If it ever feels "stuck" and you need it GONE,
+there are **four** ways — in order of what to reach for:
+
+1. **⌃⌥⌘Q** (Control-Option-Command-Q) on the Mac keyboard. This is a **system-wide panic
+   quit** — it works **even when ShowRunner is not the active app** (the exact case where
+   plain Esc and Cmd-Q do nothing because the app lost focus behind the full-screen card).
+   It's just Cmd-Q with Control+Option added. **This is the one to memorise.**
+2. **Cmd-Q** — works normally whenever ShowRunner is the frontmost app.
+3. **QUIT APP** on the phone remote (two taps — see step 5 below). Works as long as the phone
+   can still reach the Mac over the network.
+4. **`./killshow.sh`** — last resort if the keyboard and network both fail. Run it in Terminal
+   on the Mac, or over SSH from the phone (see "Kill it from the phone over SSH" at the bottom).
+
+You should never have to restart the computer again.
+
+---
+
+
 ShowRunner now runs a tiny web server **inside the app** (port **8088**). Open the URL it
 shows in the operator window in Safari on your phone and you get a remote with the full
 running order, **PREV / NEXT / GO / STOP**, the on-deck piece, now-playing, and elapsed time.
@@ -62,7 +82,8 @@ the phone, join the Mac to it (Wi-Fi menu → your iPhone), wait a few seconds. 
 Tailscale URL keeps working over the hotspot; the Mac's hotspot address (usually
 `172.20.10.2`) is also shown in the operator window as a fallback.
 
-**Last resort — the Mac's keyboard.** Space = GO, Esc = STOP. Always works.
+**Last resort — the Mac's keyboard.** Space = GO, Esc = STOP. To QUIT no matter what:
+**⌃⌥⌘Q** (works even if the app isn't focused). Plain Cmd-Q works when it is.
 
 ### Before show day
 
@@ -88,3 +109,23 @@ Tailscale URL keeps working over the hotspot; the Mac's hotspot address (usually
 - `POST /quit` — terminates the app (replies 200 first, then quits ~0.1 s later)
 
 `curl -s localhost:8088/state | python3 -m json.tool` is a quick health check.
+
+## Kill it from the phone over SSH (absolute last resort)
+
+If the keyboard is unreachable AND the phone remote's QUIT can't get through, you can still
+kill the app from the phone over SSH — this needs no network beyond what reaches the Mac
+(Tailscale works great for it).
+
+**One-time setup (do this before show day):**
+1. On the Mac: System Settings → General → Sharing → turn on **Remote Login (SSH)**.
+2. On the phone: install a free SSH app (e.g. **Termius** or **Blink Shell**).
+3. Save a connection to the Mac: host = the Tailscale name/IP (the same `100.x.y.z` you use
+   for the remote), user = your Mac login name. Test it once.
+
+**On the night, if you need to kill the app:**
+```
+ssh <you>@<mac-tailscale-ip>
+cd ~/Music/belgium-setlist && ./killshow.sh
+```
+`killshow.sh` asks ShowRunner to quit, then force-kills it if needed, and confirms the
+projector display is released. (Plain `killall ShowRunner` also works.)

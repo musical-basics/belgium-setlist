@@ -62,6 +62,7 @@ final class AppController: NSObject, OperatorWindowDelegate {
     private var previewLightingIndex: Int?
 
     private var keyMonitor: Any?
+    private var panicHotKey: GlobalPanicHotKey?
     private var elapsedTimer: Timer?
 
     private var remoteServer: RemoteServer?
@@ -660,10 +661,27 @@ final class AppController: NSObject, OperatorWindowDelegate {
     // MARK: Keyboard
 
     private func installKeyboard() {
+        // System-wide panic quit (⌃⌥⌘Q) — works even when ShowRunner is NOT the frontmost app,
+        // which is the one case the menu Cmd-Q and Esc below cannot cover. See GlobalPanicHotKey.
+        let hk = GlobalPanicHotKey {
+            Logger.shared.info("Global panic hotkey ⌃⌥⌘Q pressed — terminating app")
+            NSApp.terminate(nil)
+        }
+        if let err = hk.register() {
+            Logger.shared.warn("Global panic hotkey unavailable: \(err)")
+        } else {
+            panicHotKey = hk
+            Logger.shared.info("Global panic hotkey ⌃⌥⌘Q armed")
+        }
+
         keyMonitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) { [weak self] event in
             guard let self = self else { return event }
-            // Let system/menu shortcuts (Cmd-Q, Cmd-W, …) pass through untouched.
-            if event.modifierFlags.contains(.command) { return event }
+            if event.modifierFlags.contains(.command) {
+                // Quit directly on Cmd-Q instead of relying on menu routing (keyCode 12 = Q).
+                if event.keyCode == 12 { NSApp.terminate(nil); return nil }
+                // Let other system/menu shortcuts (Cmd-W, Cmd-H, …) pass through untouched.
+                return event
+            }
             switch event.keyCode {
             case 49, 36, 76:  // space, return, keypad-enter → play/pause
                 if event.isARepeat { return nil }   // ignore auto-repeat so a held key can't re-toggle
@@ -814,6 +832,7 @@ final class AppController: NSObject, OperatorWindowDelegate {
 
     func teardown() {
         if let k = keyMonitor { NSEvent.removeMonitor(k) }
+        panicHotKey?.unregister()
         elapsedTimer?.invalidate()
         remoteServer?.stop()
         lighting?.shutdown()   // stop sACN + close the lighting window cleanly (no-op if off)

@@ -374,6 +374,7 @@ final class OperatorWindowController {
         closeApplicationButton.target = self
         closeApplicationButton.action = #selector(closeApplicationPressed)
         closeApplicationButton.contentTintColor = .systemRed
+        closeApplicationButton.toolTip = "Quit ShowRunner.  Keyboard: Cmd-Q, or ⌃⌥⌘Q to quit even when the app isn't focused (panic quit)."
         closeApplicationButton.translatesAutoresizingMaskIntoConstraints = false
         closeApplicationButton.widthAnchor.constraint(equalToConstant: 164).isActive = true
         closeApplicationButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
