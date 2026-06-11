@@ -242,8 +242,8 @@ final class OperatorWindowController {
     private let statusLabel = NSTextField(labelWithString: "")
     private let listStack = NSStackView()
     private let scrollView = NSScrollView()
-    private let goButton = NSButton(title: "GO  (Space)", target: nil, action: nil)
-    private let playPauseButton = NSButton(title: "▶  PLAY", target: nil, action: nil)
+    private let goButton = NSButton(title: "GO  (on-deck)", target: nil, action: nil)
+    private let playPauseButton = NSButton(title: "▶  PLAY  (Space)", target: nil, action: nil)
     private let stopButton = NSButton(title: "STOP / PANIC  (Esc)", target: nil, action: nil)
     private let onDeckLabel = NSTextField(labelWithString: "—")
     private let nowPlayingLabel = NSTextField(labelWithString: "—")
@@ -627,13 +627,13 @@ final class OperatorWindowController {
     func setPlayPauseState(_ state: String) {
         switch state {
         case "playing":
-            playPauseButton.title = "⏸  PAUSE"
+            playPauseButton.title = "⏸  PAUSE  (Space)"
             playPauseButton.layer?.backgroundColor = NSColor.systemOrange.cgColor
         case "paused":
-            playPauseButton.title = "▶  RESUME"
+            playPauseButton.title = "▶  RESUME  (Space)"
             playPauseButton.layer?.backgroundColor = NSColor.systemBlue.cgColor
         default:
-            playPauseButton.title = "▶  PLAY"
+            playPauseButton.title = "▶  PLAY  (Space)"
             playPauseButton.layer?.backgroundColor = NSColor.systemGreen.cgColor
         }
     }

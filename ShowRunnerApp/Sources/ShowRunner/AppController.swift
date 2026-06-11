@@ -451,6 +451,12 @@ final class AppController: NSObject, OperatorWindowDelegate {
         updatePlayPauseButton()
     }
 
+    /// Keyboard [ / ] : move the on-deck selection one piece (clamped) and fire it immediately.
+    private func goRelative(_ delta: Int) {
+        selectIndex(selectedIndex + delta)
+        go()
+    }
+
     private func selectIndex(_ i: Int) {
         guard !pieces.isEmpty else { return }
         selectedIndex = min(max(0, i), pieces.count - 1)
@@ -655,18 +661,24 @@ final class AppController: NSObject, OperatorWindowDelegate {
             // Let system/menu shortcuts (Cmd-Q, Cmd-W, …) pass through untouched.
             if event.modifierFlags.contains(.command) { return event }
             switch event.keyCode {
-            case 49, 36, 76:  // space, return, keypad-enter
-                if event.isARepeat { return nil }   // ignore auto-repeat so a held key can't re-fire GO
-                self.go(); return nil
-            case 125:         // down arrow
+            case 49, 36, 76:  // space, return, keypad-enter → play/pause
+                if event.isARepeat { return nil }   // ignore auto-repeat so a held key can't re-toggle
+                self.togglePlayPause(); return nil
+            case 30:          // ]  → next piece + play
+                if event.isARepeat { return nil }
+                self.goRelative(+1); return nil
+            case 33:          // [  → previous piece + play
+                if event.isARepeat { return nil }
+                self.goRelative(-1); return nil
+            case 125:         // down arrow → move on-deck selection (no play)
                 self.selectIndex(self.selectedIndex + 1); return nil
-            case 126:         // up arrow
+            case 126:         // up arrow → move on-deck selection (no play)
                 self.selectIndex(self.selectedIndex - 1); return nil
-            case 53:          // escape
+            case 53:          // escape → STOP / PANIC
                 if event.isARepeat { return nil }
                 self.stop(); return nil
-            case 33: self.nudgeMaster(backing: true,  delta: -1); return nil  // [  backing down
-            case 30: self.nudgeMaster(backing: true,  delta: +1); return nil  // ]  backing up
+            case 25: self.nudgeMaster(backing: true,  delta: -1); return nil  // 9  backing down
+            case 29: self.nudgeMaster(backing: true,  delta: +1); return nil  // 0  backing up
             case 27: self.nudgeMaster(backing: false, delta: -1); return nil  // -  click down
             case 24: self.nudgeMaster(backing: false, delta: +1); return nil  // =  click up
             default:
