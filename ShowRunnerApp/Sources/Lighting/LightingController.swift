@@ -102,6 +102,22 @@ public final class LightingController {
                 log("Lighting: EDM piece \(order) has no timeline configured — using a neutral wash.")
             }
             renderer.loadCues(neutralWash(order))
+        case .auto:
+            // A live, non-audio piece animated on the renderer's own wall clock (looping), so it
+            // moves/fades continuously with no audio clock. Falls back to the SOLO look if missing.
+            if let file = pc.timeline {
+                let url = showRoot.appendingPathComponent(file)
+                if let tl = Timeline.load(from: url, onWarn: log) {
+                    renderer.loadTimeline(tl, pieceOrder: order, selfDriven: true, loop: true)
+                    return
+                }
+                log("Lighting: auto timeline '\(file)' for piece \(order) is missing/invalid — using a SOLO look.")
+            } else {
+                log("Lighting: auto piece \(order) has no timeline configured — using a SOLO look.")
+            }
+            renderer.loadCues(SoloTemplate.build(piece: order,
+                                                 cyc: pc.cycColor ?? [0.10, 0.10, 0.45],
+                                                 intensity: pc.intensity ?? 0.85))
         case .solo:
             renderer.loadCues(SoloTemplate.build(piece: order,
                                                  cyc: pc.cycColor ?? [0.10, 0.10, 0.45],

@@ -44,7 +44,7 @@
   ],
   "_PIECES_NOTE": "Keys MUST match the 'order' strings in showrunner.json (the 20-cue running order: 1-3, S1, 4-6, S2, 7-9, S3, 10-12, S4, 13, E1-E3). S1-S4 are Lionel's speaking cues — a warm, calm look so he reads while talking.",
   "pieces": {
-    "1":  { "template": "solo", "cycColor": [0.10, 0.10, 0.45], "intensity": 0.85 },
+    "1":  { "template": "auto", "timeline": "Timelines/fantaisie.json", "cycColor": [0.10, 0.10, 0.45], "intensity": 0.85 },
     "2":  { "template": "solo", "cycColor": [0.08, 0.20, 0.45], "intensity": 0.85 },
     "3":  { "template": "solo", "cycColor": [0.15, 0.15, 0.50], "intensity": 0.90 },
     "S1": { "template": "solo", "cycColor": [0.45, 0.30, 0.12], "intensity": 0.75 },

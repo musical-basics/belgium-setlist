@@ -57,6 +57,14 @@ public final class Renderer {
     private var program: Program = .none
     private var pieceOrder: String?
 
+    // Self-driven timeline: for a live, non-audio piece (no audio clock) the renderer advances the
+    // timeline on its OWN wall clock from the moment the piece fired, optionally looping. When
+    // `timelineSelfDriven` is false a timeline follows the audio `clock` exactly as before.
+    private var timelineSelfDriven = false
+    private var timelineLoop = false
+    private var timelineStartTime = 0.0
+    private var timelineDuration = 0.0
+
     private var blackout = false
     private var hold = false
     private var heldPosition = 0.0
@@ -120,17 +128,39 @@ public final class Renderer {
 
     // MARK: Public controls (all hop onto the render queue → no data races)
 
-    public func loadTimeline(_ tl: Timeline, pieceOrder: String) {
+    /// Load a timeline. `selfDriven` runs it on the renderer's own wall clock (for live, non-audio
+    /// pieces that have no audio clock); `loop` wraps it seamlessly so the look never freezes while
+    /// the pianist plays. With `selfDriven == false` the timeline follows the audio clock (EDM).
+    public func loadTimeline(_ tl: Timeline, pieceOrder: String, selfDriven: Bool = false, loop: Bool = false) {
         queue.async { [weak self] in
             guard let self = self else { return }
             self.program = .timeline(tl)
             self.pieceOrder = pieceOrder
+            self.timelineSelfDriven = selfDriven
+            self.timelineLoop = loop
+            self.timelineStartTime = self.now()
+            self.timelineDuration = tl.durationSeconds ?? 0
             self.proof = nil
             self.hold = false
             self.blackout = false   // firing a new piece brings the rig up (clears any STOP/manual blackout)
             self.liveMap = [:]
-            self.onLog("Lighting: timecode program for piece \(pieceOrder) (\(tl.tracks.count) tracks).")
+            let drive = selfDriven
+                ? "self-driven\(loop && self.timelineDuration > 0 ? ", looping every \(Int(self.timelineDuration))s" : "")"
+                : "audio-timecode"
+            self.onLog("Lighting: \(drive) program for piece \(pieceOrder) (\(tl.tracks.count) tracks).")
         }
+    }
+
+    /// The active timeline's playback position this frame: the audio clock for EDM pieces, or the
+    /// renderer's internal wall clock (looped) for self-driven pieces. Honors HOLD.
+    private func timelinePosition() -> Double {
+        if timelineSelfDriven {
+            if hold { return heldPosition }
+            var p = now() - timelineStartTime
+            if timelineLoop && timelineDuration > 0 { p = p.truncatingRemainder(dividingBy: timelineDuration) }
+            return p
+        }
+        return hold ? heldPosition : clock.positionSeconds
     }
 
     public func loadCues(_ list: CueList) {
@@ -139,6 +169,7 @@ public final class Renderer {
             self.program = .cues(list)
             self.cues = list.cues
             self.pieceOrder = list.piece
+            self.timelineSelfDriven = false
             self.proof = nil
             self.hold = false
             self.blackout = false   // firing a new piece brings the rig up (clears any STOP/manual blackout)
@@ -153,6 +184,7 @@ public final class Renderer {
         queue.async { [weak self] in
             self?.program = .none
             self?.pieceOrder = nil
+            self?.timelineSelfDriven = false
             self?.proof = nil
         }
     }
@@ -177,16 +209,16 @@ public final class Renderer {
     }
     public func toggleBlackout() { queue.async { [weak self] in self?.blackout.toggle() } }
 
-    public func setHold(_ on: Bool) {
-        queue.async { [weak self] in
-            guard let self = self else { return }
-            self.hold = on
-            if on { self.heldPosition = self.clock.positionSeconds }
-            self.onLog("Lighting: manual hold \(on ? "ON" : "off").")
-        }
+    public func setHold(_ on: Bool) { queue.async { [weak self] in self?.setHoldLocked(on) } }
+    public func toggleHold() { queue.async { [weak self] in guard let s = self else { return }; s.setHoldLocked(!s.hold) } }
+    private func setHoldLocked(_ on: Bool) {
+        // Capture the running position BEFORE latching hold (timelinePosition() reads `hold`). On
+        // release of a self-driven timeline, slide the start so playback resumes where it froze.
+        if on { heldPosition = timelinePosition() }
+        else if timelineSelfDriven { timelineStartTime = now() - heldPosition }
+        hold = on
+        onLog("Lighting: manual hold \(on ? "ON" : "off").")
     }
-    public func toggleHold() { queue.async { [weak self] in self?.setHoldLocked(!(self?.hold ?? false)) } }
-    private func setHoldLocked(_ on: Bool) { hold = on; if on { heldPosition = clock.positionSeconds } }
 
     public func advanceCue() { queue.async { [weak self] in guard let s = self else { return }; s.gotoCueLocked(s.cueIndex + 1) } }
     public func previousCue() { queue.async { [weak self] in guard let s = self else { return }; s.gotoCueLocked(s.cueIndex - 1) } }
@@ -260,7 +292,7 @@ public final class Renderer {
             return liveMap   // hold whatever was last shown
 
         case .timeline(let tl):
-            let pos = hold ? heldPosition : clock.positionSeconds
+            let pos = timelinePosition()
             var asg: [String: FixtureState] = [:]
             for track in tl.tracks { asg[track.fixture] = track.sample(at: pos) }
             liveMap = applyAudioFlash(to: rig.resolve(asg))
@@ -351,7 +383,7 @@ public final class Renderer {
         else {
             switch program {
             case .none: s.mode = "idle"
-            case .timeline: s.mode = "timecode"; s.position = hold ? heldPosition : clock.positionSeconds
+            case .timeline: s.mode = "timecode"; s.position = timelinePosition()
             case .cues:
                 s.mode = "cue"; s.cueCount = cues.count; s.cueIndex = cueIndex
                 if cueIndex >= 0 && cueIndex < cues.count { s.cueLabel = cues[cueIndex].label }

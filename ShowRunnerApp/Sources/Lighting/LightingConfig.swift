@@ -31,7 +31,9 @@ public struct LightingConfig {
     }
 
     public struct PieceLightingConfig {
-        public enum Template: String { case solo, trio, edm, off }
+        /// `auto` = a timecoded timeline driven by the renderer's OWN wall clock (loops), so a
+        /// live, non-audio piano piece can still move/fade continuously with no audio clock to follow.
+        public enum Template: String { case solo, trio, edm, auto, off }
         public let template: Template
         public let cycColor: [Double]? // [r,g,b] 0…1 for solo/trio
         public let intensity: Double?  // base intensity for solo/trio
@@ -213,9 +215,14 @@ public enum LightingConfigLoader {
         func edm(_ file: String) -> LightingConfig.PieceLightingConfig {
             .init(template: .edm, cycColor: nil, intensity: nil, timeline: file)
         }
+        // `auto`: a self-driven (wall-clock, looping) timeline for a live non-audio piece. cycColor
+        // is kept as the SOLO fallback colour if the timeline file is ever missing.
+        func auto(_ file: String, _ c: [Double], _ i: Double = 0.85) -> LightingConfig.PieceLightingConfig {
+            .init(template: .auto, cycColor: c, intensity: i, timeline: file)
+        }
         let speech = solo([0.45, 0.30, 0.12], 0.75)   // warm amber, calm
         let pieces: [String: LightingConfig.PieceLightingConfig] = [
-            "1":  solo([0.10, 0.10, 0.45]),   // Fantaisie-Impromptu — deep blue
+            "1":  auto("Timelines/fantaisie.json", [0.10, 0.10, 0.45]),  // Fantaisie-Impromptu — dark moody purple/blue netherworld
             "2":  solo([0.08, 0.20, 0.45]),   // Prelude in G minor — cold blue
             "3":  solo([0.15, 0.15, 0.50], 0.9), // Rolling Thunder — storm blue
             "S1": speech,

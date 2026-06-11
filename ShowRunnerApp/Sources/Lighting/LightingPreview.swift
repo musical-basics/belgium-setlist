@@ -31,7 +31,7 @@ public enum LightingPreview {
                              cfg: LightingConfig, rig: Rig, showRoot: URL) -> [String: FixtureState] {
         guard let pc = cfg.pieces[order] else { return [:] }
         switch pc.template {
-        case .edm:
+        case .edm, .auto:   // both are timeline-driven; preview samples the timeline at `seconds`
             if let file = pc.timeline,
                let tl = Timeline.load(from: showRoot.appendingPathComponent(file)) {
                 var asg: [String: FixtureState] = [:]
