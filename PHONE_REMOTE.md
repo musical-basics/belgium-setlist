@@ -34,6 +34,13 @@ expands under the cue when selected. The Mac (and anything the audience could se
 just "Lionel Speaking Portion", and GO on a speaking cue fades the projector to black and
 stops any audio.
 
+**Editing speeches from the phone:** each speech panel has an **EDIT** button — standard
+iOS text editing (cursor, selection, paste, autocorrect) in a large text box, then **SAVE**
+writes it straight into `showrunner.json` on the Mac (atomically, same as the fader saves);
+**CANCEL** discards. If a save fails mid-edit (network blip), your text stays in the box —
+reconnect and tap SAVE again. No cloud/database involved; the file on the Mac is the single
+source of truth and survives restarts.
+
 **One-command start:** `./showtime.sh` quits any running ShowRunner, connects Tailscale,
 relaunches the app, and prints the phone URLs. No `tailscale up` needed — the script
 handles it (the macOS app connects itself; it only needs a one-time login).

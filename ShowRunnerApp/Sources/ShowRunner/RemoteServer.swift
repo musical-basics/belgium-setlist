@@ -50,9 +50,10 @@ struct LocalAddress {
 final class RemoteServer {
     let port: UInt16
 
-    /// All three are invoked on the MAIN thread.
+    /// All callbacks are invoked on the MAIN thread.
     var onAction: ((RemoteAction) -> Void)?
     var onSelect: ((Int) -> Void)?
+    var onEditNotes: ((Int, String) -> Void)?
     var stateProvider: (() -> RemoteState)?
 
     private var listener: NWListener?
@@ -123,16 +124,25 @@ final class RemoteServer {
         receiveRequest(conn, buffer: Data())
     }
 
-    /// Accumulate until the end of the request headers; we never need a body
-    /// (every endpoint is path/query only), so route as soon as headers are complete.
+    /// Accumulate the request headers, then (for /notes) the Content-Length body.
     private func receiveRequest(_ conn: NWConnection, buffer: Data) {
-        conn.receive(minimumIncompleteLength: 1, maximumLength: 16384) { [weak self] data, _, isComplete, error in
+        conn.receive(minimumIncompleteLength: 1, maximumLength: 65536) { [weak self] data, _, isComplete, error in
             guard let self = self else { conn.cancel(); return }
             var buf = buffer
             if let d = data { buf.append(d) }
-            if error != nil || buf.count > 16384 { conn.cancel(); return }
+            if error != nil || buf.count > 262_144 { conn.cancel(); return }
             if let headerEnd = buf.range(of: Data("\r\n\r\n".utf8)) {
-                self.route(conn, header: buf.subdata(in: buf.startIndex..<headerEnd.lowerBound))
+                let header = buf.subdata(in: 0..<headerEnd.lowerBound)
+                let bodyStart = headerEnd.upperBound
+                let wanted = Self.contentLength(header)
+                if buf.count - bodyStart >= wanted {
+                    let body = buf.subdata(in: bodyStart..<(bodyStart + wanted))
+                    self.route(conn, header: header, body: body)
+                } else if isComplete {
+                    conn.cancel()
+                } else {
+                    self.receiveRequest(conn, buffer: buf)
+                }
             } else if isComplete {
                 conn.cancel()
             } else {
@@ -141,7 +151,18 @@ final class RemoteServer {
         }
     }
 
-    private func route(_ conn: NWConnection, header: Data) {
+    private static func contentLength(_ header: Data) -> Int {
+        guard let text = String(data: header, encoding: .utf8) else { return 0 }
+        for line in text.components(separatedBy: "\r\n") {
+            let parts = line.split(separator: ":", maxSplits: 1)
+            if parts.count == 2, parts[0].trimmingCharacters(in: .whitespaces).lowercased() == "content-length" {
+                return Int(parts[1].trimmingCharacters(in: .whitespaces)) ?? 0
+            }
+        }
+        return 0
+    }
+
+    private func route(_ conn: NWConnection, header: Data, body: Data) {
         guard let requestLine = String(data: header, encoding: .utf8)?
             .components(separatedBy: "\r\n").first else { conn.cancel(); return }
         let parts = requestLine.split(separator: " ")
@@ -164,17 +185,26 @@ final class RemoteServer {
             // response already reflects what the tap did.
             respondWithState(conn)
         case "/select":
-            let idx = query.split(separator: "&").compactMap { kv -> Int? in
-                let p = kv.split(separator: "=")
-                return p.count == 2 && p[0] == "i" ? Int(p[1]) : nil
-            }.first
-            if let i = idx {
+            if let i = Self.indexParam(query) {
                 DispatchQueue.main.async { [weak self] in self?.onSelect?(i) }
+            }
+            respondWithState(conn)
+        case "/notes":
+            // Body = the new speech text (raw UTF-8). Saved to showrunner.json on the Mac.
+            if let i = Self.indexParam(query), let text = String(data: body, encoding: .utf8) {
+                DispatchQueue.main.async { [weak self] in self?.onEditNotes?(i, text) }
             }
             respondWithState(conn)
         default:
             send(conn, status: "404 Not Found", contentType: "text/plain", body: Data("not found".utf8))
         }
+    }
+
+    private static func indexParam(_ query: String) -> Int? {
+        query.split(separator: "&").compactMap { kv -> Int? in
+            let p = kv.split(separator: "=")
+            return p.count == 2 && p[0] == "i" ? Int(p[1]) : nil
+        }.first
     }
 
     private func respondWithState(_ conn: NWConnection) {
@@ -251,10 +281,19 @@ header { padding:calc(env(safe-area-inset-top) + 8px) 16px 10px; background:#171
              border-radius:4px; padding:2px 6px; }
 .row.sel { background:rgba(80,120,255,.30); }
 .row.play { background:rgba(46,204,64,.26); }
-.notes { display:none; margin:0 6px 10px; padding:14px 16px; background:#1b1626;
-         border:1px solid #4c3a78; border-radius:12px; font-size:18px; line-height:1.5;
-         color:#efeaf7; white-space:pre-wrap; -webkit-user-select:none; }
+.notes { display:none; margin:0 6px 10px; padding:12px 16px 14px; background:#1b1626;
+         border:1px solid #4c3a78; border-radius:12px; }
 .notes.show { display:block; }
+.ntext { font-size:18px; line-height:1.5; color:#efeaf7; white-space:pre-wrap;
+         -webkit-user-select:none; }
+.nbar { display:flex; justify-content:flex-end; gap:8px; margin-bottom:8px; }
+.nbtn { font-size:13px; font-weight:800; padding:7px 16px; border-radius:8px;
+        background:#3b2f5c; color:#cfc4e8; }
+.nbtn.save { background:#1f9d40; color:#fff; }
+.notes textarea { width:100%; min-height:45vh; font-size:18px; line-height:1.5;
+                  font-family:inherit; color:#efeaf7; background:#120e1b;
+                  border:1px solid #4c3a78; border-radius:8px; padding:10px;
+                  -webkit-user-select:text; user-select:text; resize:vertical; }
 footer { padding:10px 12px calc(env(safe-area-inset-bottom) + 10px); background:#17171c;
          border-top:1px solid #26262e; display:grid; grid-template-columns:1fr 1fr; gap:10px; }
 button { border:none; border-radius:12px; font-weight:800; color:#fff; font-family:inherit; }
@@ -284,7 +323,7 @@ button:active { filter:brightness(1.25); }
   <button id="stop">STOP / PANIC</button>
 </footer>
 <script>
-var rows = [], noteEls = [], lastSelected = -1, stopTimer = null;
+var rows = [], noteEls = [], lastSelected = -1, stopTimer = null, editing = -1;
 function $(id){ return document.getElementById(id); }
 function handle(p){ return p.then(function(r){ if(!r.ok) throw 0; return r.json(); })
                      .then(function(s){ render(s); online(true); })
@@ -314,22 +353,66 @@ function buildList(pieces){
     list.appendChild(row);
     rows.push(row);
     var n = null;
-    if (p.speaking && p.notes) {
-      n = document.createElement('div'); n.className = 'notes'; n.textContent = p.notes;
+    if (p.speaking) {
+      n = document.createElement('div'); n.className = 'notes';
+      var bar = document.createElement('div'); bar.className = 'nbar';
+      var eb = document.createElement('button'); eb.className = 'nbtn'; eb.textContent = 'EDIT';
+      eb.onclick = function(ev){ ev.stopPropagation(); enterEdit(i); };
+      bar.appendChild(eb);
+      var txt = document.createElement('div'); txt.className = 'ntext';
+      txt.textContent = p.notes || '';
+      n.appendChild(bar); n.appendChild(txt);
       list.appendChild(n);
     }
     noteEls.push(n);
   });
 }
+function enterEdit(i){
+  if (editing !== -1) return;
+  editing = i;
+  var n = noteEls[i], txt = n.querySelector('.ntext'), bar = n.querySelector('.nbar');
+  bar.innerHTML = '';
+  var ta = document.createElement('textarea');
+  ta.value = txt.textContent;
+  var save = document.createElement('button'); save.className = 'nbtn save'; save.textContent = 'SAVE';
+  var cancel = document.createElement('button'); cancel.className = 'nbtn'; cancel.textContent = 'CANCEL';
+  function close(){
+    editing = -1;
+    ta.remove(); bar.innerHTML = '';
+    var eb = document.createElement('button'); eb.className = 'nbtn'; eb.textContent = 'EDIT';
+    eb.onclick = function(ev){ ev.stopPropagation(); enterEdit(i); };
+    bar.appendChild(eb);
+    txt.style.display = '';
+  }
+  save.onclick = function(){
+    save.textContent = 'SAVING…';
+    fetch('/notes?i=' + i, {method:'POST', body: ta.value, cache:'no-store'})
+      .then(function(r){ if(!r.ok) throw 0; return r.json(); })
+      .then(function(s){ txt.textContent = ta.value; close(); render(s); online(true); })
+      .catch(function(){ save.textContent = 'SAVE'; alert('Save failed — check connection and tap SAVE again. Your text is still here.'); });
+  };
+  cancel.onclick = function(){ close(); };
+  bar.appendChild(cancel); bar.appendChild(save);
+  txt.style.display = 'none';
+  n.insertBefore(ta, null);
+  ta.focus();
+}
 function render(s){
   if (rows.length !== s.pieces.length) buildList(s.pieces);
   rows.forEach(function(row, i){
     row.className = 'row' + (i === s.playing ? ' play' : (i === s.selected ? ' sel' : ''));
-    if (noteEls[i]) noteEls[i].className = 'notes' + (i === s.selected ? ' show' : '');
+    // A panel being edited stays open even if the selection moves.
+    if (noteEls[i]) {
+      noteEls[i].className = 'notes' + (i === s.selected || i === editing ? ' show' : '');
+      if (i !== editing) {
+        var t = noteEls[i].querySelector('.ntext'), nn = s.pieces[i].notes || '';
+        if (t.textContent !== nn) t.textContent = nn;
+      }
+    }
   });
   if (s.selected !== lastSelected) {
     lastSelected = s.selected;
-    if (rows[s.selected]) rows[s.selected].scrollIntoView({block:'start', behavior:'smooth'});
+    if (editing === -1 && rows[s.selected]) rows[s.selected].scrollIntoView({block:'start', behavior:'smooth'});
   }
   $('ondecktext').textContent = s.onDeck;
   $('nowplaying').textContent = s.nowPlaying;

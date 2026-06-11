@@ -532,6 +532,13 @@ final class AppController: NSObject, OperatorWindowDelegate {
             }
         }
         server.onSelect = { [weak self] i in self?.selectIndex(i) }
+        server.onEditNotes = { [weak self] i, text in
+            guard let self = self, self.config.pieces.indices.contains(i),
+                  self.config.pieces[i].isSpeaking else { return }
+            self.config.pieces[i].notes = text
+            self.scheduleSave()
+            Logger.shared.info("Speech notes edited from phone for [\(self.config.pieces[i].order)] (\(text.count) chars)")
+        }
         server.stateProvider = { [weak self] in
             self?.remoteState() ?? RemoteState(pieces: [], selected: 0, playing: nil, playState: "stopped",
                                                onDeck: "", nowPlaying: "", elapsed: "", remaining: "", progress: 0)
@@ -546,12 +553,14 @@ final class AppController: NSObject, OperatorWindowDelegate {
     }
 
     private func remoteState() -> RemoteState {
-        let infos = pieces.map { m -> RemotePieceState in
+        let infos = pieces.enumerated().map { (i, m) -> RemotePieceState in
             let ready = m.piece.isSpeaking || (m.imageReady && (!m.piece.hasAudio || m.audioReady))
+            // Notes come from the live config (not the PieceModel snapshot) so phone
+            // edits are reflected immediately.
+            let notes = (m.piece.isSpeaking && config.pieces.indices.contains(i)) ? config.pieces[i].notes : nil
             return RemotePieceState(order: m.piece.order, title: m.piece.title,
                                     subtitle: m.piece.subtitle, hasAudio: m.piece.hasAudio,
-                                    ready: ready, speaking: m.piece.isSpeaking,
-                                    notes: m.piece.isSpeaking ? m.piece.notes : nil)
+                                    ready: ready, speaking: m.piece.isSpeaking, notes: notes)
         }
         let playState = playingIndex != nil ? "playing" : (pausedIndex != nil ? "paused" : "stopped")
         return RemoteState(pieces: infos,
