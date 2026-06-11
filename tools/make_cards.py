@@ -203,30 +203,47 @@ def subtitle_bottom(img):
                     break
     return last
 
-def add_featuring(card_path, text, italic_font_path, color=GOLD):
+def add_credits(card_path, performers, italic_path, name_color, desc_color=GREY):
+    """A 'featuring' block under the card's subtitle: a soft lead-in, then per
+    performer a gold name+instrument line with a smaller muted descriptor below."""
     img = Image.open(card_path).convert("RGB")
     W, H = img.size
-    scale = H / 1080.0
-    draw = ImageDraw.Draw(img)
+    s = H / 1080.0
+    d = ImageDraw.Draw(img)
     bottom = subtitle_bottom(img) or int(H * 0.66)
-    size = int(40 * scale)
-    fnt = font(italic_font_path, size)
-    asc, desc = fnt.getmetrics()
-    y = bottom + int(64 * scale)
-    w = draw.textlength(text, font=fnt)
-    draw.text((W / 2 - w / 2, y), text, font=fnt, fill=color)
+    cx = W / 2
+    lead_f = font(italic_path, int(28 * s))
+    name_f = font(italic_path, int(39 * s))
+    desc_f = font(italic_path, int(27 * s))
+
+    def line(text, f, color, y, lead=1.16):
+        w = d.textlength(text, font=f)
+        d.text((cx - w / 2, y), text, font=f, fill=color)
+        asc, desc = f.getmetrics()
+        return y + int((asc + desc) * lead)
+
+    y = bottom + int(46 * s)
+    y = line("featuring", lead_f, name_color, y) + int(6 * s)
+    for i, (name, desc) in enumerate(performers):
+        if i > 0:
+            y += int(15 * s)
+        y = line(name, name_f, name_color, y)
+        if desc:
+            y = line(desc, desc_f, desc_color, y)
     img.save(card_path)
-    print("featuring ->", os.path.relpath(card_path, ROOT))
+    print("credits ->", os.path.relpath(card_path, ROOT))
 
 FEATURED = [
-    ("Dreams of a Violin/TitleCard.png",
-     "featuring Alicia De Poorter, violin", F_ITALIC, GOLD),
-    ("Beethoven Virus/TitleCard.png",
-     "featuring Gudrun Vercampt, violin   ·   Anthony Gröger, cello", F_ITALIC, GOLD),
-    ("Gallop/TitleCard.png",
-     "featuring Alicia De Poorter, violin   ·   Céline Uten, cello", F_ITALIC, GOLD),
-    ("Four Seasons Nightmare/TitleCard.png",
-     "featuring Gudrun Vercampt, violin", F_NY_ITAL, (190, 165, 120)),
+    {"rel": "Dreams of a Violin/TitleCard.png", "italic": F_ITALIC, "name": GOLD,
+     "performers": [("Alicia De Poorter  ·  violin", "student of Gudrun Vercampt")]},
+    {"rel": "Gallop/TitleCard.png", "italic": F_ITALIC, "name": GOLD,
+     "performers": [("Alicia De Poorter  ·  violin", "student of Gudrun Vercampt"),
+                    ("Céline Uten  ·  cello", "student of Anthony Gröger")]},
+    {"rel": "Beethoven Virus/TitleCard.png", "italic": F_ITALIC, "name": GOLD,
+     "performers": [("Gudrun Vercampt  ·  violin", "Professor at Academy Zaventem"),
+                    ("Anthony Gröger  ·  cello", "Professor at Academy Zaventem")]},
+    {"rel": "Four Seasons Nightmare/TitleCard.png", "italic": F_NY_ITAL, "name": (190, 165, 120),
+     "performers": [("Gudrun Vercampt  ·  violin", "Professor at Academy Zaventem")]},
 ]
 
 def main():
@@ -235,8 +252,8 @@ def main():
         os.makedirs(folder, exist_ok=True)
         render_slide(os.path.join(folder, "TitleCard.png"),
                      preshow_elements(**slide["args"]))
-    for rel, text, fpath, color in FEATURED:
-        add_featuring(os.path.join(ROOT, rel), text, fpath, color)
+    for c in FEATURED:
+        add_credits(os.path.join(ROOT, c["rel"]), c["performers"], c["italic"], c["name"])
 
 if __name__ == "__main__":
     main()
