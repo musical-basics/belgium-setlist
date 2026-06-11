@@ -79,7 +79,10 @@ public final class T1Mode3Profile: FixtureProfile {
         var bytes = [UInt8](repeating: 0, count: channelCount)
 
         put16(&bytes, Ch.pan, Ch.panFine, s.pan)
-        put16(&bytes, Ch.tilt, Ch.tiltFine, s.tilt)
+        // INVERTED tilt: the two T1s are hung upstage-centre yoked the opposite way to the
+        // Spiider rig the timelines author against — straight-through tilt throws the beam back
+        // up onto the cyc/screen instead of down onto the piano, so flip it (1 − tilt).
+        put16(&bytes, Ch.tilt, Ch.tiltFine, 1.0 - s.tilt)
 
         // `white` lifts all five emitters (open white = all at full per the chart defaults).
         put16(&bytes, Ch.red, Ch.redFine, max(s.red, s.white))
