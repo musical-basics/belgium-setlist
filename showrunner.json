@@ -1,241 +1,243 @@
 {
-  "masterBackingGainDb" : -0.01837482946793778,
-  "masterClickGainDb" : -0.08615148099752656,
-  "pieces" : [
-    {
-      "subtitle" : "Ianis Merino Bessi — Shostakovich",
-      "title" : "Pre-Show 1 · Tweede Wals",
-      "order" : "P1",
-      "hasAudio" : false,
-      "titleCard" : "TitleCard.png",
-      "folder" : "Preshow 1 - Shostakovich Waltz"
-    },
-    {
-      "subtitle" : "De Pooter · Smeets · Nguyen — Pachelbel",
-      "title" : "Pre-Show 2 · Canon in D",
-      "order" : "P2",
-      "hasAudio" : false,
-      "titleCard" : "TitleCard.png",
-      "folder" : "Preshow 2 - Pachelbel Canon"
-    },
-    {
-      "subtitle" : "Rithika Garbham — Beethoven",
-      "title" : "Pre-Show 3 · Für Elise",
-      "order" : "P3",
-      "hasAudio" : false,
-      "titleCard" : "TitleCard.png",
-      "folder" : "Preshow 3 - Fur Elise"
-    },
-    {
-      "subtitle" : "Frédéric Chopin, Op. 66",
-      "title" : "Fantaisie-Impromptu",
-      "order" : "1",
-      "hasAudio" : false,
-      "titleCard" : "TitleCard.png",
-      "folder" : "Fantaisie-Impromptu"
-    },
-    {
-      "subtitle" : "Sergei Rachmaninoff, Op. 23 No. 5",
-      "title" : "Prelude in G minor",
-      "order" : "2",
-      "hasAudio" : false,
-      "titleCard" : "TitleCard.png",
-      "folder" : "Rachmaninoff Prelude in G minor"
-    },
-    {
-      "subtitle" : "Lionel Yu",
-      "title" : "Rolling Thunder",
-      "order" : "3",
-      "hasAudio" : false,
-      "titleCard" : "TitleCard.png",
-      "folder" : "Rolling Thunder"
-    },
-    {
-      "subtitle" : "Speech 1 of 4",
-      "speaking" : true,
-      "title" : "Lionel Speaking Portion",
-      "order" : "S1",
-      "hasAudio" : false,
-      "notes" : "Hello everyone! Thank you so much for being here.\n\nI want to thank the Lions Club of Zaventem for making this concert happen.\n\nI am curious about Belgium, because I feel like half the people here speak French, the other half speak Dutch or Flemish. So who here speaks French? Who here speaks Dutch? Who here speaks Flemish? It’s the same people right?\n\nBefore this show I was told Belgians speak Dutch. Then I was warned never to call it Dutch, it's Flemish. Then I was told it actually is Dutch, just pronounced properly.\n\nAnd now I want to ask, who here is part of Lions Club? Raise your hand.\n\nWho here knows my music from before this show and has seen me on Youtube? And who here has been to one of my previous concerts?\n\nWho here came the furthest?"
-    },
-    {
-      "subtitle" : "Lionel Yu",
-      "title" : "Fight for Freedom",
-      "order" : "4",
-      "hasAudio" : false,
-      "titleCard" : "TitleCard.png",
-      "folder" : "Fight for Freedom"
-    },
-    {
-      "subtitle" : "Lionel Yu",
-      "title" : "Colors of the Soul",
-      "order" : "5",
-      "hasAudio" : false,
-      "titleCard" : "TitleCard.png",
-      "folder" : "Colors of the Soul"
-    },
-    {
-      "subtitle" : "Frédéric Chopin",
-      "title" : "Torrent Etude",
-      "order" : "6A",
-      "hasAudio" : false,
-      "titleCard" : "TitleCard.png",
-      "folder" : "Torrent Etude"
-    },
-    {
-      "order" : "6B",
-      "click" : "Click.wav",
-      "clickGainDb" : -2.730356838335606,
-      "subtitle" : "Chopin · arr. Lionel Yu",
-      "title" : "Torrent Etude Nightmare",
-      "titleCard" : "TitleCard.png",
-      "folder" : "Torrent Etude Nightmare",
-      "backing" : "Backing.wav",
-      "hasAudio" : true
-    },
-    {
-      "subtitle" : "Speech 2 of 4",
-      "speaking" : true,
-      "title" : "Lionel Speaking Portion",
-      "order" : "S2",
-      "hasAudio" : false,
-      "notes" : "So 2 years ago, I did a concert in Amsterdam.\n\nIs anyone here from the netherlands? Ok, there’s not many, and I think I know the reason why. It’s because the tickets were not free.\n\nLast week there was a news report about 2 taxis having an accident in Amsterdam. Fortunately no one died but 22 people ended up in the hospital.\n\nOk last one. A Belgian, German and Dutchman are drinking together when a fly lands in each of their beers. The Belgian pushes his glass away and orders a new one. The German throws the fly away and keeps drinking. The Dutchman picks up the fly, and yells “Spit it out!”"
-    },
-    {
-      "subtitle" : "Ludwig van Beethoven",
-      "title" : "Für Elise",
-      "order" : "7A",
-      "hasAudio" : false,
-      "titleCard" : "TitleCard.png",
-      "folder" : "Fur Elise"
-    },
-    {
-      "order" : "7B",
-      "click" : "Click.wav",
-      "clickGainDb" : 6,
-      "subtitle" : "Remix of Beethoven's Für Elise",
-      "title" : "Für Elise Nightmare",
-      "titleCard" : "TitleCard.png",
-      "folder" : "Fur Elise Nightmare",
-      "backing" : "Backing.wav",
-      "hasAudio" : true
-    },
-    {
-      "order" : "8",
-      "click" : "Click.wav",
-      "clickGainDb" : 6,
-      "subtitle" : "Remix of Pachelbel's Canon in D",
-      "title" : "Canon in Dream",
-      "titleCard" : "TitleCard.png",
-      "folder" : "Canon in Dream",
-      "backing" : "Backing.wav",
-      "hasAudio" : true
-    },
-    {
-      "subtitle" : "Beethoven · 1st Movement",
-      "title" : "Moonlight Sonata",
-      "order" : "9A",
-      "hasAudio" : false,
-      "titleCard" : "TitleCard.png",
-      "folder" : "Moonlight Sonata"
-    },
-    {
-      "order" : "9B",
-      "click" : "Click.wav",
-      "subtitle" : "Remix of Beethoven's Moonlight Sonata",
-      "title" : "Moonlight Sonata Nightmare",
-      "titleCard" : "TitleCard.png",
-      "folder" : "Moonlight Sonata Nightmare",
-      "backing" : "Backing.wav",
-      "hasAudio" : true
-    },
-    {
-      "subtitle" : "Speech 3 of 4",
-      "speaking" : true,
-      "title" : "Lionel Speaking Portion",
-      "order" : "S3",
-      "hasAudio" : false,
-      "notes" : "So actually I’m a Chinese American, born in China and live in America. Half of my family is in China and is in the communist party and the other half lives in America and voted for Trump. So if you have any complaints about either of these countries, you can come talk to me.\n\nAnd you know what’s crazy today, is AI. Who here uses AI? Who here hates AI and refuses to use it? And who here is afraid that AI will take their job?\n\nI was a hater once too but recently I’ve started using it. It’s really good if you know what you want, if you have a vision for something that doesn’t exist. It’s really bad if you don’t know what you want, and you just tell the AI, “please help me because I have no brain.”\n\nBut the thing is, while AI is perfect for logic and reasoning, it is completely inadequate for the higher forms of intelligence, such as intuition, imagination, empathy, and the most important which is the divine.\n\nSo the answer to being human in the age of AI, I believe, is not more education, especially not in math and sciences. But rather to spend more time learning an instrument, exploring nature, connecting with your family, giving back to the community and praying and going to church. All the things that an AI cannot do, is the area that we humans should spend double, even triple our efforts doing. "
-    },
-    {
-      "subtitle" : "Lionel Yu · violin & piano",
-      "title" : "Dreams of a Violin",
-      "order" : "10",
-      "hasAudio" : false,
-      "titleCard" : "TitleCard.png",
-      "folder" : "Dreams of a Violin"
-    },
-    {
-      "subtitle" : "Lionel Yu · piano trio",
-      "title" : "Gallop",
-      "order" : "11",
-      "hasAudio" : false,
-      "titleCard" : "TitleCard.png",
-      "folder" : "Gallop"
-    },
-    {
-      "subtitle" : "arr. Lionel Yu · piano trio",
-      "title" : "Beethoven Virus",
-      "order" : "12",
-      "hasAudio" : false,
-      "titleCard" : "TitleCard.png",
-      "folder" : "Beethoven Virus"
-    },
-    {
-      "subtitle" : "Speech 4 of 4",
-      "speaking" : true,
-      "title" : "Lionel Speaking Portion",
-      "order" : "S4",
-      "hasAudio" : false,
-      "notes" : "So now we are at our final piece.\n\nI want to first thank the Lions Club of Zaventem for making this all possible. The Lions Club is truly an amazing organization that does so much for its members.\n\nI want to thank especially Luc from Lions Club for putting in so much work and supporting my music. Without him this event simply could not have happened. Luc can you stand up?\n\nI also want to thank the talented performers tonight from the Zaventem Music Academy. Truly, I’m amazed at the students quality, of their skill. When I was their age, I wasn’t playing classical music on stages like this, I was playing video games.\n\nSo I want to talk about encores."
-    },
-    {
-      "order" : "13",
-      "click" : "Click.wav",
-      "subtitle" : "Remix of Vivaldi's Four Seasons",
-      "title" : "Four Seasons Nightmare",
-      "titleCard" : "TitleCard.png",
-      "folder" : "Four Seasons Nightmare",
-      "backing" : "Backing.wav",
-      "hasAudio" : true
-    },
-    {
-      "subtitle" : "Lionel Yu",
-      "title" : "Sunflowers",
-      "order" : "E1",
-      "hasAudio" : false,
-      "titleCard" : "TitleCard.png",
-      "folder" : "Sunflowers"
-    },
-    {
-      "subtitle" : "Rimsky-Korsakov",
-      "title" : "Flight of the Bumblebee",
-      "order" : "E2",
-      "hasAudio" : false,
-      "titleCard" : "TitleCard.png",
-      "folder" : "Flight of the Bumblebee"
-    },
-    {
-      "order" : "E3",
-      "click" : "Click.wav",
-      "subtitle" : "arr. Lionel Yu",
-      "title" : "Still D.R.E.",
-      "titleCard" : "TitleCard.png",
-      "folder" : "Still Dre",
-      "backing" : "Backing.wav",
-      "hasAudio" : true
-    }
-  ],
-  "engineSampleRate" : 48000,
-  "audioDeviceName" : "Audient iD44",
+  "masterBackingGainDb" : -7.039294422438388,
+  "masterClickGainDb" : -6.933703866827566,
   "fadeSeconds" : 1,
   "audienceDisplayIndex" : 1,
   "backingChannels" : [
     3,
     4
   ],
+  "pieces" : [
+    {
+      "hasAudio" : false,
+      "folder" : "Preshow 1 - Shostakovich Waltz",
+      "subtitle" : "Ianis Merino Bessi — Shostakovich",
+      "order" : "P1",
+      "title" : "Pre-Show 1 · Tweede Wals",
+      "titleCard" : "TitleCard.png"
+    },
+    {
+      "hasAudio" : false,
+      "folder" : "Preshow 2 - Pachelbel Canon",
+      "subtitle" : "De Pooter · Smeets · Nguyen — Pachelbel",
+      "order" : "P2",
+      "title" : "Pre-Show 2 · Canon in D",
+      "titleCard" : "TitleCard.png"
+    },
+    {
+      "hasAudio" : false,
+      "folder" : "Preshow 3 - Fur Elise",
+      "subtitle" : "Rithika Garbham — Beethoven",
+      "order" : "P3",
+      "title" : "Pre-Show 3 · Für Elise",
+      "titleCard" : "TitleCard.png"
+    },
+    {
+      "hasAudio" : false,
+      "folder" : "Fantaisie-Impromptu",
+      "subtitle" : "Frédéric Chopin, Op. 66",
+      "order" : "1",
+      "title" : "Fantaisie-Impromptu",
+      "titleCard" : "TitleCard.png"
+    },
+    {
+      "hasAudio" : false,
+      "folder" : "Rachmaninoff Prelude in G minor",
+      "subtitle" : "Sergei Rachmaninoff, Op. 23 No. 5",
+      "order" : "2",
+      "title" : "Prelude in G minor",
+      "titleCard" : "TitleCard.png"
+    },
+    {
+      "hasAudio" : false,
+      "folder" : "Rolling Thunder",
+      "subtitle" : "Lionel Yu",
+      "order" : "3",
+      "title" : "Rolling Thunder",
+      "titleCard" : "TitleCard.png"
+    },
+    {
+      "speaking" : true,
+      "notes" : "Hello everyone! Thank you so much for being here.\n\nI want to thank the Lions Club of Zaventem for making this concert happen.\n\nI am curious about Belgium, because I feel like half the people here speak French, the other half speak Dutch or Flemish. So who here speaks French? Who here speaks Dutch? Who here speaks Flemish? It’s the same people right?\n\nBefore this show I was told Belgians speak Dutch. Then I was warned never to call it Dutch, it's Flemish. Then I was told it actually is Dutch, just pronounced properly.\n\nAnd now I want to ask, who here is part of Lions Club? Raise your hand.\n\nWho here knows my music from before this show and has seen me on Youtube? And who here has been to one of my previous concerts?\n\nWho here came the furthest?",
+      "subtitle" : "Speech 1 of 4",
+      "order" : "S1",
+      "title" : "Lionel Speaking Portion",
+      "hasAudio" : false
+    },
+    {
+      "hasAudio" : false,
+      "folder" : "Fight for Freedom",
+      "subtitle" : "Lionel Yu",
+      "order" : "4",
+      "title" : "Fight for Freedom",
+      "titleCard" : "TitleCard.png"
+    },
+    {
+      "hasAudio" : false,
+      "folder" : "Colors of the Soul",
+      "subtitle" : "Lionel Yu",
+      "order" : "5",
+      "title" : "Colors of the Soul",
+      "titleCard" : "TitleCard.png"
+    },
+    {
+      "hasAudio" : false,
+      "folder" : "Torrent Etude",
+      "subtitle" : "Frédéric Chopin",
+      "order" : "6A",
+      "title" : "Torrent Etude",
+      "titleCard" : "TitleCard.png"
+    },
+    {
+      "title" : "Torrent Etude Nightmare",
+      "titleCard" : "TitleCard.png",
+      "backing" : "Backing.wav",
+      "subtitle" : "Chopin · arr. Lionel Yu",
+      "clickGainDb" : -2.730356838335606,
+      "click" : "Click.wav",
+      "hasAudio" : true,
+      "folder" : "Torrent Etude Nightmare",
+      "order" : "6B"
+    },
+    {
+      "speaking" : true,
+      "notes" : "So 2 years ago, I did a concert in Amsterdam.\n\nIs anyone here from the netherlands? Ok, there’s not many, and I think I know the reason why. It’s because the tickets were not free.\n\nLast week there was a news report about 2 taxis having an accident in Amsterdam. Fortunately no one died but 22 people ended up in the hospital.\n\nOk last one. A Belgian, German and Dutchman are drinking together when a fly lands in each of their beers. The Belgian pushes his glass away and orders a new one. The German throws the fly away and keeps drinking. The Dutchman picks up the fly, and yells “Spit it out!”",
+      "subtitle" : "Speech 2 of 4",
+      "order" : "S2",
+      "title" : "Lionel Speaking Portion",
+      "hasAudio" : false
+    },
+    {
+      "hasAudio" : false,
+      "folder" : "Fur Elise",
+      "subtitle" : "Ludwig van Beethoven",
+      "order" : "7A",
+      "title" : "Für Elise",
+      "titleCard" : "TitleCard.png"
+    },
+    {
+      "title" : "Für Elise Nightmare",
+      "titleCard" : "TitleCard.png",
+      "backing" : "Backing.wav",
+      "subtitle" : "Remix of Beethoven's Für Elise",
+      "clickGainDb" : 6,
+      "click" : "Click.wav",
+      "hasAudio" : true,
+      "folder" : "Fur Elise Nightmare",
+      "order" : "7B"
+    },
+    {
+      "title" : "Canon in Dream",
+      "titleCard" : "TitleCard.png",
+      "backing" : "Backing.wav",
+      "subtitle" : "Remix of Pachelbel's Canon in D",
+      "clickGainDb" : 6,
+      "click" : "Click.wav",
+      "hasAudio" : true,
+      "folder" : "Canon in Dream",
+      "order" : "8"
+    },
+    {
+      "hasAudio" : false,
+      "folder" : "Moonlight Sonata",
+      "subtitle" : "Beethoven · 1st Movement",
+      "order" : "9A",
+      "title" : "Moonlight Sonata",
+      "titleCard" : "TitleCard.png"
+    },
+    {
+      "title" : "Moonlight Sonata Nightmare",
+      "titleCard" : "TitleCard.png",
+      "backing" : "Backing.wav",
+      "subtitle" : "Remix of Beethoven's Moonlight Sonata",
+      "clickGainDb" : 6,
+      "click" : "Click.wav",
+      "hasAudio" : true,
+      "folder" : "Moonlight Sonata Nightmare",
+      "order" : "9B"
+    },
+    {
+      "speaking" : true,
+      "notes" : "So actually I’m a Chinese American, born in China and live in America. Half of my family is in China and is in the communist party and the other half lives in America and voted for Trump. So if you have any complaints about either of these countries, you can come talk to me.\n\nAnd you know what’s crazy today, is AI. Who here uses AI? Who here hates AI and refuses to use it? And who here is afraid that AI will take their job?\n\nI was a hater once too but recently I’ve started using it. It’s really good if you know what you want, if you have a vision for something that doesn’t exist. It’s really bad if you don’t know what you want, and you just tell the AI, “please help me because I have no brain.”\n\nBut the thing is, while AI is perfect for logic and reasoning, it is completely inadequate for the higher forms of intelligence, such as intuition, imagination, empathy, and the most important which is the divine.\n\nSo the answer to being human in the age of AI, I believe, is not more education, especially not in math and sciences. But rather to spend more time learning an instrument, exploring nature, connecting with your family, giving back to the community and praying and going to church. All the things that an AI cannot do, is the area that we humans should spend double, even triple our efforts doing. ",
+      "subtitle" : "Speech 3 of 4",
+      "order" : "S3",
+      "title" : "Lionel Speaking Portion",
+      "hasAudio" : false
+    },
+    {
+      "hasAudio" : false,
+      "folder" : "Dreams of a Violin",
+      "subtitle" : "Lionel Yu · violin & piano",
+      "order" : "10",
+      "title" : "Dreams of a Violin",
+      "titleCard" : "TitleCard.png"
+    },
+    {
+      "hasAudio" : false,
+      "folder" : "Gallop",
+      "subtitle" : "Lionel Yu · piano trio",
+      "order" : "11",
+      "title" : "Gallop",
+      "titleCard" : "TitleCard.png"
+    },
+    {
+      "hasAudio" : false,
+      "folder" : "Beethoven Virus",
+      "subtitle" : "arr. Lionel Yu · piano trio",
+      "order" : "12",
+      "title" : "Beethoven Virus",
+      "titleCard" : "TitleCard.png"
+    },
+    {
+      "speaking" : true,
+      "notes" : "So now we are at our final piece.\n\nI want to first thank the Lions Club of Zaventem for making this all possible. The Lions Club is truly an amazing organization that does so much for its members.\n\nI want to thank especially Luc from Lions Club for putting in so much work and supporting my music. Without him this event simply could not have happened. Luc can you stand up?\n\nI also want to thank the talented performers tonight from the Zaventem Music Academy. Truly, I’m amazed at the students quality, of their skill. When I was their age, I wasn’t playing classical music on stages like this, I was playing video games.\n\nSo I want to talk about encores.",
+      "subtitle" : "Speech 4 of 4",
+      "order" : "S4",
+      "title" : "Lionel Speaking Portion",
+      "hasAudio" : false
+    },
+    {
+      "title" : "Four Seasons Nightmare",
+      "titleCard" : "TitleCard.png",
+      "backing" : "Backing.wav",
+      "subtitle" : "Remix of Vivaldi's Four Seasons",
+      "click" : "Click.wav",
+      "hasAudio" : true,
+      "folder" : "Four Seasons Nightmare",
+      "order" : "13"
+    },
+    {
+      "hasAudio" : false,
+      "folder" : "Sunflowers",
+      "subtitle" : "Lionel Yu",
+      "order" : "E1",
+      "title" : "Sunflowers",
+      "titleCard" : "TitleCard.png"
+    },
+    {
+      "hasAudio" : false,
+      "folder" : "Flight of the Bumblebee",
+      "subtitle" : "Rimsky-Korsakov",
+      "order" : "E2",
+      "title" : "Flight of the Bumblebee",
+      "titleCard" : "TitleCard.png"
+    },
+    {
+      "title" : "Still D.R.E.",
+      "titleCard" : "TitleCard.png",
+      "backing" : "Backing.wav",
+      "subtitle" : "arr. Lionel Yu",
+      "clickGainDb" : 6,
+      "click" : "Click.wav",
+      "hasAudio" : true,
+      "folder" : "Still Dre",
+      "order" : "E3"
+    }
+  ],
   "clickChannels" : [
     1,
     2
-  ]
+  ],
+  "engineSampleRate" : 48000,
+  "audioDeviceName" : "Audient iD44"
 }

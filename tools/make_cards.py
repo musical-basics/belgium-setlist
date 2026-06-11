@@ -174,10 +174,10 @@ PRESHOW = [
             piece_nl="Für Elise",
             composer="Ludwig van Beethoven",
             played_nl="Gespeeld door Rithika Garbham",
-            nl_desc=[],
+            nl_desc=["9 jaar"],
             piece_en="Für Elise · Ludwig van Beethoven",
             played_en="Performed by Rithika Garbham",
-            en_desc=[],
+            en_desc=["9 years old"],
         ),
     },
 ]
