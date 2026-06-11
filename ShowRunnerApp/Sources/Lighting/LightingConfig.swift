@@ -200,10 +200,12 @@ public enum LightingConfigLoader {
             .init(name: "Dalis10",   profile: "dalis_mode2",   universeRole: "dalis",  address: 199),
         ]
 
-        // Per-piece lighting languages (the 12 pieces collapse into SOLO / TRIO / EDM).
+        // Per-piece lighting languages, keyed by the `order` strings of the CURRENT 20-cue
+        // running order in showrunner.json (1-3, S1, 4-6, S2, 7-9, S3, 10-12, S4, 13, E1-E3).
         // EDM pieces reference a timeline file; SOLO/TRIO carry a cyc colour + base intensity.
-        func solo(_ c: [Double]) -> LightingConfig.PieceLightingConfig {
-            .init(template: .solo, cycColor: c, intensity: 0.85, timeline: nil)
+        // S1-S4 are Lionel's speaking cues — warm, calm, movers parked.
+        func solo(_ c: [Double], _ i: Double = 0.85) -> LightingConfig.PieceLightingConfig {
+            .init(template: .solo, cycColor: c, intensity: i, timeline: nil)
         }
         func trio(_ c: [Double]) -> LightingConfig.PieceLightingConfig {
             .init(template: .trio, cycColor: c, intensity: 0.9, timeline: nil)
@@ -211,19 +213,27 @@ public enum LightingConfigLoader {
         func edm(_ file: String) -> LightingConfig.PieceLightingConfig {
             .init(template: .edm, cycColor: nil, intensity: nil, timeline: file)
         }
+        let speech = solo([0.45, 0.30, 0.12], 0.75)   // warm amber, calm
         let pieces: [String: LightingConfig.PieceLightingConfig] = [
-            "1":  solo([0.10, 0.10, 0.45]),   // Prelude in G minor — deep blue
-            "2":  solo([0.35, 0.05, 0.30]),   // Colors of the Soul — magenta
-            "3":  trio([0.55, 0.30, 0.08]),   // Gallop (trio) — warm amber
-            "4":  edm("Timelines/torrent.json"),  // Torrent Etude (EDM) — REFERENCE piece
-            "5":  trio([0.50, 0.10, 0.10]),   // Beethoven Virus (trio) — red
-            "6":  edm("Timelines/canon.json"),
-            "7":  solo([0.20, 0.35, 0.15]),   // Fight for Freedom — green
-            "8":  solo([0.08, 0.20, 0.45]),   // Winter Wind — cold blue
+            "1":  solo([0.10, 0.10, 0.45]),   // Fantaisie-Impromptu — deep blue
+            "2":  solo([0.08, 0.20, 0.45]),   // Prelude in G minor — cold blue
+            "3":  solo([0.15, 0.15, 0.50], 0.9), // Rolling Thunder — storm blue
+            "S1": speech,
+            "4":  solo([0.20, 0.35, 0.15]),   // Fight for Freedom — green
+            "5":  solo([0.35, 0.05, 0.30]),   // Colors of the Soul — magenta
+            "6":  edm("Timelines/torrent.json"),  // Torrent Etude (EDM) — REFERENCE piece
+            "S2": speech,
+            "7":  edm("Timelines/furelise.json"),
+            "8":  edm("Timelines/canon.json"),
             "9":  edm("Timelines/moonlight.json"),
-            "10": solo([0.55, 0.40, 0.05]),   // Sunflowers — gold
-            "11": trio([0.25, 0.10, 0.40]),   // Dreams of a Violin (duet) — violet
-            "12": edm("Timelines/furelise.json"),
+            "S3": speech,
+            "10": trio([0.25, 0.10, 0.40]),   // Dreams of a Violin (duet) — violet
+            "11": trio([0.55, 0.30, 0.08]),   // Gallop (trio) — warm amber
+            "12": trio([0.50, 0.10, 0.10]),   // Beethoven Virus (trio) — red
+            "S4": speech,
+            "13": edm("Timelines/fourseasons.json"),
+            "E1": solo([0.55, 0.40, 0.05]),   // Sunflowers — gold
+            "E2": solo([0.35, 0.45, 0.08], 0.9), // Flight of the Bumblebee — yellow-green
             "E3": edm("Timelines/stilldre.json"),
         ]
 

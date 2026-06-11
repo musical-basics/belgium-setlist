@@ -199,7 +199,7 @@ as ONE submaster level. Their focus is the venue's — ask for an even piano-cen
 | File | Role |
 |---|---|
 | `lighting.json` | **The patch + per-piece lighting config.** Fixtures (names → profiles → universe roles → addresses), sACN network mode, piece templates. Read at launch; never affects audio. Universe roles: `front`=1, `movers`=2, `dalis`=3 |
-| `Timelines/torrent.json` | Piece 4 (Torrent Etude) EDM timeline — **the reference**. 10 tracks: `Front`, `Dalis`, `T1s`, `Spiider1`, `Spiider2`, `Spiider3+Spiider5`, `Spiider4+Spiider6`, `Spiider7`, `Spiider8`. Section times measured from the backing track (see §6) |
+| `Timelines/torrent.json` | Piece 6 (Torrent Etude) EDM timeline — **the reference**. 10 tracks: `Front`, `Dalis`, `T1s`, `Spiider1`, `Spiider2`, `Spiider3+Spiider5`, `Spiider4+Spiider6`, `Spiider7`, `Spiider8`. Section times measured from the backing track (see §6) |
 | `Timelines/canon.json` / `moonlight.json` / `furelise.json` / `stilldre.json` | **Not yet authored** — those EDM pieces fall back to a neutral wash |
 | `showrunner.json` | The AUDIO show config (running order, audio routing, speech notes). Lighting only reads piece `order` strings from it indirectly |
 | `ShowRunnerApp/Sources/Lighting/Profiles/*.swift` | The four fixture profiles (channel maps live HERE, one file per mode) |
@@ -218,7 +218,7 @@ and stay DARK until the operator confirms the patched modes match the plot and t
 
 ---
 
-## 6. Torrent audio analysis (measured section times, piece 4)
+## 6. Torrent audio analysis (measured section times, piece 6)
 
 From band-split FFT energy analysis (bass 20–150 Hz / mid / high 4–16 kHz, 0.25 s frames)
 of `ShowAudio/Torrent Etude Nightmare/Backing.wav` (149.27 s, 48 kHz stereo):

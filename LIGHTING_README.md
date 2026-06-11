@@ -121,10 +121,12 @@ It is a pure reader on the main thread — it never touches the engine or audio.
 **Headless PNG export** (no windows needed — handy for remote checks / docs):
 ```bash
 "../ShowRunner.app/Contents/MacOS/ShowRunner" --lighting-preview out.png <pieceOrder> <seconds>
-# e.g. Torrent drop 1:          --lighting-preview drop1.png 4 53
-#      Torrent drop 2:          --lighting-preview drop2.png 4 112
-#      the piano interlude:     --lighting-preview interlude.png 4 80
+# e.g. Torrent drop 1:          --lighting-preview drop1.png 6 53
+#      Torrent drop 2:          --lighting-preview drop2.png 6 112
+#      the piano interlude:     --lighting-preview interlude.png 6 80
 #      a SOLO piece:            --lighting-preview solo.png 1 0
+# (piece numbers = the `order` strings in showrunner.json — Torrent is piece 6
+#  in the 20-cue running order)
 ```
 
 > Caveat: the preview approximates colour mixing and beam geometry abstractly. It is for judging
@@ -286,7 +288,7 @@ name, or a **"+"-joined list** (`"Spiider3+Spiider5"`) to drive a side stack fro
 Mirrored pairs are authored with right pan = 1 − left pan.
 
 ```jsonc
-{ "piece": "4", "template": "edm", "durationSeconds": 149,
+{ "piece": "6", "template": "edm", "durationSeconds": 149,
   "tracks": [
     { "fixture": "Spiider3+Spiider5", "keyframes": [
         { "t": 50.9, "ease": "hold", "state": { "red": 0.95, "blue": 0.45, "intensity": 1.0,
@@ -296,7 +298,7 @@ Mirrored pairs are authored with right pan = 1 − left pan.
 
 `SoloTemplate` / `TrioTemplate` build reusable cue lists from a `cycColor` + `intensity`;
 `EDMTemplate` can synthesize a timeline from section markers (intro/build/drop/breakdown/outro) for
-cloning the reference piece. **`Timelines/torrent.json` (piece 4) is authored for the final rig**,
+cloning the reference piece. **`Timelines/torrent.json` (piece 6, Torrent) is authored for the final rig**,
 with section times measured from the backing track (music in 2.9 s · drop 1 at 50.9 s · cut 76.5 s
 · piano interlude · cut 98.4 s · drop 2 at 109.5 s · cut 134.6 s · final climax 137.4–141.5 s ·
 out by 148.5 s). The other EDM pieces fall back to a clearly-labelled **NEUTRAL WASH (no

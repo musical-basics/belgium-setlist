@@ -1,6 +1,6 @@
 {
   "_note": "REFERENCE EDM timeline (piece 4, Torrent Etude Nightmare) for the FINAL venue rig (Lighting_Plot/Lions v01): 8 Spiiders, 2 T1 back-keys, 7-Dalis cyc row, front-catwalk wash. Times are SECONDS, set from band-split energy analysis of ShowAudio/Torrent Etude Nightmare/Backing.wav (149.27 s): music in 2.9 · groove 11.3 · lift 24 · build 32→50.7 · DROP 1 at 50.9 · hard cut 76.5 · piano interlude 77.5–83.6 · rebuild 85.5→98.1 · cut 98.4 · rebuild 99.8→109.3 · DROP 2 at 109.5 · cut 134.6 · final swell 135→137.4 · climax 137.5–141.5 · fade-out by 148.5. Palette: deep blue → electric cyan → hot magenta → red, white only for the climax (no rainbow cycling). Strobe ONLY on the two drops + the final hit. Mirrored pairs: Spiider1↔2 (downstage ±2 m), 3↔4 + 5↔6 (wide ±7 m stacks, share a track per side), 7↔8 (upstage ±3 m); right pan = 1 − left pan. Spiiders/T1s emit only after ARM MOVERS. Every mover keyframe restates color+pan+tilt+zoom because omitted fields fall back to defaults.",
-  "piece": "4",
+  "piece": "6",
   "template": "edm",
   "durationSeconds": 149,
   "tracks": [
