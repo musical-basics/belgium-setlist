@@ -22,6 +22,13 @@ if [[ -x "$TS" ]]; then
     sleep 1
   done
   if [[ -n "$TSIP" ]]; then
+    # CRITICAL: stop Tailscale from hijacking the lights. With accept-routes on,
+    # a peer (e.g. an openclaw box) advertising a default + multicast route makes
+    # this Mac swallow 224.0.0/4 into the tunnel — and sACN to the lights is
+    # 239.255.x.x multicast, so the lights go dark while Tailscale is up. Force
+    # accept-routes off + no exit node so multicast/Wi-Fi leave via the real NICs.
+    "$TS" set --accept-routes=false --exit-node= 2>/dev/null \
+      && echo "    ✓ Tailscale route-hijack guard set (accept-routes off, no exit node)"
     echo "    ✓ Tailscale up: $TSIP"
   else
     echo "    ⚠ Tailscale installed but not connected (logged out?) — open the"
