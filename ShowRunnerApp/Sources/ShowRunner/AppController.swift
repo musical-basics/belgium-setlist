@@ -155,6 +155,7 @@ final class AppController: NSObject, OperatorWindowDelegate {
         // wrong, `lighting` stays nil and the audio show is completely unaffected.
         lighting = LightingBridge(engine: audioEngine, showRoot: root)
         lighting?.start()
+        operatorController.setLightingWindowsAvailable(lighting?.isActive ?? false)
         // ---------------------------------------------------------------------------------------
 
         // Phone web remote (separate, fail-safe): serves a control page the operator's phone
@@ -353,6 +354,7 @@ final class AppController: NSObject, OperatorWindowDelegate {
             operatorController.setElapsed("––:–– / ––:––")
             operatorController.setRemaining("−––:––")
             operatorController.setProgress(0)
+            updatePlayPauseButton()
             return
         }
 
@@ -403,6 +405,7 @@ final class AppController: NSObject, OperatorWindowDelegate {
         // never on the GO→sound critical path and never samples the previous piece's stale clock.
         // No-op when lighting is off; never blocks or affects audio.
         lighting?.pieceDidStart(order: m.piece.order)
+        updatePlayPauseButton()
     }
 
     private func stop() {
@@ -419,6 +422,7 @@ final class AppController: NSObject, OperatorWindowDelegate {
         operatorController.setRemaining("−––:––")
         operatorController.setProgress(0)
         updateScrubEnabled()
+        updatePlayPauseButton()
     }
 
     /// Phone PLAY/PAUSE button: pause the playing piece, resume the paused one,
@@ -444,6 +448,7 @@ final class AppController: NSObject, OperatorWindowDelegate {
         } else {
             go()
         }
+        updatePlayPauseButton()
     }
 
     private func selectIndex(_ i: Int) {
@@ -472,6 +477,13 @@ final class AppController: NSObject, OperatorWindowDelegate {
         let index = playingIndex ?? selectedIndex
         let enabled = pieces.indices.contains(index) && pieces[index].piece.hasAudio && pieces[index].premix != nil
         operatorController.setScrubEnabled(enabled)
+    }
+
+    /// Keep the operator window's PLAY/PAUSE button in sync with transport state (same model the
+    /// phone remote shows). Called after every transport change.
+    private func updatePlayPauseButton() {
+        let state = playingIndex != nil ? "playing" : (pausedIndex != nil ? "paused" : "stopped")
+        operatorController.setPlayPauseState(state)
     }
 
     private func durationSeconds(for index: Int) -> Double? {
@@ -532,6 +544,7 @@ final class AppController: NSObject, OperatorWindowDelegate {
             }
         }
         server.onSelect = { [weak self] i in self?.selectIndex(i) }
+        server.onArmMovers = { [weak self] in self?.lighting?.toggleArmMovers() }
         server.onEditNotes = { [weak self] i, text in
             guard let self = self, self.config.pieces.indices.contains(i),
                   self.config.pieces[i].isSpeaking else { return }
@@ -541,7 +554,8 @@ final class AppController: NSObject, OperatorWindowDelegate {
         }
         server.stateProvider = { [weak self] in
             self?.remoteState() ?? RemoteState(pieces: [], selected: 0, playing: nil, playState: "stopped",
-                                               onDeck: "", nowPlaying: "", elapsed: "", remaining: "", progress: 0)
+                                               onDeck: "", nowPlaying: "", elapsed: "", remaining: "", progress: 0,
+                                               lightingArmable: false, lightingArmed: false)
         }
         if let err = server.start() {
             Logger.shared.error("Phone remote failed to start on port \(port): \(err)")
@@ -571,7 +585,9 @@ final class AppController: NSObject, OperatorWindowDelegate {
                            nowPlaying: operatorController.nowPlayingText,
                            elapsed: operatorController.elapsedText,
                            remaining: operatorController.remainingText,
-                           progress: operatorController.progressValue)
+                           progress: operatorController.progressValue,
+                           lightingArmable: lighting?.moversArmable ?? false,
+                           lightingArmed: lighting?.moversArmed ?? false)
     }
 
     /// Show the URL(s) the phone can reach us on. Re-checked every few seconds because the
@@ -622,6 +638,7 @@ final class AppController: NSObject, OperatorWindowDelegate {
             operatorController.setProgress(1)
             operatorController.setRemaining("−00:00")
             updateScrubEnabled()
+            updatePlayPauseButton()
         }
     }
 
@@ -661,9 +678,19 @@ final class AppController: NSObject, OperatorWindowDelegate {
     // MARK: OperatorWindowDelegate
 
     func operatorDidPressGo() { go() }
+    func operatorDidPressPlayPause() { togglePlayPause() }
     func operatorDidPressStop() { stop() }
     func operatorDidPressCloseApplication() { NSApp.terminate(nil) }
     func operatorDidSelect(index: Int) { selectIndex(index) }
+
+    /// Operator "Show window" buttons — re-open a window that was closed (or just bring it forward).
+    func operatorDidRequestShowWindow(_ target: OperatorWindowTarget) {
+        switch target {
+        case .audience:        applyAudienceDisplay(index: config.audienceDisplayIndex)
+        case .lighting:        lighting?.showLightingWindow()
+        case .lightingPreview: lighting?.showPreviewWindow()
+        }
+    }
 
     func operatorDidSeek(toFraction fraction: Double) {
         let index = playingIndex ?? selectedIndex

@@ -69,6 +69,13 @@ public final class LightingController {
         log("Lighting + stage-preview windows opened. \(rig.fixtures.count) fixtures, universes \(rig.universeFrames().map { $0.number }).")
     }
 
+    /// Re-show the Lighting control window — for the operator's "show window" button, or if they
+    /// closed it. Safe to call any time; the window persists when closed (isReleasedWhenClosed=false).
+    public func showLightingWindow() { window?.show() }
+
+    /// Re-show the abstract stage-preview window (same re-open semantics as above).
+    public func showPreviewWindow() { visualizer?.show() }
+
     /// Tear down cleanly (on app quit): stop the renderer (sends sACN termination), close the window.
     public func shutdown() {
         renderer.stop()

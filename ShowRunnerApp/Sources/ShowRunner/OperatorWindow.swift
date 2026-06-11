@@ -202,10 +202,17 @@ final class PieceRowView: NSView {
     }
 }
 
+/// Which window the operator's "Show window" buttons should re-open / bring to the front.
+enum OperatorWindowTarget {
+    case audience, lighting, lightingPreview
+}
+
 protocol OperatorWindowDelegate: AnyObject {
     func operatorDidPressGo()
+    func operatorDidPressPlayPause()
     func operatorDidPressStop()
     func operatorDidPressCloseApplication()
+    func operatorDidRequestShowWindow(_ target: OperatorWindowTarget)
     func operatorDidSelect(index: Int)
     func operatorDidChangeDevice(index: Int)
     func operatorDidChangeDisplay(index: Int)
@@ -225,6 +232,9 @@ final class OperatorWindowController {
 
     private let titleLabel = NSTextField(labelWithString: "ShowRunner")
     private let closeApplicationButton = NSButton(title: "CLOSE APPLICATION", target: nil, action: nil)
+    private let showAudienceButton = NSButton(title: "Projector / Title Card", target: nil, action: nil)
+    private let showLightingButton = NSButton(title: "Lighting", target: nil, action: nil)
+    private let showPreviewButton = NSButton(title: "Stage Preview", target: nil, action: nil)
     private let devicePopup = NSPopUpButton(frame: .zero, pullsDown: false)
     private let displayPopup = NSPopUpButton(frame: .zero, pullsDown: false)
     private let backingPopup = NSPopUpButton(frame: .zero, pullsDown: false)
@@ -233,6 +243,7 @@ final class OperatorWindowController {
     private let listStack = NSStackView()
     private let scrollView = NSScrollView()
     private let goButton = NSButton(title: "GO  (Space)", target: nil, action: nil)
+    private let playPauseButton = NSButton(title: "▶  PLAY", target: nil, action: nil)
     private let stopButton = NSButton(title: "STOP / PANIC  (Esc)", target: nil, action: nil)
     private let onDeckLabel = NSTextField(labelWithString: "—")
     private let nowPlayingLabel = NSTextField(labelWithString: "—")
@@ -318,8 +329,12 @@ final class OperatorWindowController {
         trimCaptionLabel.textColor = .secondaryLabelColor
 
         configureButton(goButton, color: .systemGreen, action: #selector(goPressed))
+        configureButton(playPauseButton, color: .systemGreen, action: #selector(playPausePressed))
         configureButton(stopButton, color: .systemRed, action: #selector(stopPressed))
         configureCloseButton()
+        configureShowButton(showAudienceButton, action: #selector(showAudiencePressed))
+        configureShowButton(showLightingButton, action: #selector(showLightingPressed))
+        configureShowButton(showPreviewButton, action: #selector(showPreviewPressed))
 
         buildLayout()
     }
@@ -335,6 +350,15 @@ final class OperatorWindowController {
         b.layer?.cornerRadius = 10
         b.translatesAutoresizingMaskIntoConstraints = false
         b.heightAnchor.constraint(equalToConstant: 72).isActive = true
+    }
+
+    private func configureShowButton(_ b: NSButton, action: Selector) {
+        b.bezelStyle = .rounded
+        b.font = .systemFont(ofSize: 12, weight: .semibold)
+        b.target = self
+        b.action = action
+        b.translatesAutoresizingMaskIntoConstraints = false
+        b.heightAnchor.constraint(equalToConstant: 28).isActive = true
     }
 
     private func configureCloseButton() {
@@ -373,7 +397,17 @@ final class OperatorWindowController {
         routeRow.spacing = 24
         routeRow.alignment = .firstBaseline
 
-        let header = NSStackView(views: [titleRow, pickerRow, routeRow, statusLabel, remoteLabel])
+        // "Show window" buttons — re-open the projector / lighting / preview windows if closed.
+        let showCaption = NSTextField(labelWithString: "Show window:")
+        showCaption.font = .systemFont(ofSize: 12, weight: .medium)
+        showCaption.textColor = .secondaryLabelColor
+        showCaption.setContentHuggingPriority(.required, for: .horizontal)
+        let windowsRow = NSStackView(views: [showCaption, showAudienceButton, showLightingButton, showPreviewButton, NSView()])
+        windowsRow.orientation = .horizontal
+        windowsRow.alignment = .centerY
+        windowsRow.spacing = 8
+
+        let header = NSStackView(views: [titleRow, pickerRow, routeRow, windowsRow, statusLabel, remoteLabel])
         header.orientation = .vertical
         header.alignment = .leading
         header.spacing = 8
@@ -399,11 +433,16 @@ final class OperatorWindowController {
             ])
         }
 
-        // Footer
-        let transport = NSStackView(views: [goButton, stopButton])
-        transport.orientation = .horizontal
-        transport.distribution = .fillEqually
-        transport.spacing = 16
+        // Footer — GO + PLAY/PAUSE side by side, STOP full-width beneath them.
+        let transportTop = NSStackView(views: [goButton, playPauseButton])
+        transportTop.orientation = .horizontal
+        transportTop.distribution = .fillEqually
+        transportTop.spacing = 16
+        transportTop.translatesAutoresizingMaskIntoConstraints = false
+        let transport = NSStackView(views: [transportTop, stopButton])
+        transport.orientation = .vertical
+        transport.alignment = .leading
+        transport.spacing = 12
 
         // "On deck" banner — exactly what the next GO will fire.
         let onDeckCaption = NSTextField(labelWithString: "ON DECK →")
@@ -486,6 +525,10 @@ final class OperatorWindowController {
             footer.bottomAnchor.constraint(equalTo: content.bottomAnchor, constant: -m),
             transport.leadingAnchor.constraint(equalTo: footer.leadingAnchor),
             transport.trailingAnchor.constraint(equalTo: footer.trailingAnchor),
+            transportTop.leadingAnchor.constraint(equalTo: transport.leadingAnchor),
+            transportTop.trailingAnchor.constraint(equalTo: transport.trailingAnchor),
+            stopButton.leadingAnchor.constraint(equalTo: transport.leadingAnchor),
+            stopButton.trailingAnchor.constraint(equalTo: transport.trailingAnchor),
             onDeckRow.leadingAnchor.constraint(equalTo: footer.leadingAnchor),
             onDeckRow.trailingAnchor.constraint(equalTo: footer.trailingAnchor),
             timeRow.leadingAnchor.constraint(equalTo: footer.leadingAnchor),
@@ -579,6 +622,28 @@ final class OperatorWindowController {
     func setStatus(_ text: String) { statusLabel.stringValue = text }
     func setRemoteInfo(_ text: String) { remoteLabel.stringValue = text }
 
+    /// Reflect the transport state in the PLAY/PAUSE button (mirrors the phone remote's morphing
+    /// button): "stopped" → ▶ PLAY (green), "playing" → ⏸ PAUSE (orange), "paused" → ▶ RESUME (blue).
+    func setPlayPauseState(_ state: String) {
+        switch state {
+        case "playing":
+            playPauseButton.title = "⏸  PAUSE"
+            playPauseButton.layer?.backgroundColor = NSColor.systemOrange.cgColor
+        case "paused":
+            playPauseButton.title = "▶  RESUME"
+            playPauseButton.layer?.backgroundColor = NSColor.systemBlue.cgColor
+        default:
+            playPauseButton.title = "▶  PLAY"
+            playPauseButton.layer?.backgroundColor = NSColor.systemGreen.cgColor
+        }
+    }
+
+    /// Enable the lighting "Show window" buttons only when the lighting module is actually running.
+    func setLightingWindowsAvailable(_ available: Bool) {
+        showLightingButton.isEnabled = available
+        showPreviewButton.isEnabled = available
+    }
+
     // Read-backs so the phone remote mirrors EXACTLY what the operator window shows.
     var onDeckText: String { onDeckLabel.stringValue }
     var nowPlayingText: String { nowPlayingLabel.stringValue }
@@ -618,8 +683,12 @@ final class OperatorWindowController {
     // MARK: Actions
 
     @objc private func goPressed() { delegate?.operatorDidPressGo() }
+    @objc private func playPausePressed() { delegate?.operatorDidPressPlayPause() }
     @objc private func stopPressed() { delegate?.operatorDidPressStop() }
     @objc private func closeApplicationPressed() { delegate?.operatorDidPressCloseApplication() }
+    @objc private func showAudiencePressed() { delegate?.operatorDidRequestShowWindow(.audience) }
+    @objc private func showLightingPressed() { delegate?.operatorDidRequestShowWindow(.lighting) }
+    @objc private func showPreviewPressed() { delegate?.operatorDidRequestShowWindow(.lightingPreview) }
     @objc private func rowClicked(_ g: NSClickGestureRecognizer) {
         if let v = g.view as? PieceRowView { delegate?.operatorDidSelect(index: v.index) }
     }

@@ -30,6 +30,10 @@ struct RemoteState: Codable {
     let elapsed: String
     let remaining: String
     let progress: Double
+    /// Lighting: whether provisional movers exist (drives showing the ARM button) and whether
+    /// they're currently armed. Both false when lighting is off.
+    let lightingArmable: Bool
+    let lightingArmed: Bool
 }
 
 /// A local IPv4 address the phone could reach us on.
@@ -54,6 +58,8 @@ final class RemoteServer {
     var onAction: ((RemoteAction) -> Void)?
     var onSelect: ((Int) -> Void)?
     var onEditNotes: ((Int, String) -> Void)?
+    /// ARM MOVERS toggle from the phone — toggles the lighting module's provisional movers.
+    var onArmMovers: (() -> Void)?
     var stateProvider: (() -> RemoteState)?
 
     private var listener: NWListener?
@@ -184,6 +190,9 @@ final class RemoteServer {
             // The state hop below is queued on main AFTER the action, so the
             // response already reflects what the tap did.
             respondWithState(conn)
+        case "/arm":
+            DispatchQueue.main.async { [weak self] in self?.onArmMovers?() }
+            respondWithState(conn)
         case "/select":
             if let i = Self.indexParam(query) {
                 DispatchQueue.main.async { [weak self] in self?.onSelect?(i) }
@@ -301,6 +310,8 @@ button { border:none; border-radius:12px; font-weight:800; color:#fff; font-fami
 #go { grid-column:1/-1; background:#1f9d40; font-size:24px; padding:20px 0; }
 #go.pause { background:#c87f0a; }
 #go.resume { background:#2563c9; }
+#arm { grid-column:1/-1; background:#3a3a44; font-size:15px; padding:12px 0; }
+#arm.on { background:#c87f0a; }
 #stop { grid-column:1/-1; background:#8c1d1d; font-size:15px; padding:12px 0; }
 #stop.armed { background:#e53935; font-size:18px; }
 button:active { filter:brightness(1.25); }
@@ -320,6 +331,7 @@ button:active { filter:brightness(1.25); }
   <button id="prev">&#9650; PREV</button>
   <button id="next">&#9660; NEXT</button>
   <button id="go">GO</button>
+  <button id="arm" style="display:none">ARM MOVERS</button>
   <button id="stop">STOP / PANIC</button>
 </footer>
 <script>
@@ -425,10 +437,19 @@ function render(s){
   if (s.playState === 'playing') { go.className = 'pause'; go.textContent = '⏸ PAUSE'; }
   else if (s.playState === 'paused') { go.className = 'resume'; go.textContent = '▶ RESUME'; }
   else { go.className = ''; go.textContent = 'GO'; }
+  var arm = $('arm');
+  if (s.lightingArmable) {
+    arm.style.display = '';
+    arm.className = s.lightingArmed ? 'on' : '';
+    arm.textContent = s.lightingArmed ? '● MOVERS ARMED' : 'ARM MOVERS';
+  } else {
+    arm.style.display = 'none';
+  }
 }
 $('prev').onclick = function(){ send('/prev'); };
 $('next').onclick = function(){ send('/next'); };
 $('go').onclick = function(){ send('/toggle'); };
+$('arm').onclick = function(){ send('/arm'); };
 $('stop').onclick = function(){
   var b = $('stop');
   if (b.classList.contains('armed')) {

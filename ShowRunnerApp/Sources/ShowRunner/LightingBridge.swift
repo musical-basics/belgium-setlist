@@ -36,6 +36,26 @@ final class LightingBridge {
     /// Open the lighting window and start the 40 fps renderer.
     func start() { controller?.start() }
 
+    /// True when the lighting module is live (config enabled). The operator window uses this to
+    /// enable/disable its lighting "show window" buttons.
+    var isActive: Bool { controller != nil }
+
+    /// Re-show the lighting windows from the operator window (e.g. if they were closed). No-ops when off.
+    func showLightingWindow() { controller?.showLightingWindow() }
+    func showPreviewWindow() { controller?.showPreviewWindow() }
+
+    // MARK: Phone-remote lighting controls (mirror the Lighting window's ARM MOVERS button)
+
+    /// Whether there are provisional movers (Spiiders/T1s) that can be armed. False when lighting is off.
+    var moversArmable: Bool { controller?.lightingStatus().hasProvisional ?? false }
+    /// Whether the provisional movers are currently armed.
+    var moversArmed: Bool { controller?.lightingStatus().armProvisional ?? false }
+    /// Toggle the provisional movers on/off — exactly like the Lighting window's ARM MOVERS button.
+    func toggleArmMovers() {
+        guard let c = controller else { return }
+        c.lightingSetArmProvisional(!c.lightingStatus().armProvisional)
+    }
+
     /// A piece was fired — pick its lighting program (timecode for EDM, cues for SOLO/TRIO).
     func pieceDidStart(order: String) { controller?.pieceDidStart(order: order) }
 
