@@ -235,7 +235,7 @@ def add_credits(card_path, performers, italic_path, name_color, desc_color=GREY)
 
 FEATURED = [
     {"rel": "Dreams of a Violin/TitleCard.png", "italic": F_ITALIC, "name": GOLD,
-     "performers": [("Alicia De Poorter  ·  violin", "student of Gudrun Vercampt")]},
+     "performers": [("Alicia De Pooter  ·  violin", "student of Gudrun Vercampt")]},
     {"rel": "Gallop/TitleCard.png", "italic": F_ITALIC, "name": GOLD,
      "performers": [("Alicia De Pooter  ·  violin", "student of Gudrun Vercampt"),
                     ("Céline Uten  ·  cello", "student of Anthony Gröger")]},
