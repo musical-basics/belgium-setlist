@@ -36,6 +36,11 @@ public struct LightingConfig {
                                            // tilts forward enough to reach the downstage piano, so lock them. Dial this
                                            // ONE number until the beam lands on the piano (higher = more downstage/forward).
                                            // nil = follow the sweep + invert like the Spiiders.
+        public var tiltFlipFixtures: Set<String>  // movers whose tilt axis runs OPPOSITE their mirror
+                                                  // partner: apply ONE extra tilt flip (1−tilt) after the
+                                                  // global invertTilt, e.g. a T1 hung facing its partner so
+                                                  // the global invert lands one on the piano and throws the
+                                                  // other onto the cyc. Empty = none (default rig).
     }
 
     public struct ResolvedNetwork {
@@ -99,6 +104,7 @@ private struct LightingConfigFile: Codable {
         var stretch: Double?
         var invertTilt: Bool?
         var t1BackKeyTilt: Double?
+        var tiltFlipFixtures: [String]?
     }
     struct NetworkFile: Codable {
         var mode: String?
@@ -193,7 +199,8 @@ public enum LightingConfigLoader {
             pianoTilt: f.stage?.pianoTilt ?? d.stage.pianoTilt,
             stretch: f.stage?.stretch ?? d.stage.stretch,
             invertTilt: f.stage?.invertTilt ?? d.stage.invertTilt,
-            t1BackKeyTilt: f.stage?.t1BackKeyTilt ?? d.stage.t1BackKeyTilt)
+            t1BackKeyTilt: f.stage?.t1BackKeyTilt ?? d.stage.t1BackKeyTilt,
+            tiltFlipFixtures: f.stage?.tiltFlipFixtures.map(Set.init) ?? d.stage.tiltFlipFixtures)
 
         return LightingConfig(
             enabled: f.enabled ?? d.enabled,
@@ -296,7 +303,7 @@ public enum LightingConfigLoader {
 
         // The piano sits centre, slightly left (plot stage page), beam landing downstage on the
         // instrument. stretch = 1 → authored looks unchanged; dial down to pull the rig onto the piano.
-        let stage = LightingConfig.StageAnchor(pianoPan: 0.46, pianoTilt: 0.40, stretch: 1.0, invertTilt: true, t1BackKeyTilt: 0.72)
+        let stage = LightingConfig.StageAnchor(pianoPan: 0.46, pianoTilt: 0.40, stretch: 1.0, invertTilt: true, t1BackKeyTilt: 0.72, tiltFlipFixtures: [])
 
         return LightingConfig(
             enabled: true,
